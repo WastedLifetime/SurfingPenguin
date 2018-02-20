@@ -1,3 +1,5 @@
+"""routes.py: Each function in this file indicates a web page (HTML page)."""
+
 from surfing_penguin import surfing_penguin
 from flask import render_template, flash, redirect
 from surfing_penguin.forms import LoginForm
@@ -18,6 +20,7 @@ def login():
 
 @surfing_penguin.route('/select_qstnr')
 def select_qstnr():
+    """Show the list of questionnaires. Clients should pick up one and go to filling_in."""
     qstnrs = [
         {
             'author': {'username': 'John'},

@@ -16,7 +16,7 @@ export FLASK_APP=surfing_penguin.py
 flask run
 ```
 
-You should see the following content if it is correctly run.
+You should see the following content if it runs correctly.
 ```
  * Serving Flask app "surfing_penguin"
  * Running on http://127.0.0.1:5000/ (Press CTRL+C to quit)

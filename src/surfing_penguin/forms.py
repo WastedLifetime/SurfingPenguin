@@ -1,3 +1,5 @@
+"""forms.py: This file contains classes that respectively represent a form."""
+
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, BooleanField, SubmitField
 from wtforms.validators import DataRequired
