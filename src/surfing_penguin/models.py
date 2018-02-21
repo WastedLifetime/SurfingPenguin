@@ -1,6 +1,7 @@
-""" models.py: Classes that tell the content in each datatype in the database."""
+""" models.py: Classes that tell the content in the database."""
 
 from surfing_penguin import db
+
 
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)

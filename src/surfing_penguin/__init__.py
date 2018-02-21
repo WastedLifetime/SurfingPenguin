@@ -10,4 +10,4 @@ surfing_penguin.config.from_object(Config)
 db = SQLAlchemy(surfing_penguin)
 migrate = Migrate(surfing_penguin, db)
 
-from surfing_penguin import routes, models
+from surfing_penguin import routes, models  # noqa: F401
