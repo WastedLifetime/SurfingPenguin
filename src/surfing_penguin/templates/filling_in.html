@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% block content %}
+    <h1>Filling in</h1>
+    <body>
+        {% for question in qstnr %}
+        <div><p>Q: <b>{{ question }}</b></p></div>
+        {% endfor %}
+    </body>
+
+{% endblock %}
+
