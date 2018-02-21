@@ -1,4 +1,4 @@
-"""__init__.py: Initialization of the server"
+"""__init__.py: Initialization of the server"""
 
 from flask import Flask
 from config import Config
