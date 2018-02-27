@@ -1,8 +1,9 @@
 """routes.py: Each function in this file indicates a web page (HTML page)."""
 
-from surfing_penguin import api
-from flask import request
+from surfing_penguin import surfing_penguin, api
+from flask import render_template, flash, redirect, url_for, request
 from flask_restplus import Resource
+from surfing_penguin.forms import LoginForm
 
 
 qstnrs = [
@@ -19,20 +20,8 @@ qstnrs = [
 ]
 
 
-@api.route('/hello')
-class HelloWorld(Resource):
-    def get(self):
-        return {'hello': 'world'}
-
-
-@api.route('/index')
-class index(Resource):
-    def get(self):
-        return "Welcome to Surfing Penguin"
-
-
-@api.route('/login')
-class login(Resource):
+@api.route('/api_login')
+class api_login(Resource):
     def get(self):
         return "Please Login"
 
@@ -52,3 +41,39 @@ class select(Resource):
 class fill(Resource):
     def get(self, qstnr_id):
         return qstnrs[qstnr_id]
+
+
+@surfing_penguin.route('/')
+@surfing_penguin.route('/index')
+def index():
+    return render_template('index.html')
+
+
+@surfing_penguin.route('/login', methods=['GET', 'POST'])
+def login():
+    form = LoginForm()
+    if form.validate_on_submit():
+        flash('Login requested for user {}, remember_me={}'.format(
+            form.username.data, form.remember_me.data))
+        return redirect(url_for('index'))
+    return render_template('login.html', title='Sign In', form=form)
+
+
+@surfing_penguin.route('/select_qstnr')
+def select_qstnr():
+    """Show the list of questionnaires.
+       Clients should pick up one and go to filling_in."""
+    return render_template('select_qstnr.html', qstnrs=qstnrs)
+
+
+@surfing_penguin.route('/filling_in')
+def filling_in():
+    qstnr = [
+        {
+            'question': 'test Q1'
+        },
+        {
+            'question': 'test Q2'
+        }
+    ]
+    return render_template('filling_in.html', qstnr=qstnr)
