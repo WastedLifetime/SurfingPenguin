@@ -4,6 +4,7 @@ from surfing_penguin import surfing_penguin, api
 from flask import render_template, flash, redirect, url_for, request
 from flask_restplus import Resource
 from surfing_penguin.forms import LoginForm
+from surfing_penguin.models import Qstnr, question
 
 
 qstnrs = [
@@ -18,6 +19,16 @@ qstnrs = [
         'id': 1
     }
 ]
+qstnr1 = Qstnr()
+qstnr1.new_qst({'content': 'Q1'})
+qstnr1.new_qst({'content': 'Q2'})
+
+
+@api.route('/api_display')
+class api_display(Resource):
+    @api.marshal_list_with(question)
+    def get(self):
+        return qstnr1.questions
 
 
 @api.route('/api_login')
