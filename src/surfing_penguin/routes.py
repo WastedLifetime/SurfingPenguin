@@ -26,6 +26,9 @@ qstnr1.new_qst({'content': 'Q2'})
 
 @api.route('/api_display')
 class api_display(Resource):
+    """ This api is for developers to monitor the program,
+        currently only showing the questionnaire.
+        usage: start the server, and curl localhost:port/api_display """
     @api.marshal_list_with(question)
     def get(self):
         return qstnr1.questions
