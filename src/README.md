@@ -21,6 +21,11 @@ You should see the following content if it runs correctly.
  * Serving Flask app "surfing_penguin"
  * Running on http://127.0.0.1:5000/ (Press CTRL+C to quit)
 ```
+Some api for developers has been added, check them out in route.py.
+The HTML templates are to represent the view of administrators.
+
+### Developing Requirement
+Attention: All codes committed should pass flake8 syntax check.
 
 ### Author
 Frank

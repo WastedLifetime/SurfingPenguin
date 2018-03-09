@@ -4,7 +4,7 @@ from surfing_penguin import surfing_penguin, api
 from flask import render_template, flash, redirect, url_for, request
 from flask_restplus import Resource
 from surfing_penguin.forms import LoginForm
-from surfing_penguin.models import Qstnr, question
+from surfing_penguin.db_interface import Qstnr, question
 
 
 qstnrs = [
