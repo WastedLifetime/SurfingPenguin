@@ -1,8 +1,65 @@
 """routes.py: Each function in this file indicates a web page (HTML page)."""
 
-from surfing_penguin import surfing_penguin
-from flask import render_template, flash, redirect, url_for
+from surfing_penguin import surfing_penguin, api
+from flask import render_template, flash, redirect, url_for, request
+from flask_restplus import Resource, fields
 from surfing_penguin.forms import LoginForm
+from surfing_penguin.db_interface import Qstnr
+
+question = api.model("question_model", {
+        'content': fields.String,
+        'id': fields.Integer
+    })
+
+
+qstnrs = [
+    {
+        'author': {'username': 'John'},
+        'title': 'QSTQ',
+        'id': 0
+    },
+    {
+        'author': {'username': 'Susan'},
+        'title': 'QSTQQ',
+        'id': 1
+    }
+]
+qstnr1 = Qstnr()
+qstnr1.new_qst({'content': 'Q1'})
+qstnr1.new_qst({'content': 'Q2'})
+
+
+@api.route('/api_display')
+class api_display(Resource):
+    """ This api is for developers to monitor the program,
+        currently only showing the questionnaire.
+        usage: start the server, and curl localhost:port/api_display """
+    @api.marshal_list_with(question)
+    def get(self):
+        return qstnr1.questions
+
+
+@api.route('/api_login')
+class api_login(Resource):
+    def get(self):
+        return "Please Login"
+
+    def post(self):
+        user = request.form['user']
+        password = request.form['passwd']
+        return "Login: %s, %s" % (user, password)
+
+
+@api.route('/show_surveys')
+class show_surveys(Resource):
+    def get(self):
+        return qstnrs
+
+
+@api.route('/fill/<int:qstnr_id>')
+class fill(Resource):
+    def get(self, qstnr_id):
+        return qstnrs[qstnr_id]
 
 
 @surfing_penguin.route('/')
@@ -25,16 +82,6 @@ def login():
 def select_qstnr():
     """Show the list of questionnaires.
        Clients should pick up one and go to filling_in."""
-    qstnrs = [
-        {
-            'author': {'username': 'John'},
-            'title': 'QSTQ'
-        },
-        {
-            'author': {'username': 'Susan'},
-            'title': 'QSTQQ'
-        }
-    ]
     return render_template('select_qstnr.html', qstnrs=qstnrs)
 
 
