@@ -1,10 +1,4 @@
 from surfing_penguin import api
-from flask_restplus import fields
-
-question = api.model("question_model", {
-        'content': fields.String,
-        'id': fields.Integer
-    })
 
 
 class Qstnr(object):
