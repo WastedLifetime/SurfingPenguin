@@ -50,8 +50,8 @@ class api_login(Resource):
         return "Login: %s, %s" % (user, password)
 
 
-@api.route('/select')
-class select(Resource):
+@api.route('/show_surveys')
+class show_surveys(Resource):
     def get(self):
         return qstnrs
 
