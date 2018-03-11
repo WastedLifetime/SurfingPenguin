@@ -5,6 +5,7 @@ from flask import render_template, flash, redirect, url_for, request
 from flask_restplus import Resource, fields
 from surfing_penguin.forms import LoginForm
 from surfing_penguin.db_interface import Qstnr
+from surfing_penguin.models import User
 
 question = api.model("question_model", {
         'content': fields.String,
@@ -48,6 +49,18 @@ class api_login(Resource):
         user = request.form['user']
         password = request.form['passwd']
         return "Login: %s, %s" % (user, password)
+
+
+@api.route('/api_register')
+class api_register(Resource):
+    def get(self):
+        return "Register Page"
+
+    def post(self):
+        username = request.form['username']
+        password = request.form['password']
+        user = User(username, password)
+        return "user: %s, passwd:%s" % (user.username, user.password)
 
 
 @api.route('/show_surveys')
