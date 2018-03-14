@@ -1,5 +1,6 @@
 """routes.py: Each function in this file indicates a web page (HTML page)."""
 
+import datetime
 from surfing_penguin import surfing_penguin, api, session
 from flask import render_template, flash, redirect, url_for, request
 from flask_restplus import Resource, fields
@@ -66,13 +67,15 @@ class login(Resource):
         return "login: enter user and passwd"
 
     def post(self):
-        login_name = request.form['user']
-        login_passwd = request.form['passwd']
+        login_name = request.form['username']
+        login_passwd = request.form['password']
         if session.query(User).filter_by(username=login_name).count() == 0:
             return "user not found"
         login_user = session.query(User).filter_by(username=login_name).first()
         if login_user.password != login_passwd:
             return "wrong password"
+        login_user.last_login = datetime.datetime.utcnow()
+        session.commit()
         return "Login: %s" % (login_user.username)
 
 
@@ -106,7 +109,9 @@ class search_user(Resource):
         search_name = request.form['username']
         if session.query(User).filter_by(username=search_name).count() == 0:
             return "user does not exist"
-        return "user %s exist" % (search_name)
+        user = session.query(User).filter_by(username=search_name).first()
+        return "user %s, register time: %s, last login: %s" % (
+                user.username, user.register_time, user.last_login)
 
 
 @api.route('/show_surveys')
