@@ -1,9 +1,8 @@
 """ models.py: Classes that tell the content in the database."""
 
-from surfing_penguin import db_engine
-from sqlalchemy import Column, Integer, String
-from sqlalchemy.ext.declarative import declarative_base
-Base = declarative_base()
+import datetime
+from sqlalchemy import Column, Integer, String, DateTime
+from surfing_penguin import Base
 
 
 class User(Base):
@@ -11,16 +10,17 @@ class User(Base):
     id = Column(Integer, primary_key=True)
     username = Column(String)
     password = Column(String)
+    register_time = Column(DateTime, default=datetime.datetime.utcnow)
+    last_login = Column(DateTime, default=datetime.datetime.utcnow)
 
     def __init__(self, username, password):
         self.username = username
         self.password = password
 
     def __repr__(self):
-        return "User('{}','{}')".format(
+        return "User('{}','{}',registered at '{}',last login:'{}')".format(
                 self.username,
-                self.password
+                self.password,
+                self.register_time,
+                self.last_login
                 )
-
-
-Base.metadata.create_all(db_engine)

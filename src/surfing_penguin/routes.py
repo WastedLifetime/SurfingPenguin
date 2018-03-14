@@ -1,6 +1,6 @@
 """routes.py: Each function in this file indicates a web page (HTML page)."""
 
-from surfing_penguin import surfing_penguin, api
+from surfing_penguin import surfing_penguin, api, session
 from flask import render_template, flash, redirect, url_for, request
 from flask_restplus import Resource, fields
 from surfing_penguin.forms import LoginForm
@@ -40,27 +40,73 @@ class api_display(Resource):
         return qstnr1.questions
 
 
-@api.route('/api_login')
-class api_login(Resource):
+""" user account associated APIs:
+    register, login, (show_users), delete_user, search_user """
+
+
+@api.route('/register')
+class register(Resource):
     def get(self):
-        return "Please Login"
+        return "register: enter username and password"
 
     def post(self):
-        user = request.form['user']
-        password = request.form['passwd']
-        return "Login: %s, %s" % (user, password)
+        new_name = request.form['username']
+        new_password = request.form['password']
+        if session.query(User).filter_by(username=new_name).count() == 1:
+            return "Please use another username"
+        new_user = User(new_name, new_password)
+        session.add(new_user)
+        session.commit()
+        return "registration done for user %s" % (new_user.username)
 
 
-@api.route('/api_register')
-class api_register(Resource):
+@api.route('/login')
+class login(Resource):
     def get(self):
-        return "Register Page"
+        return "login: enter user and passwd"
 
     def post(self):
-        username = request.form['username']
-        password = request.form['password']
-        user = User(username, password)
-        return "user: %s, passwd:%s" % (user.username, user.password)
+        login_name = request.form['user']
+        login_passwd = request.form['passwd']
+        if session.query(User).filter_by(username=login_name).count() == 0:
+            return "user not found"
+        login_user = session.query(User).filter_by(username=login_name).first()
+        if login_user.password != login_passwd:
+            return "wrong password"
+        return "Login: %s" % (login_user.username)
+
+
+@api.route('/show_users')
+class show_users(Resource):
+    """ need to convert the result into JSONable format """
+    def get(self):
+        return session.query(User).all()
+
+
+@api.route('/delete_user')
+class delete_user(Resource):
+    def get(self):
+        return "delete_user: enter username"
+
+    def post(self):
+        delete_name = request.form['username']
+        if session.query(User).filter_by(username=delete_name).count() == 0:
+            return "user does not exist"
+        session.query(User).filter_by(username=delete_name).delete()
+        session.commit()
+        return "user %s deleted" % (delete_name)
+
+
+@api.route('/search_user')
+class search_user(Resource):
+    def get(self):
+        return "search_user: enter username"
+
+    def post(self):
+        search_name = request.form['username']
+        if session.query(User).filter_by(username=search_name).count() == 0:
+            return "user does not exist"
+        return "user %s exist" % (search_name)
 
 
 @api.route('/show_surveys')
@@ -75,14 +121,13 @@ class fill(Resource):
         return qstnrs[qstnr_id]
 
 
-@surfing_penguin.route('/')
 @surfing_penguin.route('/index')
 def index():
     return render_template('index.html')
 
 
-@surfing_penguin.route('/login', methods=['GET', 'POST'])
-def login():
+@surfing_penguin.route('/login_html', methods=['GET', 'POST'])
+def login_html():
     form = LoginForm()
     if form.validate_on_submit():
         flash('Login requested for user {}, remember_me={}'.format(
