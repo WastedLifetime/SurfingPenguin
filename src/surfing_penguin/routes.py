@@ -42,7 +42,7 @@ class api_display(Resource):
 
 
 """ user account associated APIs:
-    register, login, (show_users), delete_user, search_user """
+    register, login, show_users, delete_user, search_user """
 
 
 @api.route('/register')
@@ -64,7 +64,7 @@ class register(Resource):
 @api.route('/login')
 class login(Resource):
     def get(self):
-        return "login: enter user and passwd"
+        return "login: enter username and password"
 
     def post(self):
         login_name = request.form['username']
@@ -81,9 +81,8 @@ class login(Resource):
 
 @api.route('/show_users')
 class show_users(Resource):
-    """ need to convert the result into JSONable format """
     def get(self):
-        return session.query(User).all()
+        return convert_users_to_json(session.query(User).all())
 
 
 @api.route('/delete_user')
@@ -159,3 +158,19 @@ def filling_in():
         }
     ]
     return render_template('filling_in.html', qstnr=qstnr)
+
+
+def convert_user_to_json(user):
+    json_user = {
+        "username": user.username,
+        "register_time": user.register_time.isoformat(),
+        "last_login": user.last_login.isoformat()
+    }
+    return json_user
+
+
+def convert_users_to_json(users):
+    json_users = []
+    for user in users:
+        json_users.append(convert_user_to_json(user))
+    return json_users
