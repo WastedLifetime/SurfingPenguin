@@ -8,8 +8,8 @@ from surfing_penguin import Base
 class User(Base):
     __tablename__ = 'user'
     id = Column(Integer, primary_key=True)
-    username = Column(String)
-    password = Column(String)
+    username = Column(String(32))
+    password = Column(String(32))
     register_time = Column(DateTime, default=datetime.datetime.utcnow)
     last_login = Column(DateTime, default=datetime.datetime.utcnow)
 

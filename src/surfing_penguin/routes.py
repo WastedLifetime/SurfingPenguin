@@ -1,16 +1,23 @@
 """routes.py: Each function in this file indicates a web page (HTML page)."""
 
-import datetime
-from surfing_penguin import surfing_penguin, api, session
+from surfing_penguin import surfing_penguin, api
 from flask import render_template, flash, redirect, url_for, request
 from flask_restplus import Resource, fields
 from surfing_penguin.forms import LoginForm
-from surfing_penguin.db_interface import Qstnr
-from surfing_penguin.models import User
+from surfing_penguin.db_interface import Qstnr, User_func
 
 question = api.model("question_model", {
         'content': fields.String,
         'id': fields.Integer
+    })
+
+
+user = api.model("user_model", {
+        'username': fields.String,
+        'id': fields.Integer,
+        'password': fields.String,
+        'register_time': fields.String,
+        'last_login': fields.String
     })
 
 
@@ -47,69 +54,53 @@ class api_display(Resource):
 
 @api.route('/register')
 class register(Resource):
-    def get(self):
-        return "register: enter username and password"
-
     def post(self):
         new_name = request.form['username']
         new_password = request.form['password']
-        if session.query(User).filter_by(username=new_name).count() == 1:
-            return "Please use another username"
-        new_user = User(new_name, new_password)
-        session.add(new_user)
-        session.commit()
-        return "registration done for user %s" % (new_user.username)
+        new_user = User_func.register(new_name, new_password)
+        if new_user:
+            return "registratoin done for {}".format(new_user.username)
+        return "register failed"
 
 
 @api.route('/login')
 class login(Resource):
-    def get(self):
-        return "login: enter username and password"
-
     def post(self):
         login_name = request.form['username']
         login_passwd = request.form['password']
-        if session.query(User).filter_by(username=login_name).count() == 0:
+        if User_func.search_user(login_name) is False:
             return "user not found"
-        login_user = session.query(User).filter_by(username=login_name).first()
-        if login_user.password != login_passwd:
-            return "wrong password"
-        login_user.last_login = datetime.datetime.utcnow()
-        session.commit()
-        return "Login: %s" % (login_user.username)
+        if User_func.check_password(login_name, login_passwd) is False:
+            return "wrong passwd"
+        return "Login: {}".format(login_name)
 
 
 @api.route('/show_users')
 class show_users(Resource):
+    @api.marshal_list_with(user)
     def get(self):
-        return convert_users_to_json(session.query(User).all())
+        users = User_func.get_all_users()
+        return users
 
 
 @api.route('/delete_user')
 class delete_user(Resource):
-    def get(self):
-        return "delete_user: enter username"
-
     def post(self):
         delete_name = request.form['username']
-        if session.query(User).filter_by(username=delete_name).count() == 0:
+        if User_func.search_user(delete_name) is False:
             return "user does not exist"
-        session.query(User).filter_by(username=delete_name).delete()
-        session.commit()
-        return "user %s deleted" % (delete_name)
+        User_func.delete_user(delete_name)
+        return "user {} deleted".format(delete_name)
 
 
 @api.route('/search_user')
 class search_user(Resource):
-    def get(self):
-        return "search_user: enter username"
-
     def post(self):
         search_name = request.form['username']
-        if session.query(User).filter_by(username=search_name).count() == 0:
+        if User_func.search_user(search_name) is False:
             return "user does not exist"
-        user = session.query(User).filter_by(username=search_name).first()
-        return "user %s, register time: %s, last login: %s" % (
+        user = User_func.get_user(search_name)
+        return "user {}, register time: {}, last login: {}".format(
                 user.username, user.register_time, user.last_login)
 
 
