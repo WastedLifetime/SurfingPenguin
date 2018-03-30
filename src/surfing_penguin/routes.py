@@ -1,10 +1,10 @@
 """routes.py: Each function in this file indicates a web page (HTML page)."""
 
 from surfing_penguin import surfing_penguin, api
-from flask import render_template, flash, redirect, url_for, request
+from flask import render_template, flash, redirect, url_for
 from flask_restplus import Resource, fields
 from surfing_penguin.forms import LoginForm
-from surfing_penguin.db_interface import Qstnr, User_func
+from surfing_penguin.db_interface import Qstnr, UserFunctions
 
 question = api.model("question_model", {
         'content': fields.String,
@@ -12,12 +12,17 @@ question = api.model("question_model", {
     })
 
 
-user = api.model("user_model", {
+api_user = api.model("user_model", {
         'username': fields.String,
         'id': fields.Integer,
         'password': fields.String,
-        'register_time': fields.String,
-        'last_login': fields.String
+        'messages': fields.String,
+    })
+
+
+api_show_user = api.model("show_user_model", {
+        'username': fields.String,
+        'id': fields.Integer,
     })
 
 
@@ -54,54 +59,59 @@ class api_display(Resource):
 
 @api.route('/register')
 class register(Resource):
+    @api.marshal_with(api_user)
+    @api.expect(api_user)
     def post(self):
-        new_name = request.form['username']
-        new_password = request.form['password']
-        new_user = User_func.register(new_name, new_password)
-        if new_user:
-            return "registratoin done for {}".format(new_user.username)
-        return "register failed"
+        name = api.payload['username']
+        password = api.payload['password']
+        if UserFunctions.search_user(name) is True:
+            return {'messages': "use another name"}
+        return UserFunctions.register(name, password)
 
 
 @api.route('/login')
 class login(Resource):
+    @api.marshal_with(api_user)
+    @api.expect(api_user)
     def post(self):
-        login_name = request.form['username']
-        login_passwd = request.form['password']
-        if User_func.search_user(login_name) is False:
-            return "user not found"
-        if User_func.check_password(login_name, login_passwd) is False:
-            return "wrong passwd"
-        return "Login: {}".format(login_name)
+        name = api.payload['username']
+        password = api.payload['password']
+        if UserFunctions.search_user(name) is False:
+            return {'messages': "user not found"}
+        if UserFunctions.check_password(name, password) is False:
+            return {'messages': "wrong passwd"}
+        return {'messages': "Login: {}".format(name)}
 
 
 @api.route('/show_users')
 class show_users(Resource):
-    @api.marshal_list_with(user)
+    @api.marshal_list_with(api_show_user)
     def get(self):
-        users = User_func.get_all_users()
+        users = UserFunctions.get_all_users()
         return users
 
 
 @api.route('/delete_user')
 class delete_user(Resource):
+    @api.marshal_with(api_user)
+    @api.expect(api_user)
     def post(self):
-        delete_name = request.form['username']
-        if User_func.search_user(delete_name) is False:
-            return "user does not exist"
-        User_func.delete_user(delete_name)
-        return "user {} deleted".format(delete_name)
+        name = api.payload['username']
+        if UserFunctions.search_user(name) is False:
+            return {'messages': "user not found"}
+        UserFunctions.delete_user(name)
+        return {'messages': "user {} deleted".format(name)}
 
 
 @api.route('/search_user')
 class search_user(Resource):
+    @api.marshal_with(api_show_user)
+    @api.expect(api_show_user)
     def post(self):
-        search_name = request.form['username']
-        if User_func.search_user(search_name) is False:
-            return "user does not exist"
-        user = User_func.get_user(search_name)
-        return "user {}, register time: {}, last login: {}".format(
-                user.username, user.register_time, user.last_login)
+        search_name = api.payload['username']
+        if UserFunctions.search_user(search_name) is False:
+            return {'messages': "user does not exist"}
+        return UserFunctions.get_user(search_name)
 
 
 @api.route('/show_surveys')

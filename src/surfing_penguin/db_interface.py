@@ -2,7 +2,7 @@ from surfing_penguin import api, session
 from surfing_penguin.models import User
 
 
-class User_func(object):
+class UserFunctions(object):
     def search_user(name):
         if session.query(User).filter_by(username=name).count() == 1:
             return True
