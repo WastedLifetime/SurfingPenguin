@@ -1,7 +1,7 @@
 """__init__.py: Initialization of the server"""
 
 from flask import Flask
-from surfing_penguin.config import Config
+from config import Config
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from flask_restplus import Api
