@@ -12,4 +12,4 @@ db = SQLAlchemy(surfing_penguin)
 migrate = Migrate(surfing_penguin, db)
 api = Api(surfing_penguin)
 
-from surfing_penguin import routes, models  # noqa: F401
+from src.surfing_penguin import routes, models  # noqa: F401
