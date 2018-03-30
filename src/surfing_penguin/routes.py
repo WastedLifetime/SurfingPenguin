@@ -1,10 +1,10 @@
 """routes.py: Each function in this file indicates a web page (HTML page)."""
 
-from surfing_penguin import surfing_penguin, api
+from src.surfing_penguin import surfing_penguin, api
 from flask import render_template, flash, redirect, url_for, request
 from flask_restplus import Resource, fields
-from surfing_penguin.forms import LoginForm
-from surfing_penguin.db_interface import Qstnr
+from src.surfing_penguin.forms import LoginForm
+from src.surfing_penguin.db_interface import Qstnr
 
 question = api.model("question_model", {
         'content': fields.String,

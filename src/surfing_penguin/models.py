@@ -1,6 +1,6 @@
 """ models.py: Classes that tell the content in the database."""
 
-from surfing_penguin import db
+from src.surfing_penguin import db
 
 
 class User(db.Model):

@@ -1,4 +1,4 @@
-from surfing_penguin import api
+from src.surfing_penguin import api
 
 
 class Qstnr(object):
