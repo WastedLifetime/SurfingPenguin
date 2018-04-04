@@ -1,10 +1,16 @@
 """routes.py: Each function in this file indicates a web page (HTML page)."""
 
 from surfing_penguin import surfing_penguin, api
-from flask import render_template, flash, redirect, url_for
+from flask import request, render_template, flash, redirect, url_for
 from flask_restplus import Resource, fields
 from surfing_penguin.forms import LoginForm
 from surfing_penguin.db_interface import Qstnr, UserFunctions
+from functools import wraps
+
+api_return_message = api.model("return_message", {
+        'message': fields.String
+    })
+
 
 question = api.model("question_model", {
         'content': fields.String,
@@ -14,7 +20,6 @@ question = api.model("question_model", {
 
 api_get_user = api.model("get_user_model", {
         'username': fields.String,
-        'id': fields.Integer,
         'password': fields.String,
     })
 
@@ -47,6 +52,26 @@ qstnrs = [
 qstnr1 = Qstnr()
 qstnr1.new_qst({'content': 'Q1'})
 qstnr1.new_qst({'content': 'Q2'})
+
+
+def token_required(f):
+    @wraps(f)
+    def decorated(*args, **kwargs):
+
+        token = None
+
+        if 'X-API-KEY' in request.headers:
+            token = request.headers['X-API-KEY']
+
+        if not token:
+            return {'message': 'Token is missing.'}, 401
+
+        if token != 'mytoken':
+            return {'message': 'Your token is wrong, wrong, wrong!!!'}, 401
+
+        return f(*args, **kwargs)
+
+    return decorated
 
 
 @api.route('/api_display')
@@ -86,7 +111,14 @@ class login(Resource):
             return {'messages': "user not found"}
         if UserFunctions.check_password(name, password) is False:
             return {'messages': "wrong passwd"}
-        return {'messages': "Login: {}".format(name)}
+        return {'username': name, 'messages': "Login: {}".format(name)}
+
+
+@api.route('/logout')
+class logout(Resource):
+    @api.marshal_with(api_return_message)
+    def get(self):
+        return {'message': 'user logout'}
 
 
 @api.route('/show_users')
@@ -99,8 +131,10 @@ class show_users(Resource):
 
 @api.route('/delete_user')
 class delete_user(Resource):
-    @api.marshal_with(api_return_user)
+    @api.marshal_with(api_return_message)
     @api.expect(api_get_user)
+    @api.doc(security='apikey')
+    @token_required
     def post(self):
         name = api.payload['username']
         if UserFunctions.search_user(name) is False:

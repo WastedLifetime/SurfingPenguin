@@ -12,7 +12,15 @@ surfing_penguin = Flask(__name__)
 surfing_penguin.config.from_object(Config)
 db_engine = create_engine('sqlite:///:memory:', echo=False)
 
-api = Api(surfing_penguin)
+authorizations = {
+    'apikey' : {
+        'type' : 'apiKey',
+        'in' : 'header',
+        'name' : 'X-API-KEY'
+    }
+}
+
+api = Api(surfing_penguin, authorizations=authorizations)
 
 from surfing_penguin import models  # noqa: F401
 Base.metadata.create_all(db_engine)
