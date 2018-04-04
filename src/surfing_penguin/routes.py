@@ -12,10 +12,16 @@ question = api.model("question_model", {
     })
 
 
-api_user = api.model("user_model", {
+api_get_user = api.model("get_user_model", {
         'username': fields.String,
         'id': fields.Integer,
         'password': fields.String,
+    })
+
+
+api_return_user = api.model("return_user_model", {
+        'username': fields.String,
+        'id': fields.Integer,
         'messages': fields.String,
     })
 
@@ -59,8 +65,8 @@ class api_display(Resource):
 
 @api.route('/register')
 class register(Resource):
-    @api.marshal_with(api_user)
-    @api.expect(api_user)
+    @api.marshal_with(api_return_user)
+    @api.expect(api_get_user)
     def post(self):
         name = api.payload['username']
         password = api.payload['password']
@@ -71,8 +77,8 @@ class register(Resource):
 
 @api.route('/login')
 class login(Resource):
-    @api.marshal_with(api_user)
-    @api.expect(api_user)
+    @api.marshal_with(api_return_user)
+    @api.expect(api_get_user)
     def post(self):
         name = api.payload['username']
         password = api.payload['password']
@@ -93,8 +99,8 @@ class show_users(Resource):
 
 @api.route('/delete_user')
 class delete_user(Resource):
-    @api.marshal_with(api_user)
-    @api.expect(api_user)
+    @api.marshal_with(api_return_user)
+    @api.expect(api_get_user)
     def post(self):
         name = api.payload['username']
         if UserFunctions.search_user(name) is False:
