@@ -1,4 +1,38 @@
-from surfing_penguin import api
+from surfing_penguin import api, session
+from surfing_penguin.models import User
+
+
+class UserFunctions(object):
+    def search_user(name):
+        if session.query(User).filter_by(username=name).count() == 1:
+            return True
+        return False
+
+    def get_user(name):
+        return session.query(User).filter_by(username=name).first()
+
+    def register(name, password):
+        if session.query(User).filter_by(username=name).count() == 1:
+            return
+        new_user = User(name, password)
+        new_user.id = session.query(User).count() + 1
+        session.add(new_user)
+        session.commit()
+        return new_user
+
+    def check_password(name, password):
+        user = session.query(User).filter_by(username=name).first()
+        if user.password != password:
+            return False
+        return True
+
+    def get_all_users():
+        users = session.query(User).all()
+        return users
+
+    def delete_user(name):
+        session.query(User).filter_by(username=name).delete()
+        session.commit()
 
 
 class Qstnr(object):

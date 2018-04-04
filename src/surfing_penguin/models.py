@@ -1,13 +1,26 @@
 """ models.py: Classes that tell the content in the database."""
 
-from surfing_penguin import db
+import datetime
+from sqlalchemy import Column, Integer, String, DateTime
+from surfing_penguin import Base
 
 
-class User(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String(64), index=True, unique=True)
-    email = db.Column(db.String(120), index=True, unique=True)
-    password_hash = db.Column(db.String(128))
+class User(Base):
+    __tablename__ = 'user'
+    id = Column(Integer, primary_key=True)
+    username = Column(String(32))
+    password = Column(String(32))
+    register_time = Column(DateTime, default=datetime.datetime.utcnow)
+    last_login = Column(DateTime, default=datetime.datetime.utcnow)
+
+    def __init__(self, username, password):
+        self.username = username
+        self.password = password
 
     def __repr__(self):
-        return '<User {}>'.format(self.username)
+        return "User('{}','{}',registered at '{}',last login:'{}')".format(
+                self.username,
+                self.password,
+                self.register_time,
+                self.last_login
+                )
