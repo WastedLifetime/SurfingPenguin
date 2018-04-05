@@ -1,14 +1,21 @@
 """routes.py: Each function in this file indicates a web page (HTML page)."""
 
-from surfing_penguin import surfing_penguin, api
-from flask import request, render_template, flash, redirect, url_for
+from surfing_penguin import surfing_penguin, api, auth
+from flask import request, g, render_template, flash, redirect, url_for
 from flask_restplus import Resource, fields
 from surfing_penguin.forms import LoginForm
 from surfing_penguin.db_interface import Qstnr, UserFunctions
+from surfing_penguin.models import User
 from functools import wraps
 
 api_return_message = api.model("return_message", {
         'message': fields.String
+    })
+
+
+api_token = api.model("api_token", {
+        'token': fields.String,
+        'duration': fields.Integer
     })
 
 
@@ -74,6 +81,36 @@ def token_required(f):
     return decorated
 
 
+@auth.verify_password
+def verify_password(username_or_token, password):
+    # first try to authenticate by token
+    user = User.verify_auth_token(username_or_token)
+    if not user:
+        # try to authenticate with username/password
+        user = UserFunctions.get_user(username_or_token)
+        if not user or not user.verify_password(password):
+            return False
+    g.user = user
+    return True
+
+
+@api.route('/api_token')
+class api_token(Resource):
+    @auth.login_required
+    @api.marshal_with(api_token)
+    def get():
+        token = g.user.generate_auth_token(600)
+        return {'token': token.decode('ascii'), 'duration': 600}
+
+
+@api.route('/api_resource')
+class api_resource(Resource):
+    @auth.login_required
+    @api.marshal_with(api_return_message)
+    def get(self):
+        return {'message': 'hi, user {}'.format(g.user.username)}
+
+
 @api.route('/api_display')
 class api_display(Resource):
     """ This api is for developers to monitor the program,
@@ -109,7 +146,8 @@ class login(Resource):
         password = api.payload['password']
         if UserFunctions.search_user(name) is False:
             return {'messages': "user not found"}
-        if UserFunctions.check_password(name, password) is False:
+        user = UserFunctions.get_user(name)
+        if user.verify_password(password) is False:
             return {'messages': "wrong passwd"}
         return {'username': name, 'messages': "Login: {}".format(name)}
 
@@ -133,8 +171,9 @@ class show_users(Resource):
 class delete_user(Resource):
     @api.marshal_with(api_return_message)
     @api.expect(api_get_user)
-    @api.doc(security='apikey')
-    @token_required
+    # @api.doc(security='apikey')
+    # @token_required
+    @auth.login_required
     def post(self):
         name = api.payload['username']
         if UserFunctions.search_user(name) is False:
