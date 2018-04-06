@@ -14,9 +14,9 @@ db_engine = create_engine('sqlite:///:memory:', echo=False)
 
 api = Api(surfing_penguin)
 
-from surfing_penguin import models  # noqa: F401
+from src.surfing_penguin import models  # noqa: F401
 Base.metadata.create_all(db_engine)
 Session = sessionmaker(bind=db_engine)
 session = Session()
 
-from surfing_penguin import routes
+from src.surfing_penguin import routes
