@@ -1,5 +1,5 @@
-from surfing_penguin import api, session
-from surfing_penguin.models import User
+from src.surfing_penguin import api, session
+from src.surfing_penguin.models import User
 
 
 class UserFunctions(object):

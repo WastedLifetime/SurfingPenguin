@@ -2,7 +2,7 @@
 
 import datetime
 from sqlalchemy import Column, Integer, String, DateTime
-from surfing_penguin import Base
+from src.surfing_penguin import Base
 
 
 class User(Base):

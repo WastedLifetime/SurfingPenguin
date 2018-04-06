@@ -1,7 +1,7 @@
 """__init__.py: Initialization of the server"""
 
 from flask import Flask
-from config import Config
+from src.config import Config
 from flask_restplus import Api
 from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
