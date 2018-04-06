@@ -1,4 +1,5 @@
-from surfing_penguin import api, session
+import datetime
+from surfing_penguin import api, session, login_manager
 from surfing_penguin.models import User
 
 
@@ -31,6 +32,16 @@ class UserFunctions(object):
     def delete_user(name):
         session.query(User).filter_by(username=name).delete()
         session.commit()
+
+    def update_last_seen(name):
+        user = session.query(User).filter_by(username=name).first()
+        user.last_seen = datetime.datetime.utcnow()
+        session.commit()
+
+
+@login_manager.user_loader
+def load_user(id):
+    return session.query(User).get(int(id))
 
 
 class Qstnr(object):

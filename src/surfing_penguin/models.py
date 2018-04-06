@@ -13,7 +13,7 @@ class User(UserMixin, Base):
     username = Column(String(32))
     password_hash = Column(String(128))
     register_time = Column(DateTime, default=datetime.datetime.utcnow)
-    last_login = Column(DateTime, default=datetime.datetime.utcnow)
+    last_seen = Column(DateTime, default=datetime.datetime.utcnow)
 
     def __init__(self, username, password):
         self.username = username
@@ -23,7 +23,7 @@ class User(UserMixin, Base):
         return "User('{}', registered at '{}',last login:'{}')".format(
                 self.username,
                 self.register_time,
-                self.last_login
+                self.last_seen
                 )
 
     def check_password(self, password):
