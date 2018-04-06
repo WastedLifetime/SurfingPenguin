@@ -4,22 +4,15 @@ from surfing_penguin import api
 from flask_restplus import Resource, fields
 from surfing_penguin.db_interface import UserFunctions
 
-question = api.model("question_model", {
-        'content': fields.String,
-        'id': fields.Integer
-    })
-
 
 api_get_user = api.model("get_user_model", {
         'username': fields.String,
-        'id': fields.Integer,
         'password': fields.String,
     })
 
 
 api_return_user = api.model("return_user_model", {
         'username': fields.String,
-        'id': fields.Integer,
         'messages': fields.String,
     })
 
