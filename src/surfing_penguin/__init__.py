@@ -9,13 +9,15 @@ from sqlalchemy.orm import sessionmaker
 Base = declarative_base()
 
 surfing_penguin = Flask(__name__)
-ENV=os.environ.get('ENV')
+ENV=os.environ.get('ENV
+
 if ENV == "Staging":
     surfing_penguin.config.from_object(StagingConfig)
-if ENV == "Development":
-    surfing_penguin.config.from_object(DevelopmentConfig)
-if ENV == "Production":
+elif ENV == "Production":
     surfing_penguin.config.from_object(ProductionConfig)
+else:
+    surfing_penguin.config.from_object(DevelopmentConfig)
+
 
 db_engine = create_engine(surfing_penguin.config['SQLALCHEMY_DATABASE_URI'], echo=False)
 
