@@ -4,7 +4,7 @@ from surfing_penguin.models import User
 
 class UserFunctions(object):
     def search_user(name):
-        if session.query(User).filter_by(username=name).count() == 1:
+        if session.query(User).filter_by(username=name).first() is not None:
             return True
         return False
 
@@ -12,7 +12,7 @@ class UserFunctions(object):
         return session.query(User).filter_by(username=name).first()
 
     def register(name, password):
-        if session.query(User).filter_by(username=name).count() == 1:
+        if session.query(User).filter_by(username=name).first() is not None:
             return
         new_user = User(name, password)
         new_user.id = session.query(User).count() + 1
@@ -22,9 +22,7 @@ class UserFunctions(object):
 
     def check_password(name, password):
         user = session.query(User).filter_by(username=name).first()
-        if user.password != password:
-            return False
-        return True
+        return user.verify_password(password)
 
     def get_all_users():
         users = session.query(User).all()

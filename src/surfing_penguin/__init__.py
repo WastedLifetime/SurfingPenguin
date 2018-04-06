@@ -3,6 +3,7 @@
 from flask import Flask
 from config import Config
 from flask_restplus import Api
+from flask_httpauth import HTTPBasicAuth
 from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
@@ -12,7 +13,16 @@ surfing_penguin = Flask(__name__)
 surfing_penguin.config.from_object(Config)
 db_engine = create_engine('sqlite:///:memory:', echo=False)
 
-api = Api(surfing_penguin)
+authorizations = {
+    'apikey': {
+        'type': 'apiKey',
+        'in': 'header',
+        'name': 'X-API-KEY'
+    }
+}
+
+api = Api(surfing_penguin, authorizations=authorizations)
+auth = HTTPBasicAuth()
 
 from surfing_penguin import models  # noqa: F401
 Base.metadata.create_all(db_engine)
