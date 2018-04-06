@@ -61,6 +61,7 @@ qstnr1.new_qst({'content': 'Q1'})
 qstnr1.new_qst({'content': 'Q2'})
 
 
+# TODO:combine it with HTTPauth
 def token_required(f):
     @wraps(f)
     def decorated(*args, **kwargs):
@@ -98,7 +99,7 @@ def verify_password(username_or_token, password):
 class api_token(Resource):
     @auth.login_required
     @api.marshal_with(api_token)
-    def get():
+    def get(self):
         token = g.user.generate_auth_token(600)
         return {'token': token.decode('ascii'), 'duration': 600}
 
@@ -137,6 +138,7 @@ class register(Resource):
         return UserFunctions.register(name, password)
 
 
+# TODO: combine this with HTTPauth
 @api.route('/login')
 class login(Resource):
     @api.marshal_with(api_return_user)
