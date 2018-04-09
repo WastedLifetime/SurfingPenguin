@@ -36,6 +36,7 @@ api_show_user_and_time = api.model("show_user_and_time_model", {
 
 @surfing_penguin.before_request
 def before_request():
+    # before each operation of a user, update his/her last_seen
     if current_user.is_authenticated:
         UserFunctions.update_last_seen(current_user.username)
 
@@ -124,6 +125,7 @@ class search_user(Resource):
 @login_manager.unauthorized_handler
 @api.marshal_with(api_return_message)
 def unauthorized():
+    # TODO: Flash this message somewhere.
     print("entering")
     return {'message': "Please Login First"}
 

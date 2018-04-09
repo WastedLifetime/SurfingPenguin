@@ -23,4 +23,4 @@ Base.metadata.create_all(db_engine)
 Session = sessionmaker(bind=db_engine)
 session = Session()
 
-from surfing_penguin import routes
+from surfing_penguin import routes  # noqa: F401
