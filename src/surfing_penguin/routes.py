@@ -1,66 +1,53 @@
 """routes.py: Each function in this file indicates a web page (HTML page)."""
 
-from surfing_penguin import surfing_penguin, api
-from flask import render_template, flash, redirect, url_for
+from surfing_penguin import surfing_penguin, api, login_manager
 from flask_restplus import Resource, fields
-from surfing_penguin.forms import LoginForm
-from surfing_penguin.db_interface import Qstnr, UserFunctions
+from surfing_penguin.db_interface import UserFunctions
+from flask_login import login_user, logout_user, current_user, login_required
 
-question = api.model("question_model", {
-        'content': fields.String,
-        'id': fields.Integer
+
+api_return_message = api.model("return_message_model", {
+        'messages': fields.String
     })
-
-
 api_get_user = api.model("get_user_model", {
         'username': fields.String,
-        'id': fields.Integer,
         'password': fields.String,
     })
 
 
 api_return_user = api.model("return_user_model", {
         'username': fields.String,
-        'id': fields.Integer,
         'messages': fields.String,
     })
 
 
 api_show_user = api.model("show_user_model", {
         'username': fields.String,
-        'id': fields.Integer,
     })
 
 
-qstnrs = [
-    {
-        'author': {'username': 'John'},
-        'title': 'QSTQ',
-        'id': 0
-    },
-    {
-        'author': {'username': 'Susan'},
-        'title': 'QSTQQ',
-        'id': 1
-    }
-]
-qstnr1 = Qstnr()
-qstnr1.new_qst({'content': 'Q1'})
-qstnr1.new_qst({'content': 'Q2'})
-
-
-@api.route('/api_display')
-class api_display(Resource):
-    """ This api is for developers to monitor the program,
-        currently only showing the questionnaire.
-        usage: start the server, and curl localhost:port/api_display """
-    @api.marshal_list_with(question)
-    def get(self):
-        return qstnr1.questions
-
-
+api_show_user_and_time = api.model("show_user_and_time_model", {
+        'username': fields.String,
+        'last_seen': fields.DateTime
+    })
 """ user account associated APIs:
     register, login, show_users, delete_user, search_user """
+
+
+@surfing_penguin.before_request
+def before_request():
+    # before each operation of a user, update his/her last_seen
+    if current_user.is_authenticated:
+        UserFunctions.update_last_seen(current_user.username)
+
+
+@api.route('/hi')
+class hi(Resource):
+    @api.marshal_with(api_return_message)
+    def get(self):
+        if current_user.is_authenticated:
+            return {'messages': "hi, {}!".format(current_user.username)}
+        return {'messages': "hi, stranger!"}
 
 
 @api.route('/register')
@@ -77,16 +64,30 @@ class register(Resource):
 
 @api.route('/login')
 class login(Resource):
-    @api.marshal_with(api_return_user)
+    @api.marshal_with(api_return_message)
     @api.expect(api_get_user)
     def post(self):
+        if current_user.is_authenticated:
+            return {'messages': "You had logged in before."}
         name = api.payload['username']
         password = api.payload['password']
         if UserFunctions.search_user(name) is False:
             return {'messages': "user not found"}
         if UserFunctions.check_password(name, password) is False:
             return {'messages': "wrong passwd"}
+        user = UserFunctions.get_user(name)
+        login_user(user)
         return {'messages': "Login: {}".format(name)}
+
+
+@api.route('/logout')
+class logout(Resource):
+    @api.marshal_with(api_return_message)
+    def get(self):
+        if current_user.is_authenticated:
+            logout_user()
+            return {'messages': "user logged out"}
+        return {'messages': "You did not logged in"}
 
 
 @api.route('/show_users')
@@ -99,8 +100,9 @@ class show_users(Resource):
 
 @api.route('/delete_user')
 class delete_user(Resource):
-    @api.marshal_with(api_return_user)
+    @api.marshal_with(api_return_message)
     @api.expect(api_get_user)
+    @login_required
     def post(self):
         name = api.payload['username']
         if UserFunctions.search_user(name) is False:
@@ -111,7 +113,7 @@ class delete_user(Resource):
 
 @api.route('/search_user')
 class search_user(Resource):
-    @api.marshal_with(api_show_user)
+    @api.marshal_with(api_show_user_and_time)
     @api.expect(api_show_user)
     def post(self):
         search_name = api.payload['username']
@@ -120,51 +122,12 @@ class search_user(Resource):
         return UserFunctions.get_user(search_name)
 
 
-@api.route('/show_surveys')
-class show_surveys(Resource):
-    def get(self):
-        return qstnrs
-
-
-@api.route('/fill/<int:qstnr_id>')
-class fill(Resource):
-    def get(self, qstnr_id):
-        return qstnrs[qstnr_id]
-
-
-@surfing_penguin.route('/index')
-def index():
-    return render_template('index.html')
-
-
-@surfing_penguin.route('/login_html', methods=['GET', 'POST'])
-def login_html():
-    form = LoginForm()
-    if form.validate_on_submit():
-        flash('Login requested for user {}, remember_me={}'.format(
-            form.username.data, form.remember_me.data))
-        return redirect(url_for('index'))
-    return render_template('login.html', title='Sign In', form=form)
-
-
-@surfing_penguin.route('/select_qstnr')
-def select_qstnr():
-    """Show the list of questionnaires.
-       Clients should pick up one and go to filling_in."""
-    return render_template('select_qstnr.html', qstnrs=qstnrs)
-
-
-@surfing_penguin.route('/filling_in')
-def filling_in():
-    qstnr = [
-        {
-            'question': 'test Q1'
-        },
-        {
-            'question': 'test Q2'
-        }
-    ]
-    return render_template('filling_in.html', qstnr=qstnr)
+@login_manager.unauthorized_handler
+@api.marshal_with(api_return_message)
+def unauthorized():
+    # TODO: Flash this message somewhere.
+    print("entering")
+    return {'message': "Please Login First"}
 
 
 def convert_user_to_json(user):
