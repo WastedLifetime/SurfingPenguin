@@ -2,6 +2,7 @@
 import os
 from flask import Flask
 from src.config import ProductionConfig, DevelopmentConfig, StagingConfig
+from flask_login import LoginManager
 from flask_restplus import Api
 from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
@@ -9,6 +10,8 @@ from sqlalchemy.orm import sessionmaker
 Base = declarative_base()
 
 surfing_penguin = Flask(__name__)
+
+
 ENV = os.environ.get('ENV')
 
 if ENV == "Staging":
@@ -22,6 +25,11 @@ else:
 db_engine = create_engine(surfing_penguin
                           .config['SQLALCHEMY_DATABASE_URI'],
                           echo=False)
+
+login_manager = LoginManager(surfing_penguin)
+login_manager.login_view = 'login'
+login_manager.init_app(surfing_penguin)
+
 
 api = Api(surfing_penguin)
 
