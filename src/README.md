@@ -13,8 +13,8 @@ pip install -r requirements.txt
 Under src, the following commands help you start the server of the website.
 ```
 export FLASK_APP=surfing_penguin.py
-(export ENV == "Staging" or "Production")
-(export DATABASE_URL= "Your local database url" )
+(export ENV == "Staging" or "Production" or you will use the DevelopmentConfig)
+(export DATABASE_URL= "Your local database url" or you will use sqlite as your database)
 flask run
 ```
 
