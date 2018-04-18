@@ -8,17 +8,17 @@ class Config(object):
 
 
 class ProductionConfig(Config):
-    SQLALCHEMY_DATABASE_URI = ('postgres://tirbevwnotwfvq:504b36902c0cb58897c0'
-                               'e04ffd10af7384fd480949927d3e40d3b0108f53dfba@e'
-                               'c2-54-163-240-54.compute-1.amazonaws.com:5432/'
-                               'd7t8l4b4r9adoj')
+    SQLALCHEMY_DATABASE_URI = ('postgres+psycopg2://tirbevwnotwfvq:504b36902c0'
+                               'cb58897c0e04ffd10af7384fd480949927d3e40d3b0108'
+                               'f53dfba@ec2-54-163-240-54.compute-1.amazonaws.'
+                               'com:5432/d7t8l4b4r9adoj')
 
 
 class StagingConfig(Config):
-    SQLALCHEMY_DATABASE_URI = ('postgres://tirbevwnotwfvq:504b36902c0cb58897c0'
-                               'e04ffd10af7384fd480949927d3e40d3b0108f53dfba@e'
-                               'c2-54-163-240-54.compute-1.amazonaws.com:5432/'
-                               'd7t8l4b4r9adoj')
+    SQLALCHEMY_DATABASE_URI = ('postgres+psycopg2://tirbevwnotwfvq:504b36902c0'
+                               'cb58897c0e04ffd10af7384fd480949927d3e40d3b0108'
+                               'f53dfba@ec2-54-163-240-54.compute-1.amazonaws.'
+                               'com:5432/d7t8l4b4r9adoj')
 
 
 class DevelopmentConfig(Config):
