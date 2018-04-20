@@ -24,7 +24,7 @@ else:
 
 db_engine = create_engine(surfing_penguin
                           .config['SQLALCHEMY_DATABASE_URI'],
-                          echo=True)
+                          echo=False)
 
 login_manager = LoginManager(surfing_penguin)
 login_manager.login_view = 'login'
