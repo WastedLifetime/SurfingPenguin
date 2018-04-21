@@ -33,7 +33,7 @@ The HTML templates are to represent the view of administrators.
 We will teach you how to use Heroku Cli to deploy the website
 First, create a heroku app and then connect it.
 ```
-heroku create
+heroku create  --buildpack heroku/python
 heroku git:remote -a "Your app name"
 ```
 
