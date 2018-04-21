@@ -1,21 +1,26 @@
 # Back End
-This code provide the simple structure of Surfing Penguin website.
 
-### Prerequisites
-Python 3 is required.
+Back end of Surfing Penguin website
+
+## Prerequisites
+
+Python 3.6+ is required.
 All packages needed are listed in requirements.txt.
 You may use the following command to load them if you already have python 3.
 ```
 pip install -r requirements.txt
 ```
-### Setting Environment
+
+## Setting Environment
+
 ```
 export ENV = "Staging" or "Production" or you will use the DevelopmentConfig
 export DATABASE_URL= "Your database url" or you will use sqlite as your database
 ```
 
-### Running the Program
-Under src, the following commands help you start the server of the website.
+## Running the Program
+
+Under *src*, the following commands could help you start the server of the website.
 ```
 export FLASK_APP=surfing_penguin.py
 flask run
@@ -26,39 +31,43 @@ You should see the following content if it runs correctly.
  * Serving Flask app "surfing_penguin"
  * Running on http://127.0.0.1:5000/ (Press CTRL+C to quit)
 ```
-Some api for developers has been added, check them out in route.py.
-The HTML templates are to represent the view of administrators.
 
-### Deploying on Heroku
-We will teach you how to use Heroku Cli to deploy the website
-First, create a heroku app and then connect it.
+## Deploying on Heroku
+
+Here, we will teach you how to use Heroku Cli to deploy the website.
+
+1. First, create a heroku app and then connect it.
 ```
 heroku create  --buildpack heroku/python
 heroku git:remote -a "Your app name"
 ```
 
-If you want to create a postgresql, the following command can help you.
+2. If you want to create a postgresql database, the following command can help you.
 ```
 heroku addons:create heroku-postgresql:hobby-dev
-heroku config:get DATABASE_URL -a "Your app name"
 ```
 
-You should create a .env file including the following content.
+3. You should create a .env file including the following content.
 ```
 DATABASE_URL="Your database url" or you will use sqlite as your database
 ENV="Staging" or "Production" or you will use the DevelopmentConfig
+(DATABASE_URL could be got using ` heroku config:get DATABASE_URL -a "Your app name" `)
 ```
 
-Push it to the heroku master branch.
+4. Push it to the heroku master branch.
 ```
-git push heroku master
+git push heroku <branch-to-deploy>:master
 heroku config:set $(cat .env | sed '/^$/d; /#[[:print:]]*$/d')
 heroku ps:scale web=1
 heroku open
 ```
-After open, you can see the website on the heroku.
-### Developing Requirement
-Attention: All codes committed should pass flake8 syntax check.
 
-### Author
-Frank
+5. After open, you can see the website on the heroku.
+
+## Author
+
+Frank [zfrank7777](https://github.com/zfrank7777)
+
+[gameow1124](https://github.com/gameow1124)
+
+Allen [amjltc295](https://github.com/amjltc295)
