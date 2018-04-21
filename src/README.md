@@ -40,9 +40,10 @@ heroku git:remote -a "Your app name"
 If you want to create a postgresql, the following command can help you.
 ```
 heroku addons:create heroku-postgresql:hobby-dev
+heroku config:get DATABASE_URL -a "Your app name"
 ```
 
-You should create a .ENV file includeing the following content.
+You should create a .env file including the following content.
 ```
 DATABASE_URL="Your database url" or you will use sqlite as your database
 ENV="Staging" or "Production" or you will use the DevelopmentConfig
