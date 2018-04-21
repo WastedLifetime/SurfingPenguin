@@ -48,10 +48,10 @@ heroku addons:create heroku-postgresql:hobby-dev
 ```
 
 3. You should create a .env file including the following content.
+(You could get DATABASE_URL by ` heroku config:get DATABASE_URL -a "Your app name" `)
 ```
 DATABASE_URL="Your database url" or you will use sqlite as your database
 ENV="Staging" or "Production" or you will use the DevelopmentConfig
-(DATABASE_URL could be got using ` heroku config:get DATABASE_URL -a "Your app name" `)
 ```
 
 4. Push it to the heroku master branch.
