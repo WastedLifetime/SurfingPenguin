@@ -1,7 +1,7 @@
-"""__init__.py: Initialization of the server"""
-
+""" __init__.py: Initialization of the server """
+import os
 from flask import Flask
-from config import Config
+from src.config import ProductionConfig, DevelopmentConfig, StagingConfig
 from flask_login import LoginManager
 from flask_restplus import Api
 from sqlalchemy import create_engine
@@ -10,17 +10,32 @@ from sqlalchemy.orm import sessionmaker
 Base = declarative_base()
 
 surfing_penguin = Flask(__name__)
-surfing_penguin.config.from_object(Config)
-db_engine = create_engine('sqlite:///:memory:', echo=False)
+
+
+ENV = os.environ.get('ENV')
+
+if ENV == "Staging":
+    surfing_penguin.config.from_object(StagingConfig)
+elif ENV == "Production":
+    surfing_penguin.config.from_object(ProductionConfig)
+else:
+    surfing_penguin.config.from_object(DevelopmentConfig)
+
+
+db_engine = create_engine(surfing_penguin
+                          .config['SQLALCHEMY_DATABASE_URI'],
+                          echo=False)
+
 login_manager = LoginManager(surfing_penguin)
 login_manager.login_view = 'login'
 login_manager.init_app(surfing_penguin)
 
+
 api = Api(surfing_penguin)
 
-from surfing_penguin import models  # noqa: F401
+from src.surfing_penguin import models  # noqa: F401
 Base.metadata.create_all(db_engine)
 Session = sessionmaker(bind=db_engine)
 session = Session()
 
-from surfing_penguin import routes  # noqa: F401
+from src.surfing_penguin import routes  # noqa

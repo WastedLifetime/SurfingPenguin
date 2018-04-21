@@ -1,6 +1,6 @@
 import datetime
-from surfing_penguin import api, session, login_manager
-from surfing_penguin.models import User
+from src.surfing_penguin import api, session, login_manager
+from src.surfing_penguin.models import User
 
 
 class UserFunctions(object):

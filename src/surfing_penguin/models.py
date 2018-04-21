@@ -2,7 +2,7 @@
 
 import datetime
 from sqlalchemy import Column, Integer, String, DateTime
-from surfing_penguin import Base
+from src.surfing_penguin import Base
 from flask_login import UserMixin
 from werkzeug.security import generate_password_hash, check_password_hash
 
