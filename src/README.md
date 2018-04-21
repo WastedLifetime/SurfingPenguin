@@ -9,8 +9,6 @@ You may use the following command to load them if you already have python 3.
 pip install -r requirements.txt
 ```
 ### Setting Environment
-If you like to use postgresql, you should set your DATABASE_URL with the head of
-"postgres+psycopg2://"
 ```
 export ENV = "Staging" or "Production" or you will use the DevelopmentConfig
 export DATABASE_URL= "Your database url" or you will use sqlite as your database
@@ -32,14 +30,28 @@ Some api for developers has been added, check them out in route.py.
 The HTML templates are to represent the view of administrators.
 
 ### Deploying on Heroku
-You should set the environment on the Heroku first
+We will teach you how to use Heroku Cli to deploy the website
+First, create a heroku app and then connect it.
 ```
-heroku config:set ENV = "Staging" or "Production" or you will use the DevelopmentConfig
-heroku config:set DATABASE_URL= "Your database url" or you will use sqlite as your database
+heroku create
+heroku git:remote -a "Your app name"
 ```
+
+If you want to create a postgresql, the following command can help you.
+```
+heroku addons:create heroku-postgresql:hobby-dev
+```
+
+You should create a .ENV file includeing the following content.
+```
+DATABASE_URL="Your database url" or you will use sqlite as your database
+ENV="Staging" or "Production" or you will use the DevelopmentConfig
+```
+
 Push it to the heroku master branch.
 ```
 git push heroku master
+heroku config:set $(cat .env | sed '/^$/d; /#[[:print:]]*$/d')
 heroku ps:scale web=1
 heroku open
 ```
