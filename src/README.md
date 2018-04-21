@@ -66,8 +66,8 @@ heroku open
 
 ## Author
 
-Frank [zfrank7777](https://github.com/zfrank7777)
+* Frank [zfrank7777](https://github.com/zfrank7777)
 
-[gameow1124](https://github.com/gameow1124)
+* [gameow1124](https://github.com/gameow1124)
 
-Allen [amjltc295](https://github.com/amjltc295)
+* Allen [amjltc295](https://github.com/amjltc295)
