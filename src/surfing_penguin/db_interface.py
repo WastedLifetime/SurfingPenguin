@@ -1,6 +1,6 @@
 import datetime
-from src.surfing_penguin import api, session, login_manager
-from src.surfing_penguin.models import User
+from src.surfing_penguin import session, login_manager
+from src.surfing_penguin.models import User, Survey, Question
 
 
 class UserFunctions(object):
@@ -44,24 +44,31 @@ def load_user(id):
     return session.query(User).get(int(id))
 
 
-class Qstnr(object):
-    def __init__(self):
+class SurveyFunctions(object):
+    def __init__(self, name):
         self.iter = 0
-        self.questions = []
+        self.name = name
+        survey = Survey(name)
+        session.add(survey)
+        session.commit()
 
-    def get(self, id):
-        for qst in self.questions:
-            if qst['id'] == id:
-                return qst
-        api.abort(404, "question {} doesn't exist".format(id))
+    def get_all_surveys():
+        surveys = session.query(Survey).all()
+        return surveys
 
-    def new_qst(self, data):
-        question = data
+    def get_all_questions(name):
+        s = session.query(Survey).filter_by(surveyname=name).first()
+        return s.questions
+
+    def new_question(self, data):
+        # data should be a dictionary, with key "content" and "title"
+        question = Question()
+        question.title = data["title"]
+        question.content = data["content"]
         self.iter = self.iter + 1
-        question['id'] = self.iter
-        self.questions.append(question)
+        question.idx = self.iter
+        s = session.query(Survey).filter_by(surveyname=self.name).first()
+        question.survey_id = s.id
+        session.add(question)
+        session.commit()
         return question
-
-    def delete(self, id):
-        question = self.get(id)
-        self.question.remove(question)

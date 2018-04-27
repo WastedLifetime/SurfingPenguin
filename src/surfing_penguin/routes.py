@@ -1,34 +1,83 @@
 """routes.py: Each function in this file indicates a web page (HTML page)."""
 from src.surfing_penguin import surfing_penguin, api, login_manager
 from flask_restplus import Resource, fields
-from src.surfing_penguin.db_interface import UserFunctions
+from src.surfing_penguin.db_interface import UserFunctions, SurveyFunctions
 from flask_login import login_user, logout_user, current_user, login_required
 
 
 api_return_message = api.model("return_message_model", {
         'messages': fields.String
     })
+
 api_get_user = api.model("get_user_model", {
         'username': fields.String,
         'password': fields.String,
     })
-
 
 api_return_user = api.model("return_user_model", {
         'username': fields.String,
         'messages': fields.String,
     })
 
-
 api_show_user = api.model("show_user_model", {
         'username': fields.String,
     })
-
 
 api_show_user_and_time = api.model("show_user_and_time_model", {
         'username': fields.String,
         'last_seen': fields.DateTime
     })
+
+api_survey_name = api.model("survey_name", {
+        'surveyname': fields.String,
+    })
+
+api_question = api.model("question_model", {
+        'title': fields.String,
+        'content': fields.String
+    })
+
+api_survey = api.model("survey_model", {
+        'surveyname': fields.String,
+        'questions': fields.List(fields.Nested(api_question))
+    })
+
+""" survey associated APIs """
+
+
+@api.route('/create_survey')
+class create_survey(Resource):
+    @api.marshal_with(api_return_message)
+    @api.expect(api_survey)
+    def post(self):
+        new_survey = SurveyFunctions(api.payload['surveyname'])
+        for i in range(len(api.payload['questions'])):
+            new_survey.new_question(api.payload['questions'][i])
+
+        return {'messages': "survey created"}
+
+
+@api.route('/show_surveys')
+class show_surveys(Resource):
+    @api.marshal_list_with(api_survey)
+    def get(self):
+        surveys = SurveyFunctions.get_all_surveys()
+        return surveys
+
+
+@api.route('/show_questions')
+class show_quesitons(Resource):
+    @api.marshal_list_with(api_survey)
+    @api.expect(api_survey_name)
+    def post(self):
+        q = SurveyFunctions.get_all_questions(api.payload['surveyname'])
+
+        return {
+            'surveyname': api.payload['surveyname'],
+            'questions': q
+        }
+
+
 """ user account associated APIs:
     register, login, show_users, delete_user, search_user """
 
