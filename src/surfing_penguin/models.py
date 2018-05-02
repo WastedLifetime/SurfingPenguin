@@ -1,11 +1,14 @@
 """ models.py: Classes that tell the content in the database."""
 
 import datetime
-from sqlalchemy import Column, Integer, String, DateTime
 from src.surfing_penguin import Base
+from sqlalchemy import Column, Integer, String, DateTime, ForeignKey
+from sqlalchemy.orm import relationship
 from flask_login import UserMixin
 from werkzeug.security import generate_password_hash, check_password_hash
 
+
+# TODO: separate models.py into serveral models
 
 class User(UserMixin, Base):
     __tablename__ = 'user'
@@ -28,3 +31,34 @@ class User(UserMixin, Base):
 
     def check_password(self, password):
         return check_password_hash(self.password_hash, password)
+
+
+class Survey(Base):
+    __tablename__ = 'survey'
+    id = Column(Integer, primary_key=True)
+    surveyname = Column(String(128))
+    question_num = Column(Integer)
+    # TODO: add author
+    # TODO: add bidirectional relastionship with question
+    questions = relationship("Question")
+    # TODO: add answer list
+
+    def __init__(self, name):
+        self.surveyname = name
+        self.question_num = 0
+
+
+class Question(Base):
+    # TODO: add detail in what should in a question
+    __tablename__ = 'question'
+    id = Column(Integer, primary_key=True)
+    title = Column(String(128))
+    content = Column(String(1024))
+    survey_id = Column(Integer, ForeignKey('survey.id'))
+    idx = Column(Integer)  # NO. in that survey
+
+    def __init__(self, title, content, survey):
+        self.title = title
+        self.content = content
+        self.survey_id = survey.id
+        self.idx = survey.question_num

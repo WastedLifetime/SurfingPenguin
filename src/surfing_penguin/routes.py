@@ -1,34 +1,100 @@
 """routes.py: Each function in this file indicates a web page (HTML page)."""
 from src.surfing_penguin import surfing_penguin, api, login_manager
 from flask_restplus import Resource, fields
-from src.surfing_penguin.db_interface import UserFunctions
+from src.surfing_penguin.db_interface import UserFunctions, SurveyFunctions
 from flask_login import login_user, logout_user, current_user, login_required
 
 
+# TODO: separate expected and returned api models
+# TODO: add help and others (like default) for each field
 api_return_message = api.model("return_message_model", {
         'messages': fields.String
     })
+
 api_get_user = api.model("get_user_model", {
         'username': fields.String,
         'password': fields.String,
     })
-
 
 api_return_user = api.model("return_user_model", {
         'username': fields.String,
         'messages': fields.String,
     })
 
-
 api_show_user = api.model("show_user_model", {
         'username': fields.String,
     })
-
 
 api_show_user_and_time = api.model("show_user_and_time_model", {
         'username': fields.String,
         'last_seen': fields.DateTime
     })
+
+api_survey_name = api.model("survey_name", {
+        'name': fields.String,
+    })
+
+api_survey_id = api.model("survey_id", {
+        'id': fields.Integer
+    })
+
+api_question = api.model("question_model", {
+        'idx': fields.Integer,
+        'title': fields.String,
+        'content': fields.String
+    })
+
+# TODO: add question_num and category (for meta class) in api_survey
+api_survey = api.model("survey_model", {
+        'id': fields.Integer,
+        'surveyname': fields.String,
+        'questions': fields.List(fields.Nested(api_question))
+    })
+
+""" survey associated APIs """
+# TODO: add error handling for functions that change the database
+# (e.g., creating a survey with existing name)
+
+
+@api.route('/create_survey')
+class create_survey(Resource):
+    @api.marshal_with(api_return_message)
+    @api.expect(api_survey)
+    def post(self):
+        SurveyFunctions.new_survey(
+                api.payload['surveyname'], api.payload['questions'])
+        return {'messages': "survey created"}
+
+
+@api.route('/show_all_surveys')
+class show_surveys(Resource):
+    @api.marshal_list_with(api_survey)
+    def get(self):
+        return SurveyFunctions.get_all_surveys()
+
+
+@api.route('/search_survey_by_id')
+class search_survey_by_id(Resource):
+    """
+    Show the information of a survey, given its name or ID.
+    """
+    @api.marshal_list_with(api_survey)
+    @api.expect(api_survey_id)
+    def post(self):
+        return SurveyFunctions.id_get_survey(api.payload['id'])
+
+
+@api.route('/search_survey_by_name')
+class search_survey_by_name(Resource):
+    """
+    Show the information of a survey, given its name or ID.
+    """
+    @api.marshal_list_with(api_survey)
+    @api.expect(api_survey_name)
+    def post(self):
+        return SurveyFunctions.name_get_survey(api.payload['name'])
+
+
 """ user account associated APIs:
     register, login, show_users, delete_user, search_user """
 
