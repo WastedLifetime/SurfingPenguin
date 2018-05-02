@@ -53,3 +53,10 @@ class Question(Base):
     title = Column(String(128))
     content = Column(String(1024))
     survey_id = Column(Integer, ForeignKey('survey.id'))
+    idx = Column(Integer)  # NO. in that survey
+
+    def __init__(self, title, content, survey):
+        self.title = title
+        self.content = content
+        self.survey_id = survey.id
+        self.idx = survey.question_num

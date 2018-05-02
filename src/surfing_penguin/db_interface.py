@@ -60,13 +60,15 @@ class SurveyFunctions(object):
         return s.questions
 
     def new_question(survey, data):
-        # data should be a dictionary, with key "content" and "title"
-        question = Question()
-        question.title = data["title"]
-        question.content = data["content"]
+        """
+        add a question to a survey
+
+        arg:
+            survey: survey object in ORM
+            data: a dictionary with key "content" and "title"
+        """
         survey.question_num += 1
-        question.idx = survey.question_num
-        question.survey_id = survey.id
+        question = Question(data["title"], data["content"], survey)
         session.add(question)
         session.add(survey)
         session.commit()

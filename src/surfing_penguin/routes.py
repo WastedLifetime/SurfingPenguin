@@ -70,11 +70,12 @@ class show_quesitons(Resource):
     @api.marshal_list_with(api_survey)
     @api.expect(api_survey_name)
     def post(self):
-        q = SurveyFunctions.get_all_questions(api.payload['surveyname'])
+        questions = SurveyFunctions.get_all_questions(
+                api.payload['surveyname'])
 
         return {
             'surveyname': api.payload['surveyname'],
-            'questions': q
+            'questions': questions
         }
 
 
