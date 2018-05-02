@@ -28,9 +28,12 @@ api_show_user_and_time = api.model("show_user_and_time_model", {
         'last_seen': fields.DateTime
     })
 
-api_search_survey = api.model("search_survey_model", {
-        'id': fields.Integer,
+api_survey_name = api.model("survey_name", {
         'name': fields.String,
+    })
+
+api_survey_id = api.model("survey_id", {
+        'id': fields.Integer
     })
 
 api_question = api.model("question_model", {
@@ -65,16 +68,26 @@ class show_surveys(Resource):
         return SurveyFunctions.get_all_surveys()
 
 
-@api.route('/show_survey')
-class show_quesitons(Resource):
+@api.route('/search_survey_by_id')
+class search_survey_by_id(Resource):
     """
     Show the information of a survey, given its name or ID.
     """
     @api.marshal_list_with(api_survey)
-    @api.expect(api_search_survey)
+    @api.expect(api_survey_id)
     def post(self):
-        return SurveyFunctions.get_survey(
-                api.payload['name'], api.payload['id'])
+        return SurveyFunctions.id_get_survey(api.payload['id'])
+
+
+@api.route('/search_survey_by_name')
+class search_survey_by_name(Resource):
+    """
+    Show the information of a survey, given its name or ID.
+    """
+    @api.marshal_list_with(api_survey)
+    @api.expect(api_survey_name)
+    def post(self):
+        return SurveyFunctions.name_get_survey(api.payload['name'])
 
 
 """ user account associated APIs:
