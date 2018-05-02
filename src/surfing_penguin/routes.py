@@ -67,6 +67,9 @@ class show_surveys(Resource):
 
 @api.route('/show_survey')
 class show_quesitons(Resource):
+    """
+    Show the information of a survey, given its name or ID.
+    """
     @api.marshal_list_with(api_survey)
     @api.expect(api_search_survey)
     def post(self):

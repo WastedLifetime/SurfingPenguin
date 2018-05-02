@@ -58,6 +58,9 @@ class SurveyFunctions(object):
         return surveys
 
     def get_survey(name, ID):
+        """
+        Return a specified survey, with priority: ID > name
+        """
         if ID:
             survey = session.query(Survey).filter_by(id=ID).first()
             if survey:
