@@ -28,7 +28,7 @@ def new_question(survey, data):
     """
     Add a question to a survey
 
-    Arg:
+    Args:
         survey: survey object in ORM
         data: a dictionary with key "content" and "title"
     """
