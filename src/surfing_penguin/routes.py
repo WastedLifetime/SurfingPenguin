@@ -50,10 +50,10 @@ class create_survey(Resource):
     @api.marshal_with(api_return_message)
     @api.expect(api_survey)
     def post(self):
-        new_survey = SurveyFunctions(api.payload['surveyname'])
+        new_survey = SurveyFunctions.new_survey(api.payload['surveyname'])
         for i in range(len(api.payload['questions'])):
-            new_survey.new_question(api.payload['questions'][i])
-
+            SurveyFunctions.new_question(
+                    new_survey, api.payload['questions'][i])
         return {'messages': "survey created"}
 
 

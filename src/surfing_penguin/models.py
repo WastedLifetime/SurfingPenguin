@@ -35,6 +35,7 @@ class Survey(Base):
     __tablename__ = 'survey'
     id = Column(Integer, primary_key=True)
     surveyname = Column(String(128))
+    question_num = Column(Integer)
     # TODO: add author
     # TODO: add bidirectional relastionship with question
     questions = relationship("Question")
@@ -42,6 +43,7 @@ class Survey(Base):
 
     def __init__(self, name):
         self.surveyname = name
+        self.question_num = 0
 
 
 class Question(Base):
@@ -51,4 +53,3 @@ class Question(Base):
     title = Column(String(128))
     content = Column(String(1024))
     survey_id = Column(Integer, ForeignKey('survey.id'))
-    # survey = relationship("Survey", back_populates="question")

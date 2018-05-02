@@ -45,12 +45,11 @@ def load_user(id):
 
 
 class SurveyFunctions(object):
-    def __init__(self, name):
-        self.iter = 0
-        self.name = name
+    def new_survey(name):
         survey = Survey(name)
         session.add(survey)
         session.commit()
+        return survey
 
     def get_all_surveys():
         surveys = session.query(Survey).all()
@@ -60,15 +59,14 @@ class SurveyFunctions(object):
         s = session.query(Survey).filter_by(surveyname=name).first()
         return s.questions
 
-    def new_question(self, data):
+    def new_question(survey, data):
         # data should be a dictionary, with key "content" and "title"
         question = Question()
         question.title = data["title"]
         question.content = data["content"]
-        self.iter = self.iter + 1
-        question.idx = self.iter
-        s = session.query(Survey).filter_by(surveyname=self.name).first()
-        question.survey_id = s.id
+        survey.question_num += 1
+        question.idx = survey.question_num
+        question.survey_id = survey.id
         session.add(question)
+        session.add(survey)
         session.commit()
-        return question
