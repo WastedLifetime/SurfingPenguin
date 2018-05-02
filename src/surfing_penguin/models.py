@@ -8,6 +8,8 @@ from flask_login import UserMixin
 from werkzeug.security import generate_password_hash, check_password_hash
 
 
+# TODO: separate models.py into serveral models
+
 class User(UserMixin, Base):
     __tablename__ = 'user'
     id = Column(Integer, primary_key=True)

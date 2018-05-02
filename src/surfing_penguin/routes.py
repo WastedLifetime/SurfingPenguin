@@ -5,6 +5,8 @@ from src.surfing_penguin.db_interface import UserFunctions, SurveyFunctions
 from flask_login import login_user, logout_user, current_user, login_required
 
 
+# TODO: separate expected and returned api models
+# TODO: add help and others (like default) for each field
 api_return_message = api.model("return_message_model", {
         'messages': fields.String
     })
@@ -42,6 +44,7 @@ api_question = api.model("question_model", {
         'content': fields.String
     })
 
+# TODO: add question_num and category (for meta class) in api_survey
 api_survey = api.model("survey_model", {
         'id': fields.Integer,
         'surveyname': fields.String,
@@ -49,6 +52,8 @@ api_survey = api.model("survey_model", {
     })
 
 """ survey associated APIs """
+# TODO: add error handling for functions that change the database
+# (e.g., creating a survey with existing name)
 
 
 @api.route('/create_survey')
