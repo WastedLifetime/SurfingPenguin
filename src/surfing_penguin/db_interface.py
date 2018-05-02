@@ -45,23 +45,28 @@ def load_user(id):
 
 
 class SurveyFunctions(object):
-    def new_survey(name):
+    def new_survey(name, questions):
         survey = Survey(name)
         session.add(survey)
         session.commit()
+        for i in range(len(questions)):
+            SurveyFunctions.new_question(survey, questions[i])
         return survey
 
     def get_all_surveys():
         surveys = session.query(Survey).all()
         return surveys
 
-    def get_all_questions(name):
-        s = session.query(Survey).filter_by(surveyname=name).first()
-        return s.questions
+    def get_survey(name, ID):
+        if ID:
+            survey = session.query(Survey).filter_by(id=ID).first()
+            if survey:
+                return survey
+        return session.query(Survey).filter_by(surveyname=name).first()
 
     def new_question(survey, data):
         """
-        add a question to a survey
+        Add a question to a survey
 
         arg:
             survey: survey object in ORM

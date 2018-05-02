@@ -28,16 +28,19 @@ api_show_user_and_time = api.model("show_user_and_time_model", {
         'last_seen': fields.DateTime
     })
 
-api_survey_name = api.model("survey_name", {
-        'surveyname': fields.String,
+api_search_survey = api.model("search_survey_model", {
+        'id': fields.Integer,
+        'name': fields.String,
     })
 
 api_question = api.model("question_model", {
+        'idx': fields.Integer,
         'title': fields.String,
         'content': fields.String
     })
 
 api_survey = api.model("survey_model", {
+        'id': fields.Integer,
         'surveyname': fields.String,
         'questions': fields.List(fields.Nested(api_question))
     })
@@ -50,33 +53,25 @@ class create_survey(Resource):
     @api.marshal_with(api_return_message)
     @api.expect(api_survey)
     def post(self):
-        new_survey = SurveyFunctions.new_survey(api.payload['surveyname'])
-        for i in range(len(api.payload['questions'])):
-            SurveyFunctions.new_question(
-                    new_survey, api.payload['questions'][i])
+        SurveyFunctions.new_survey(
+                api.payload['surveyname'], api.payload['questions'])
         return {'messages': "survey created"}
 
 
-@api.route('/show_surveys')
+@api.route('/show_all_surveys')
 class show_surveys(Resource):
     @api.marshal_list_with(api_survey)
     def get(self):
-        surveys = SurveyFunctions.get_all_surveys()
-        return surveys
+        return SurveyFunctions.get_all_surveys()
 
 
-@api.route('/show_questions')
+@api.route('/show_survey')
 class show_quesitons(Resource):
     @api.marshal_list_with(api_survey)
-    @api.expect(api_survey_name)
+    @api.expect(api_search_survey)
     def post(self):
-        questions = SurveyFunctions.get_all_questions(
-                api.payload['surveyname'])
-
-        return {
-            'surveyname': api.payload['surveyname'],
-            'questions': questions
-        }
+        return SurveyFunctions.get_survey(
+                api.payload['name'], api.payload['id'])
 
 
 """ user account associated APIs:
