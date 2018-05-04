@@ -12,11 +12,11 @@ api_return_message = api.model("return_message_model", {
         'messages': fields.String
     })
 
-api_survey_name = api.model("survey_name", {
+api_get_survey_name = api.model("survey_name", {
         'name': fields.String,
     })
 
-api_survey_id = api.model("survey_id", {
+api_get_survey_id = api.model("survey_id", {
         'id': fields.Integer
     })
 
@@ -26,11 +26,31 @@ api_question = api.model("question_model", {
         'content': fields.String
     })
 
-# TODO: add question_num and category (for meta class) in api_survey
-api_survey = api.model("survey_model", {
-        'id': fields.Integer,
+api_get_survey = api.model("get_survey_model", {
         'surveyname': fields.String,
         'questions': fields.List(fields.Nested(api_question))
+    })
+
+# TODO: add question_num and category (for meta class) in api_survey
+api_return_survey = api.model("return_survey_model", {
+        'id': fields.Integer,
+        'question_num': fields.Integer,
+        'surveyname': fields.String,
+        'questions': fields.List(fields.Nested(api_question))
+    })
+
+api_answer = api.model("answer_model", {
+        'idx': fields.Integer,
+        'content': fields.String
+    })
+
+api_get_answerlist = api.model("get_answerlist_model", {
+        'survey_id': fields.Integer,
+        'answers': fields.List(fields.Nested(api_answer))
+    })
+
+api_return_answerlist = api.model("return_answerlist_model", {
+        'answers': fields.List(fields.Nested(api_answer))
     })
 
 """ survey associated APIs """
@@ -41,7 +61,7 @@ api_survey = api.model("survey_model", {
 @api.route(f'/api/{__version__}/create_survey')
 class create_survey(Resource):
     @api.marshal_with(api_return_message)
-    @api.expect(api_survey)
+    @api.expect(api_get_survey)
     def post(self):
         SurveyFunctions.new_survey(
                 api.payload['surveyname'], api.payload['questions'])
@@ -50,7 +70,7 @@ class create_survey(Resource):
 
 @api.route(f'/api/{__version__}/show_all_surveys')
 class show_surveys(Resource):
-    @api.marshal_list_with(api_survey)
+    @api.marshal_list_with(api_return_survey)
     def get(self):
         return SurveyFunctions.get_all_surveys()
 
@@ -60,8 +80,8 @@ class search_survey_by_id(Resource):
     """
     Show the information of a survey, given its name or ID.
     """
-    @api.marshal_list_with(api_survey)
-    @api.expect(api_survey_id)
+    @api.marshal_list_with(api_return_survey)
+    @api.expect(api_get_survey_id)
     def post(self):
         return SurveyFunctions.id_get_survey(api.payload['id'])
 
@@ -71,7 +91,24 @@ class search_survey_by_name(Resource):
     """
     Show the information of a survey, given its name or ID.
     """
-    @api.marshal_list_with(api_survey)
-    @api.expect(api_survey_name)
+    @api.marshal_list_with(api_return_survey)
+    @api.expect(api_get_survey_name)
     def post(self):
         return SurveyFunctions.name_get_survey(api.payload['name'])
+
+
+@api.route(f'/api/{__version__}/answer_a_survey')
+class answer_survey(Resource):
+    @api.marshal_with(api_return_message)
+    @api.expect(api_get_answerlist)
+    def post(self):
+        SurveyFunctions.new_answerlist(api.payload)
+        return {'messages': "Answer completed"}
+
+
+@api.route(f'/api/{__version__}/show_answers')
+class show_answerlists(Resource):
+    @api.marshal_with(api_return_answerlist)
+    @api.expect(api_get_survey_id)
+    def post(self):
+        return SurveyFunctions.id_get_answerlists(api.payload['id'])

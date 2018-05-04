@@ -1,5 +1,5 @@
-from src.surfing_penguin.extensions import session
-from src.surfing_penguin.models import Survey, Question
+from src.surfing_penguin.extentions import session
+from src.surfing_penguin.models import Survey, Question, AnswerList, Answer
 
 
 def new_survey(name, questions):
@@ -36,3 +36,25 @@ def new_question(survey, data):
     question = Question(data["title"], data["content"], survey)
     session.add(question)
     session.commit()
+
+
+def new_answerlist(data):
+    survey = session.query(Survey).filter_by(id=data["survey_id"]).first()
+    survey.answerlist_num += 1
+    answerlist = AnswerList(survey)
+    session.add(answerlist)
+    session.commit()
+    for i in range(len(data["answers"])):
+        question = session.query(Question).filter_by(
+                survey_id=survey.id, idx=i+1).first()
+        new_answer(answerlist, question, data["answers"][i])
+
+
+def new_answer(answerlist, question, data):
+    answer = Answer(answerlist, question, data["content"])
+    session.add(answer)
+    session.commit()
+
+
+def id_get_answerlists(ID):
+    return session.query(AnswerList).filter_by(survey_id=ID).all()
