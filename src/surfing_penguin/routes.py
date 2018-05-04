@@ -1,9 +1,20 @@
 """routes.py: Each function in this file indicates a web page (HTML page)."""
-from src.surfing_penguin import surfing_penguin, api, login_manager
+from flask import Blueprint
+from flask_restplus import Api
+from src.surfing_penguin import surfing_penguin, login_manager
 from flask_restplus import Resource, fields
 from src.surfing_penguin.db_interface import UserFunctions, SurveyFunctions
 from flask_login import login_user, logout_user, current_user, login_required
 
+
+blueprint = Blueprint("api",
+                      __name__,
+                      url_prefix="/api")
+
+api = Api(blueprint,
+          version="0.1",
+          title="Surfing Penguin API",
+          doc="/doc")
 
 # TODO: separate expected and returned api models
 # TODO: add help and others (like default) for each field
