@@ -50,7 +50,8 @@ api_get_answerlist = api.model("get_answerlist_model", {
     })
 
 api_return_answerlist = api.model("return_answerlist_model", {
-        'answers': fields.List(fields.Nested(api_answer))
+        'answers': fields.List(fields.Nested(api_answer)),
+        'messages': fields.String
     })
 
 """ survey associated APIs """
@@ -102,8 +103,10 @@ class answer_survey(Resource):
     @api.marshal_with(api_return_message)
     @api.expect(api_get_answerlist)
     def post(self):
-        SurveyFunctions.new_answerlist(api.payload)
-        return {'messages': "Answer completed"}
+        if SurveyFunctions.id_get_survey(api.payload['survey_id']):
+            SurveyFunctions.new_answerlist(api.payload)
+            return {'messages': "Answer completed"}
+        return {'messages': "Survey not found"}
 
 
 @api.route(f'/api/{__version__}/show_answers')
@@ -111,4 +114,6 @@ class show_answerlists(Resource):
     @api.marshal_with(api_return_answerlist)
     @api.expect(api_get_survey_id)
     def post(self):
-        return SurveyFunctions.id_get_answerlists(api.payload['id'])
+        if SurveyFunctions.id_get_survey(api.payload['id']):
+            return SurveyFunctions.id_get_answerlists(api.payload['id'])
+        return {'messages': "Survey not found"}
