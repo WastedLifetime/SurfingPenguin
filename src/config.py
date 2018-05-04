@@ -23,3 +23,7 @@ class DevelopmentConfig(Config):
     SQLALCHEMY_DATABASE_URI = (os.environ.get('DATABASE_URL')
                                if os.environ.get('DATABASE_URL') is not None
                                else 'sqlite:///:memory:')
+
+
+class TestConfig(Config):
+    SQLALCHEMY_DATABASE_URI = 'sqlite:///:memory:'
