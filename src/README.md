@@ -32,6 +32,13 @@ You should see the following content if it runs correctly.
  * Running on http://127.0.0.1:5000/ (Press CTRL+C to quit)
 ```
 
+## Running unit tests
+
+Under *src*:
+```
+pytest
+```
+
 ## Deploying on Heroku
 
 Here, we will teach you how to use Heroku Cli to deploy the website.
