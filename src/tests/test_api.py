@@ -5,7 +5,9 @@ import json
 import pytest
 
 parent_path = os.path.dirname(os.getcwd())
-sys.path.append(parent_path)
+grand_parent_path = os.path.dirname(parent_path)
+
+sys.path.append(grand_parent_path)
 
 from src.config import TestConfig  # NOQA
 from src.surfing_penguin.routes import blueprint  # NOQA
