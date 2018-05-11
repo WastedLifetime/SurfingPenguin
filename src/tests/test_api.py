@@ -5,9 +5,7 @@ import json
 import pytest
 
 parent_path = os.path.dirname(os.getcwd())
-grand_parent_path = os.path.dirname(parent_path)
-
-sys.path.append(grand_parent_path)
+sys.path.append(parent_path)
 
 from src.config import TestConfig  # NOQA
 from src.surfing_penguin.routes import blueprint  # NOQA
@@ -57,6 +55,7 @@ def json_of_response(response):
 
 def test_hi(client):
     response = client.get('/api/hi')
+    assert json_of_response(response)['messages'] == "hi, stranger!"
     assert response.status_code == 200
 
 

@@ -26,21 +26,25 @@ db_engine = create_engine(surfing_penguin
                           .config['SQLALCHEMY_DATABASE_URI'],
                           echo=False)
 
+
 def create_login_manager(app):
     login_manager = LoginManager(surfing_penguin)
     login_manager.login_view = 'login'
     login_manager.init_app(app)
     return login_manager
 
+
 login_manager = create_login_manager(surfing_penguin)
 
 from src.surfing_penguin import models  # noqa: F401
+
 
 def create_db_session(db_engine):
     Base.metadata.create_all(db_engine)
     Session = sessionmaker(bind=db_engine)
     session = Session()
     return session
+
 
 session = create_db_session(db_engine)
 
