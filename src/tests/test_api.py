@@ -1,6 +1,7 @@
 import os
 import sys
 import json
+import datetime
 import pytest
 
 parent_path = os.path.dirname(os.getcwd())
@@ -46,6 +47,10 @@ def json_of_response(response):
     return json.loads(response.data.decode('utf8'))
 
 
+def test_doc(client):
+    response = client.get('/api/doc')
+    assert response.status_code == 200
+
 # TODO: separate test functions to different classes
 
 
@@ -58,3 +63,22 @@ def test_hi(client):
 def test_doc(client):
     response = client.get('/api/doc')
     assert response.status_code == 200
+
+class TestRegister():
+
+    def test_register(self, client):
+        test_data = {'username': 'c', 'password': 'b'}
+        response = post_json(client, '/api/register', test_data)
+        assert response.status_code == 200
+
+    def test_show_users(self, client):
+        response = client.get('/api/show_users')
+        assert 'c' in json_of_response(response)[0]['username']
+        assert response.status_code == 200
+
+    def test_search_user(self, client):
+        test_data = {'username': 'c'}
+        response = post_json(client, '/api/search_user', test_data)
+        assert json_of_response(response)['username'] == "c"
+        assert json_of_response(response)['lastseen'] is not None
+        assert response.status_code == 200
