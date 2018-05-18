@@ -80,5 +80,30 @@ class TestRegister():
         test_data = {'username': 'c'}
         response = post_json(client, '/api/search_user', test_data)
         assert json_of_response(response)['username'] == "c"
-        assert json_of_response(response)['lastseen'] is not None
+        assert json_of_response(response)['last_seen'] is not None
         assert response.status_code == 200
+
+    def test_login_with_wrong_name(self, client):
+        test_data = {'username': 'd', 'password': 'b'}
+        response = post_json(client, '/api/login', test_data)
+        assert json_of_response(response)['messages'] == "user not found"
+        assert response.status_code == 200
+
+    def test_login_with_wrong_pwd(self, client):
+        test_data = {'username': 'c', 'password': 'c'}
+        response = post_json(client, '/api/login', test_data)
+        assert json_of_response(response)['messages'] == "wrong passwd"
+        assert response.status_code == 200
+
+    def test_login(self, client):
+        test_data = {'username': 'c', 'password': 'b'}
+        response = post_json(client, '/api/login', test_data)
+        assert json_of_response(response)['messages'] == "Login: c"
+        assert response.status_code == 200
+
+    def test_login_again(self, client):
+        test_data = {'username': 'c', 'password': 'b'}
+        response = post_json(client, '/api/login', test_data)
+        assert json_of_response(response)['messages'] == "You had logged in before."
+        assert response.status_code == 200
+        
