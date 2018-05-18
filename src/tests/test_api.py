@@ -60,10 +60,13 @@ def test_hi(client):
     assert response.status_code == 200
 
 
+<<<<<<< HEAD
 def test_doc(client):
     response = client.get('/api/doc')
     assert response.status_code == 200
 
+=======
+>>>>>>> Add test_search_user
 class TestRegister():
 
     def test_register(self, client):
@@ -106,4 +109,3 @@ class TestRegister():
         response = post_json(client, '/api/login', test_data)
         assert json_of_response(response)['messages'] == "You had logged in before."
         assert response.status_code == 200
-        
