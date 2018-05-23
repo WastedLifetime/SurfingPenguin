@@ -1,5 +1,5 @@
 import datetime
-from src.surfing_penguin import session, login_manager
+from src.surfing_penguin.extensions import login_manager, session
 from src.surfing_penguin.models import User
 
 

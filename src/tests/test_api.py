@@ -1,6 +1,5 @@
 import os
 import sys
-from flask import Flask
 import json
 import pytest
 
@@ -9,18 +8,15 @@ sys.path.append(parent_path)
 
 from src.config import TestConfig  # NOQA
 from src.surfing_penguin.routes import blueprint  # NOQA
-from src.surfing_penguin import create_login_manager  # NOQA
+from src.surfing_penguin import create_app  # NOQA
 
 
 @pytest.fixture
 def app():
-    app = Flask(__name__)
-
-    app.config.from_object(TestConfig)
+    app = create_app(TestConfig)
+    from src.surfing_penguin import extensions
+    extensions.init_app(app)
     app.register_blueprint(blueprint)
-    login_manager = create_login_manager(app)  # NOQA
-    # TODO: create app by create_app()
-    # TODO: check if using the correct database
 
     return app
 
@@ -67,9 +63,7 @@ def test_doc(client):
 def test_register(client):
     test_data = {'username': 'c', 'password': 'b'}
 
-    response = post_json(client,
-                         '/api/register',
-                          test_data)
+    response = post_json(client, '/api/register', test_data)
     assert response.status_code == 200
 
 
