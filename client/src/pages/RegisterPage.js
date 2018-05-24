@@ -30,7 +30,6 @@ const mapDispatchToProps = (dispatch) => {
     onSubmit: (values) => {
       return dispatch(registerRequest({
         username: values.username,
-        email: values.email,
         password: values.password
       })).then(res => {
         dispatch(registerRequestSuccess(res));

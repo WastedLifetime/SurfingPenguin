@@ -9,6 +9,7 @@ class UserSurveysPage extends React.Component {
         <div className="container UserSurveysPage">
           <NewSurvey />
           <SurveyList/>
+          
         </div>
     );
   }

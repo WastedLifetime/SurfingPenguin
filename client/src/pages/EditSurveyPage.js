@@ -34,10 +34,12 @@ class EditSurveyPage extends React.Component {
             <div className="col-md-8 Main">
               <SurveyPreview/>
             </div>
+            
             <div className="col-md-4 Sidebar">
               <AutoAffix>
                 <div>
                   <EditTab/>
+
                   <EditFooter/>
                 </div>
               </AutoAffix>

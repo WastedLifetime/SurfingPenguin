@@ -12,17 +12,20 @@ const fetcher = axios.create({
 });
 
 export const createUser = (params) => {
-  return fetcher.post("/users", params).then(res => res.data);
+
+  return fetcher.post("/register", params).then(res => res.data);
 };
 
-export const login = (email, password) => {
+export const login = (username, password) => {
   return fetcher.post("/login", {
-    email,
+    username,
     password
   }).then(res => {
-    localStorage.session = res.data.auth;
-    fetcher.defaults.headers.common['Authorization'] = res.data.auth;
-    return decode(res.data.auth);
+    localStorage.session = res.data.messages;
+    fetcher.defaults.headers.common['Authorization'] = res.data.messages;
+    
+    console.log(res.data.messages);
+    return res.data.messages;
   });
 };
 
@@ -38,7 +41,7 @@ export const fetchCurrentUser = () => {
 };
 
 export const fetchUserSurveys = (user) => {
-  return fetcher.get(`/users/${user.id}/surveys`).then(res => res.data);
+  return fetcher.get(`/show_surveys`).then(res => res.data);
 };
 
 export const fetchResults = (surveyId) => {

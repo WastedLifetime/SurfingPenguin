@@ -23,7 +23,7 @@ class LoginForm extends React.Component<Props> {
           <legend>Login</legend>
           {errors.message && <div className="alert alert-danger" role="alert">{errors.message}</div>}
           <div className="form-group">
-            <label htmlFor="">Email</label>
+            <label htmlFor="">username</label>
             <Field
                 name="username"
                 component={renderInput}

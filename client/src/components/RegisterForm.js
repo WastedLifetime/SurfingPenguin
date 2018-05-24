@@ -29,13 +29,6 @@ class RegisterForm extends React.Component<Props> {
                 type="text"/>
           </div>
           <div className="form-group">
-            <label htmlFor="">Email</label>
-            <Field
-                name="email"
-                component={renderInput}
-                type="email"/>
-          </div>
-          <div className="form-group">
             <label htmlFor="">Password</label>
             <Field
                 name="password"

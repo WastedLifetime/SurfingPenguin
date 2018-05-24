@@ -1,15 +1,17 @@
 import * as api from '../api';
 import { fetchSurveysRequest } from './surveys';
 
-export const loginRequest = (email, password) => dispatch => {
+export const loginRequest = (username, password) => dispatch => {
   dispatch({
     type: 'LOGIN_REQUEST',
     payload: {
-      email,
+      username,
       password
     }
+
   });
-  return api.login(email, password);
+  console.log("haha");
+  return api.login(username, password);
 };
 
 export const loginRequestSuccess = (res) => (dispatch) => {
