@@ -1,7 +1,7 @@
 """ models.py: Classes that tell the content in the database."""
 
 import datetime
-from src.surfing_penguin import Base
+from src.surfing_penguin.extensions import Base
 from sqlalchemy import Column, Integer, String, DateTime, ForeignKey
 from sqlalchemy.orm import relationship
 from flask_login import UserMixin

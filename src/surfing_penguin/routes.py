@@ -1,7 +1,8 @@
 """routes.py: Each function in this file indicates a web page (HTML page)."""
 from flask import Blueprint
 from flask_restplus import Api
-from src.surfing_penguin import surfing_penguin, login_manager
+from src.surfing_penguin import surfing_penguin
+from src.surfing_penguin.extensions import login_manager
 from flask_restplus import Resource, fields
 from src.surfing_penguin.db_interface import UserFunctions, SurveyFunctions
 from flask_login import login_user, logout_user, current_user, login_required
