@@ -69,11 +69,12 @@ class TestRegister():
     def test_register(self, client):
         test_data = {'username': 'c', 'password': 'b'}
         response = post_json(client, '/api/register', test_data)
+        assert json_of_response(response)['username'] == "c"
         assert response.status_code == 200
 
     def test_show_users(self, client):
         response = client.get('/api/show_users')
-        assert 'c' in json_of_response(response)[0]['username']
+        assert json_of_response(response)[0]['username'] == "c"
         assert response.status_code == 200
 
     def test_search_user(self, client):
