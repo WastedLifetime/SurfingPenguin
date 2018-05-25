@@ -15,10 +15,7 @@ from src.surfing_penguin import create_app  # NOQA
 @pytest.fixture
 def app():
     app = create_app(TestConfig)
-    from src.surfing_penguin import extensions
-    extensions.init_app(app)
     app.register_blueprint(blueprint)
-
     return app
 
 
@@ -132,4 +129,3 @@ class TestRegister():
         response = post_json(client, '/api/login', test_data)
         assert json_of_response(response)['messages'] == "You had logged in before."
         assert response.status_code == 200
-        
