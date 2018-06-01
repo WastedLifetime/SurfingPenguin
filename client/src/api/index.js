@@ -24,7 +24,6 @@ export const login = (username, password) => {
     localStorage.session = res.data.messages;
     fetcher.defaults.headers.common['Authorization'] = res.data.messages;
     
-    console.log(res.data.messages);
     return res.data.messages;
   });
 };
@@ -41,7 +40,7 @@ export const fetchCurrentUser = () => {
 };
 
 export const fetchUserSurveys = (user) => {
-  return fetcher.get(`/show_surveys`).then(res => res.data);
+  return fetcher.get(`/show_all_surveys`).then(res => res.data);
 };
 
 export const fetchResults = (surveyId) => {

@@ -10,7 +10,6 @@ export const loginRequest = (username, password) => dispatch => {
     }
 
   });
-  console.log("haha");
   return api.login(username, password);
 };
 
@@ -24,6 +23,14 @@ export const loginRequestSuccess = (res) => (dispatch) => {
 
 export const loginRequestFail = (err) => ({
   type: 'LOGIN_REQUEST_FAIL',
+  payload: err
+});
+export const loginNoUser = (err) => ({
+  type: 'LOGIN_NO_USER',
+  payload: err
+});
+export const loginWrongPasswd = (err) => ({
+  type: 'LOGIN_WRONG_PASSWD',
   payload: err
 });
 
