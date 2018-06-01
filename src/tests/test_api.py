@@ -15,8 +15,16 @@ from src.surfing_penguin import create_app  # NOQA
 @pytest.fixture
 def app():
     app = create_app(TestConfig)
+    from src.surfing_penguin import routes  # NOQA
     app.register_blueprint(blueprint)
+    # TODO: check if using the correct database
     return app
+
+
+@pytest.fixture
+def session(app):
+    from src.surfing_penguin.extensions import session
+    return session
 
 
 @pytest.fixture
