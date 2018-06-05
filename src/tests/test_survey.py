@@ -126,7 +126,8 @@ class TestSurvey():
         survey = SurveyFunctions.name_get_survey("test")
         assert (survey.question_num == 2)
 
-    # NOTE: Function new_question() is not tested
+    # NOTE: Function new_question() is not tested,
+    # because it's called in new_survey() in db_operation.
 
     """ Testing api """
     def test_create_survey(self, survey_data, client, api_prefix):
