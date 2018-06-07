@@ -1,7 +1,6 @@
 import os
 import sys
 import json
-import datetime
 import pytest
 
 parent_path = os.path.dirname(os.getcwd())
@@ -98,6 +97,12 @@ class TestRegister():
         assert json_of_response(response)['last_seen'] is not None
         assert response.status_code == 200
 
+    def test_search_user_with_not_found(self, client):
+        test_data = {'username': 'd'}
+        response = post_json(client, '/api/search_user', test_data)
+        assert json_of_response(response)['messages'] == "user does not exist"
+        assert response.status_code == 200
+
     def test_login_with_wrong_name(self, client):
         test_data = {'username': 'd', 'password': 'b'}
         response = post_json(client, '/api/login', test_data)
@@ -143,5 +148,42 @@ class TestRegister():
     def test_login_again(self, client, login_as_c):
         test_data = {'username': 'c', 'password': 'b'}
         response = post_json(client, '/api/login', test_data)
-        assert json_of_response(response)['messages'] == "You had logged in before."
+        assert json_of_response(response)['messages'] == "You had logged in\
+ before."
+        assert response.status_code == 200
+
+    def test_hi_c(self, client, login_as_c):
+        response = client.get('/api/hi')
+        assert json_of_response(response)['messages'] == "hi, c!"
+        assert response.status_code == 200
+
+    def test_logout_without_login(self, client):
+        response = client.get('/api/logout')
+        assert json_of_response(response)['messages'] == "You did not logged \
+in"
+        assert response.status_code == 200
+
+    def test_logout(self, client, login_as_c):
+        response = client.get('/api/logout')
+        assert json_of_response(response)['messages'] == "user logged out"
+        assert response.status_code == 200
+        response = client.get('/api/logout')  # check for actually log out.
+        assert json_of_response(response)['messages'] == "You did not logged \
+in"
+        assert response.status_code == 200
+
+    def test_delete_user_not_found(self, client):
+        test_data = {'username': 'd'}
+        response = post_json(client, '/api/delete_user', test_data)
+        assert json_of_response(response)['messages'] == "user does not exist"
+        assert response.status_code == 200
+
+    def test_delete_user(self, client, login_as_c):
+        test_data = {'username': 'c'}
+        response = post_json(client, '/api/delete_user', test_data)
+        assert json_of_response(response)['messages'] == "user c deleted"
+        assert response.status_code == 200
+        test_data = {'username': 'c'}
+        response = post_json(client, '/api/delete_user', test_data)
+        assert json_of_response(response)['messages'] == "user does not exist"
         assert response.status_code == 200
