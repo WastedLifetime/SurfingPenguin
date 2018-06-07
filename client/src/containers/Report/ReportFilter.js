@@ -1,6 +1,6 @@
-import React from 'react';
+//import React from 'react';
 import { connect } from 'react-redux';
-import { Button, Modal } from 'react-bootstrap';
+//import { Button, Modal } from 'react-bootstrap';
 import ReportFilterView from '../../components/Report/ReportFilter';
 import { updateFilter } from '../../actions/data';
 import { hasFilterMap } from '../../reducers/data';

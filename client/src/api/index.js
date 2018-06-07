@@ -1,7 +1,7 @@
-import newId from '../util/idGenerator';
+//import newId from '../util/idGenerator';
 import axios from 'axios';
-import { hashHistory } from 'react-router';
-import decode from 'jwt-decode';
+//import { hashHistory } from 'react-router';
+//import decode from 'jwt-decode';
 
 const fetcher = axios.create({
   baseURL: process.env.REACT_APP_ENDPOINT,

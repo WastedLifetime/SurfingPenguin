@@ -1,7 +1,8 @@
+// @flow
 import * as React from 'react';
 import { Field } from 'formik';
 
-// @flow
+
 type Props = {
   _id: string,
   title: string,
