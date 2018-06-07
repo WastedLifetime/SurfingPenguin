@@ -10,9 +10,10 @@ sys.path.append(parent_path)
 from src.config import TestConfig  # NOQA
 from src.surfing_penguin.routes import blueprint  # NOQA
 from src.surfing_penguin import create_app  # NOQA
+from src.surfing_penguin.models import *  # NOQA
 
 
-@pytest.fixture
+@pytest.fixture(scope="class")
 def app():
     app = create_app(TestConfig)
     from src.surfing_penguin import routes  # NOQA
@@ -21,10 +22,17 @@ def app():
     return app
 
 
-@pytest.fixture
+@pytest.fixture(scope="class")
 def session(app):
     from src.surfing_penguin.extensions import session
     return session
+
+
+@pytest.fixture(scope="function")
+def login_as_c(client):
+    test_data = {'username': 'c', 'password': 'b'}
+    post_json(client, '/api/login', test_data)
+    return
 
 
 @pytest.fixture
@@ -69,6 +77,7 @@ def test_doc(client):
     response = client.get('/api/doc')
     assert response.status_code == 200
 
+@pytest.mark.usefixtures('session', 'client')
 class TestRegister():
 
     def test_register(self, client):
@@ -87,7 +96,6 @@ class TestRegister():
         response = post_json(client, '/api/search_user', test_data)
         assert json_of_response(response)['username'] == "c"
         assert json_of_response(response)['last_seen'] is not None
-<<<<<<< HEAD
         assert response.status_code == 200
 
     def test_login_with_wrong_name(self, client):
@@ -132,7 +140,7 @@ class TestRegister():
         assert json_of_response(response)['messages'] == "Login: c"
         assert response.status_code == 200
 
-    def test_login_again(self, client):
+    def test_login_again(self, client, login_as_c):
         test_data = {'username': 'c', 'password': 'b'}
         response = post_json(client, '/api/login', test_data)
         assert json_of_response(response)['messages'] == "You had logged in before."
