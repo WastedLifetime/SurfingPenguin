@@ -52,12 +52,11 @@ export default withFormik({
     props.onSubmit(values).then(() => {
       setSubmitting(false);
 
-    }, () => {
+    }, (errors) => {
       setSubmitting(false);
-
       setErrors({
 
-        message: "Invalid username or password"
+        message: errors
       })
     })
   }

@@ -18,3 +18,7 @@ export const registerRequestFail = (err) => ({
   type: 'REGISTER_REQUEST_FAIL',
   err
 });
+export const registerSameUsername = (err) => ({
+  type: 'REGISTER_SAME_USERNAME',
+  err
+});

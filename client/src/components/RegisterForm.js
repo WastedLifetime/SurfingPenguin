@@ -20,6 +20,7 @@ class RegisterForm extends React.Component<Props> {
     return (
         <form onSubmit={handleSubmit}>
           <legend>Register</legend>
+      {errors.message && <div className="alert alert-danger" role="alert">{errors.message2}</div>}
           <div className="form-group">
             <label htmlFor="">User Name</label>
             <Field
@@ -53,11 +54,19 @@ class RegisterForm extends React.Component<Props> {
 export default withFormik({
   mapPropsToValues: () => {},
   handleSubmit: (values, { props, setSubmitting, setErrors }) => {
-    props.onSubmit(values).then(() => {
+    console.log(values);
+
+    props.onSubmit(values).then(() => {  
       setSubmitting(false);
     }, (errors) => {
       setSubmitting(false);
-      setErrors(errors.response.data);
+      if(errors==="Error: Network Error")
+      {
+        setErrors({message:"Network Error"})
+      }
+      else{
+        setErrors({message:errors.messages})
+      }
     })
   }
 })(RegisterForm);

@@ -31,8 +31,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     onSubmit: (values) => {
-      return dispatch(loginRequest(values.username, values.password)).
-      then(res => {
+      return dispatch(loginRequest(values.username, values.password)).then(res => {
         if(res=='user not found'){
         dispatch(loginNoUser(res));
         return Promise.reject(res);
@@ -45,7 +44,8 @@ const mapDispatchToProps = (dispatch) => {
         else{
         dispatch(loginRequestSuccess(res));
         return Promise.resolve(res);
-      }}).catch(err => {
+        }
+      }).catch(err => {
         dispatch(loginRequestFail(err));
         return Promise.reject(err);
       });
