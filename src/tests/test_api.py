@@ -30,6 +30,7 @@ def session(app):
 @pytest.fixture(scope="function")
 def login_as_c(client):
     test_data = {'username': 'c', 'password': 'b'}
+    post_json(client, '/api/register', test_data)
     post_json(client, '/api/login', test_data)
     return
 
@@ -83,6 +84,12 @@ class TestRegister():
         test_data = {'username': 'c', 'password': 'b'}
         response = post_json(client, '/api/register', test_data)
         assert json_of_response(response)['username'] == "c"
+        assert response.status_code == 200
+
+    def test_register_with_the_same_name(self, client):
+        test_data = {'username': 'c', 'password': 'b'}
+        response = post_json(client, '/api/register', test_data)
+        assert json_of_response(response)['messages'] == "use another name"
         assert response.status_code == 200
 
     def test_show_users(self, client):
@@ -172,18 +179,20 @@ in"
 in"
         assert response.status_code == 200
 
-    def test_delete_user_not_found(self, client):
+    def test_delete_user_not_found(self, client, login_as_c):
         test_data = {'username': 'd'}
         response = post_json(client, '/api/delete_user', test_data)
-        assert json_of_response(response)['messages'] == "user does not exist"
+        assert json_of_response(response)['messages'] == "user not found"
+        assert response.status_code == 200
+
+    def test_delete_user_not_login(self, client):
+        test_data = {'username': 'd'}
+        response = post_json(client, '/api/delete_user', test_data)
+        assert json_of_response(response)['messages'] == "Please Login First"
         assert response.status_code == 200
 
     def test_delete_user(self, client, login_as_c):
         test_data = {'username': 'c'}
         response = post_json(client, '/api/delete_user', test_data)
         assert json_of_response(response)['messages'] == "user c deleted"
-        assert response.status_code == 200
-        test_data = {'username': 'c'}
-        response = post_json(client, '/api/delete_user', test_data)
-        assert json_of_response(response)['messages'] == "user does not exist"
         assert response.status_code == 200

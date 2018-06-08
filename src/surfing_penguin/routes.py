@@ -20,7 +20,7 @@ api = Api(blueprint,
 # TODO: separate expected and returned api models
 # TODO: add help and others (like default) for each field
 api_return_message = api.model("return_message_model", {
-        'messages': fields.String
+        'messages': fields.String,
     })
 
 api_get_user = api.model("get_user_model", {
@@ -39,7 +39,8 @@ api_show_user = api.model("show_user_model", {
 
 api_show_user_and_time = api.model("show_user_and_time_model", {
         'username': fields.String,
-        'last_seen': fields.DateTime
+        'last_seen': fields.DateTime,
+        'messages': fields.String,
     })
 
 api_survey_name = api.model("survey_name", {
@@ -47,20 +48,20 @@ api_survey_name = api.model("survey_name", {
     })
 
 api_survey_id = api.model("survey_id", {
-        'id': fields.Integer
+        'id': fields.Integer,
     })
 
 api_question = api.model("question_model", {
         'idx': fields.Integer,
         'title': fields.String,
-        'content': fields.String
+        'content': fields.String,
     })
 
 # TODO: add question_num and category (for meta class) in api_survey
 api_survey = api.model("survey_model", {
         'id': fields.Integer,
         'surveyname': fields.String,
-        'questions': fields.List(fields.Nested(api_question))
+        'questions': fields.List(fields.Nested(api_question)),
     })
 
 """ survey associated APIs """
@@ -204,7 +205,7 @@ class search_user(Resource):
 def unauthorized():
     # TODO: Flash this message somewhere.
     print("entering")
-    return {'message': "Please Login First"}
+    return {'messages': "Please Login First"}
 
 
 def convert_user_to_json(user):
