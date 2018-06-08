@@ -58,18 +58,3 @@ def test_hi(client):
 def test_doc(client):
     response = client.get('/api/doc')
     assert response.status_code == 200
-
-
-def test_register(client):
-    test_data = {'username': 'c', 'password': 'b'}
-
-    response = post_json(client, '/api/register', test_data)
-    assert response.status_code == 200
-
-
-# NOTE: this is just an example. This would not pass the pytest
-# and should be under the same class with test_register()
-def test_show_users(client):
-    response = client.get('/api/show_users')
-    assert 'a' in json_of_response(response)[0]['username']
-    assert response.status_code == 200
