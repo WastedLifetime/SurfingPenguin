@@ -1,51 +1,13 @@
 import os
 import sys
-import json
 import pytest
+from utils import post_json, json_of_response
 
 parent_path = os.path.dirname(os.getcwd())
 sys.path.append(parent_path)
 
-from src.config import TestConfig  # NOQA
-from src.surfing_penguin.routes import blueprint  # NOQA
-from src.surfing_penguin import create_app  # NOQA
 from src.surfing_penguin.models import Survey, Question # NOQA
 import src.surfing_penguin.db_interface.SurveyFunctions as SurveyFunctions  # NOQA
-
-
-@pytest.fixture(scope='class')
-def app():
-    app = create_app(TestConfig)
-    app.register_blueprint(blueprint)
-    return app
-
-
-@pytest.fixture(scope='class')
-def session(app):
-    from src.surfing_penguin.extensions import session
-    return session
-
-
-@pytest.fixture
-def client(app):
-    test_client = app.test_client()
-
-    def teardown():
-        pass
-
-    return test_client
-
-
-@pytest.fixture
-def post_json(client, url, json_dict):
-    """Send dictionary json_dict as a json to the specified url """
-    return client.post(url, data=json.dumps(json_dict),
-                       content_type='application/json')
-
-
-def json_of_response(response):
-    """Decode json from response"""
-    return json.loads(response.data.decode('utf8'))
 
 
 @pytest.fixture
@@ -81,12 +43,6 @@ def survey_data(question_data):
         'questions': question_data
     }
     return survey
-
-
-@pytest.fixture
-def api_prefix():
-    prefix = '/api/'
-    return prefix
 
 
 @pytest.mark.usefixtures('session')

@@ -1,30 +1,10 @@
 import os
 import sys
-import json
 import pytest
+from utils import post_json, json_of_response
 
 parent_path = os.path.dirname(os.getcwd())
 sys.path.append(parent_path)
-
-from src.config import TestConfig  # NOQA
-from src.surfing_penguin.routes import blueprint  # NOQA
-from src.surfing_penguin import create_app  # NOQA
-from src.surfing_penguin.models import *  # NOQA
-
-
-@pytest.fixture(scope="class")
-def app():
-    app = create_app(TestConfig)
-    from src.surfing_penguin import routes  # NOQA
-    app.register_blueprint(blueprint)
-    # TODO: check if using the correct database
-    return app
-
-
-@pytest.fixture(scope="class")
-def session(app):
-    from src.surfing_penguin.extensions import session
-    return session
 
 
 @pytest.fixture(scope="function")
@@ -34,35 +14,6 @@ def login_as_c(client):
     post_json(client, '/api/login', test_data)
     return
 
-
-@pytest.fixture
-def client(app):
-    test_client = app.test_client()
-
-    def teardown():
-        pass
-        # Databases and resourses have to be freed at
-        # the end.
-
-    # request.addfinalizer(teardown)
-    return test_client
-
-
-@pytest.fixture
-def post_json(client, url, json_dict):
-    """Send dictionary json_dict as a json to the specified url """
-    return client.post(url, data=json.dumps(json_dict),
-                       content_type='application/json')
-
-
-def json_of_response(response):
-    """Decode json from response"""
-    return json.loads(response.data.decode('utf8'))
-
-
-def test_doc(client):
-    response = client.get('/api/doc')
-    assert response.status_code == 200
 
 # TODO: separate test functions to different classes
 
@@ -76,6 +27,7 @@ def test_hi(client):
 def test_doc(client):
     response = client.get('/api/doc')
     assert response.status_code == 200
+
 
 @pytest.mark.usefixtures('session', 'client')
 class TestRegister():
@@ -128,35 +80,11 @@ class TestRegister():
         assert json_of_response(response)['messages'] == "Login: c"
         assert response.status_code == 200
 
-    def test_login_again(self, client):
-        test_data = {'username': 'c', 'password': 'b'}
-        response = post_json(client, '/api/login', test_data)
-        assert json_of_response(response)['messages'] == "You had logged in before."
-        assert response.status_code == 200
-
-    def test_login_with_wrong_name(self, client):
-        test_data = {'username': 'd', 'password': 'b'}
-        response = post_json(client, '/api/login', test_data)
-        assert json_of_response(response)['messages'] == "user not found"
-        assert response.status_code == 200
-
-    def test_login_with_wrong_pwd(self, client):
-        test_data = {'username': 'c', 'password': 'c'}
-        response = post_json(client, '/api/login', test_data)
-        assert json_of_response(response)['messages'] == "wrong passwd"
-        assert response.status_code == 200
-
-    def test_login(self, client):
-        test_data = {'username': 'c', 'password': 'b'}
-        response = post_json(client, '/api/login', test_data)
-        assert json_of_response(response)['messages'] == "Login: c"
-        assert response.status_code == 200
-
     def test_login_again(self, client, login_as_c):
         test_data = {'username': 'c', 'password': 'b'}
         response = post_json(client, '/api/login', test_data)
-        assert json_of_response(response)['messages'] == "You had logged in\
- before."
+        assert json_of_response(response)['messages'] == \
+            "You had logged in before."
         assert response.status_code == 200
 
     def test_hi_c(self, client, login_as_c):
@@ -166,8 +94,8 @@ class TestRegister():
 
     def test_logout_without_login(self, client):
         response = client.get('/api/logout')
-        assert json_of_response(response)['messages'] == "You did not logged \
-in"
+        assert json_of_response(response)['messages'] == \
+            "You did not logged in"
         assert response.status_code == 200
 
     def test_logout(self, client, login_as_c):
@@ -175,8 +103,8 @@ in"
         assert json_of_response(response)['messages'] == "user logged out"
         assert response.status_code == 200
         response = client.get('/api/logout')  # check for actually log out.
-        assert json_of_response(response)['messages'] == "You did not logged \
-in"
+        assert json_of_response(response)['messages'] == \
+            "You did not logged in"
         assert response.status_code == 200
 
     def test_delete_user_not_found(self, client, login_as_c):
