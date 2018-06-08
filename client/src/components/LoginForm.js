@@ -29,6 +29,7 @@ class LoginForm extends React.Component<Props> {
                 component={renderInput}
                 placeholder="admin@example.com"
                 type="text"/>
+            {this.props.values.username?<p></p>:<p className="alert alert-danger" role="alert">Username cannot be empty</p>}
           </div>
           <div className="form-group">
             <label htmlFor="">Password</label>
@@ -37,10 +38,13 @@ class LoginForm extends React.Component<Props> {
                 component={renderInput}
                 placeholder="123"
                 type="password"/>
+            {this.props.values.password?<p></p>:<p className="alert alert-danger" role="alert">Password cannot be empty</p>}
           </div>
-          {isSubmitting ?
+          {!this.props.values.password || !this.props.values.username?
+          <button className="btn btn-primary" type="submit" disabled>Login</button>:
+          <p>{isSubmitting ?
               <button className="btn btn-primary" type="submit" disabled>Loading...</button> :
-              <button className="btn btn-primary" type="submit">Login</button>}
+              <button className="btn btn-primary" type="submit">Login</button>}</p>}
         </form>
     );
   }

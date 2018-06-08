@@ -28,9 +28,10 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     onSubmit: (values) => {
+      console.log(values)
       return dispatch(registerRequest({
         username: values.username,
-        password: values.password
+        password: values.password,
       })).then(res => {
         if(res.messages==='use another name')
         {

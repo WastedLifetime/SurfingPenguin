@@ -5,8 +5,7 @@ export const registerRequest = (params) => dispatch => {
     type: 'REGISTER_REQUEST',
     params
   });
-  
-  return api.createUser(params);
+  	return api.createUser(params);
 };
 
 export const registerRequestSuccess = (res) => ({
