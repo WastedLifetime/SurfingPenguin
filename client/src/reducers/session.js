@@ -9,13 +9,13 @@ export default function (state = initialState, action) {
         ...state,
         isLoading: true
       };
-    case 'LOGIN_NO_USER':
+    case 'LOGIN_REQUEST_FAIL_USER_NOT_FOUND':
       return {
         ...state,
         isLoading: false,
         isSuccess: false
       };
-    case 'LOGIN_WRONG_PASSWD':
+    case 'LOGIN_REQUEST_FAIL_WRONG_PASSWD':
       return {
         ...state,
         isLoading: false,

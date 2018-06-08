@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import RegisterFormView from '../components/RegisterForm';
-import { registerRequest, registerRequestSuccess, registerRequestFail ,registerSameUsername} from '../actions/register';
+import { registerRequest, registerRequestSuccess, registerRequestFail ,registerRequestFailDuplicateUsername} from '../actions/register';
 
 class RegisterPage extends Component {
   componentWillReceiveProps(nextProps) {
@@ -28,14 +28,13 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     onSubmit: (values) => {
-      console.log(values)
       return dispatch(registerRequest({
         username: values.username,
         password: values.password,
       })).then(res => {
         if(res.messages==='use another name')
         {
-          dispatch(registerSameUsername(res));
+          dispatch(registerRequestFailDuplicateUsername(res));
           return Promise.reject(res);
         }
         else{

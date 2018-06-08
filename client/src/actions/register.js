@@ -5,7 +5,7 @@ export const registerRequest = (params) => dispatch => {
     type: 'REGISTER_REQUEST',
     params
   });
-  	return api.createUser(params);
+  return api.createUser(params);
 };
 
 export const registerRequestSuccess = (res) => ({
@@ -17,7 +17,7 @@ export const registerRequestFail = (err) => ({
   type: 'REGISTER_REQUEST_FAIL',
   err
 });
-export const registerSameUsername = (err) => ({
-  type: 'REGISTER_SAME_USERNAME',
+export const registerRequestFailDuplicateUsername = (err) => ({
+  type: 'REGISTER_REQUEST_FAIL_DUPLICATE_USERNAME',
   err
 });

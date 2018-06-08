@@ -25,12 +25,12 @@ export const loginRequestFail = (err) => ({
   type: 'LOGIN_REQUEST_FAIL',
   payload: err
 });
-export const loginNoUser = (err) => ({
-  type: 'LOGIN_NO_USER',
+export const loginRequestFailUserNotFound = (err) => ({
+  type: 'LOGIN_REQUEST_FAIL_USER_NOT_FOUND',
   payload: err
 });
-export const loginWrongPasswd = (err) => ({
-  type: 'LOGIN_WRONG_PASSWD',
+export const loginRequestFailWrongPasswd = (err) => ({
+  type: 'LOGIN_REQUEST_FAIL_WRONG_PASSWD',
   payload: err
 });
 

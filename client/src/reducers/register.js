@@ -17,7 +17,7 @@ export default function(state={isSuccess: false, isLoading: false}, action) {
         isLoading: false,
         isSuccess: false
       };
-    case 'REGISTER_SAME_USERNAME':
+    case 'REGISTER_REQUEST_FAIL_DUPLICATE_USERNAME':
       return {
         ...state,
         isLoading: false,

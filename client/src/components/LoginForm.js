@@ -17,7 +17,7 @@ const renderInput = ({field, form: { touched, errors }, ...props}) =>
 
 class LoginForm extends React.Component<Props> {
   render() {
-    let { isSubmitting, handleSubmit, errors } = this.props;
+    let { isSubmitting, handleSubmit, errors,touched } = this.props;
     return (
         <form onSubmit={handleSubmit}>
           <legend>Login</legend>
@@ -29,7 +29,9 @@ class LoginForm extends React.Component<Props> {
                 component={renderInput}
                 placeholder="admin@example.com"
                 type="text"/>
-            {this.props.values.username?<p></p>:<p className="alert alert-danger" role="alert">Username cannot be empty</p>}
+            {!this.props.values.username && touched.username?
+              <p className="alert alert-danger" role="alert">Username cannot be empty</p>
+              :<p></p>}
           </div>
           <div className="form-group">
             <label htmlFor="">Password</label>
@@ -38,7 +40,9 @@ class LoginForm extends React.Component<Props> {
                 component={renderInput}
                 placeholder="123"
                 type="password"/>
-            {this.props.values.password?<p></p>:<p className="alert alert-danger" role="alert">Password cannot be empty</p>}
+            {!this.props.values.password && touched.password?
+              <p className="alert alert-danger" role="alert">Password cannot be empty</p>
+              :<p></p>}
           </div>
           {!this.props.values.password || !this.props.values.username?
           <button className="btn btn-primary" type="submit" disabled>Login</button>:
@@ -55,13 +59,15 @@ export default withFormik({
   handleSubmit: (values, { props, setSubmitting, setErrors }) => {
     props.onSubmit(values).then(() => {
       setSubmitting(false);
-
     }, (errors) => {
       setSubmitting(false);
-      setErrors({
-
-        message: errors
-      })
+      if(typeof(errors)!=="string")
+      {
+        setErrors({message:"Network Error"})
+      }
+      else{
+        setErrors({message:errors})
+      }
     })
   }
 })(LoginForm);
