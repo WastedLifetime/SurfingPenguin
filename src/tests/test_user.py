@@ -15,9 +15,6 @@ def login_as_c(client):
     return
 
 
-# TODO: separate test functions to different classes
-
-
 def test_hi(client, api_prefix):
     url = api_prefix+'hi'
     response = client.get(url)
