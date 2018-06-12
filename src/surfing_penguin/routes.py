@@ -1,14 +1,26 @@
 """routes.py: Each function in this file indicates a web page (HTML page)."""
-from src.surfing_penguin import surfing_penguin, api, login_manager
+from flask import Blueprint
+from flask_restplus import Api
+from src.surfing_penguin import surfing_penguin
+from src.surfing_penguin.extensions import login_manager
 from flask_restplus import Resource, fields
 from src.surfing_penguin.db_interface import UserFunctions, SurveyFunctions
 from flask_login import login_user, logout_user, current_user, login_required
 
 
+blueprint = Blueprint("api",
+                      __name__,
+                      url_prefix="/api")
+
+api = Api(blueprint,
+          version="0.1",
+          title="Surfing Penguin API",
+          doc="/doc")
+
 # TODO: separate expected and returned api models
 # TODO: add help and others (like default) for each field
 api_return_message = api.model("return_message_model", {
-        'messages': fields.String
+        'messages': fields.String,
     })
 
 api_get_user = api.model("get_user_model", {
@@ -27,7 +39,8 @@ api_show_user = api.model("show_user_model", {
 
 api_show_user_and_time = api.model("show_user_and_time_model", {
         'username': fields.String,
-        'last_seen': fields.DateTime
+        'last_seen': fields.DateTime,
+        'messages': fields.String,
     })
 
 api_survey_name = api.model("survey_name", {
@@ -35,20 +48,20 @@ api_survey_name = api.model("survey_name", {
     })
 
 api_survey_id = api.model("survey_id", {
-        'id': fields.Integer
+        'id': fields.Integer,
     })
 
 api_question = api.model("question_model", {
         'idx': fields.Integer,
         'title': fields.String,
-        'content': fields.String
+        'content': fields.String,
     })
 
 # TODO: add question_num and category (for meta class) in api_survey
 api_survey = api.model("survey_model", {
         'id': fields.Integer,
         'surveyname': fields.String,
-        'questions': fields.List(fields.Nested(api_question))
+        'questions': fields.List(fields.Nested(api_question)),
     })
 
 """ survey associated APIs """
@@ -192,7 +205,7 @@ class search_user(Resource):
 def unauthorized():
     # TODO: Flash this message somewhere.
     print("entering")
-    return {'message': "Please Login First"}
+    return {'messages': "Please Login First"}
 
 
 def convert_user_to_json(user):
