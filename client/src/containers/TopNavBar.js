@@ -12,7 +12,7 @@ class TopNavBar extends Component {
     let { currentUser } = this.props;
     return (
         <Nav pullRight>
-          <NavDropdown eventKey={3} title={currentUser.username} id="basic-nav-dropdown">
+          <NavDropdown eventKey={3} title={currentUser.substring(7,)} id="basic-nav-dropdown">
             <MenuItem divider/>
             <MenuItem href="#/logout">Logout</MenuItem>
           </NavDropdown>
