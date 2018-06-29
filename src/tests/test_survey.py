@@ -91,7 +91,7 @@ class TestSurvey():
         url = api_prefix+'create_survey'
         response = post_json(client, url, survey_data)
         assert (response.status_code == 200)
-        assert (json_of_response(response)['messages'] == "survey created")
+        assert (json_of_response(response)['messages'] == "Survey created")
 
     def test_show_all_surveys(self, client, api_prefix):
         url = api_prefix+'show_all_surveys'

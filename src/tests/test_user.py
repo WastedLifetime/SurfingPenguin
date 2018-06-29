@@ -18,7 +18,7 @@ def login_as_c(client):
 def test_hi(client, api_prefix):
     url = api_prefix+'hi'
     response = client.get(url)
-    assert json_of_response(response)['messages'] == "hi, stranger!"
+    assert json_of_response(response)['messages'] == "Hi, stranger!"
     assert response.status_code == 200
 
 
@@ -42,7 +42,7 @@ class TestRegister():
         test_data = {'username': 'c', 'password': 'b'}
         url = api_prefix+'register'
         response = post_json(client, url, test_data)
-        assert json_of_response(response)['messages'] == "use another name"
+        assert json_of_response(response)['messages'] == "Use another name"
         assert response.status_code == 200
 
     def test_show_users(self, client, api_prefix):
@@ -70,14 +70,14 @@ class TestRegister():
         test_data = {'username': 'd', 'password': 'b'}
         url = api_prefix+'login'
         response = post_json(client, url, test_data)
-        assert json_of_response(response)['messages'] == "user not found"
+        assert json_of_response(response)['messages'] == "User not found"
         assert response.status_code == 200
 
     def test_login_with_wrong_pwd(self, client, api_prefix):
         test_data = {'username': 'c', 'password': 'c'}
         url = api_prefix+'login'
         response = post_json(client, url, test_data)
-        assert json_of_response(response)['messages'] == "wrong passwd"
+        assert json_of_response(response)['messages'] == "Wrong passwd"
         assert response.status_code == 200
 
     def test_login(self, client, api_prefix):
