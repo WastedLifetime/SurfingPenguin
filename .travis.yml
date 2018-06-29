@@ -14,4 +14,3 @@ deploy:
   app: surfing-penguin
   on:
     repo: WastedLifetime/SurfingPenguin
-
