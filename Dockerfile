@@ -4,4 +4,4 @@ WORKDIR /app
 
 RUN pip install -r requirements.txt
 WORKDIR /app/src
-RUN pytest
+RUN python -m pytest -v
