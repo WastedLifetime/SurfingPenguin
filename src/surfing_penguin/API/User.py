@@ -1,12 +1,11 @@
 """routes.py: Each function in this file indicates a web page (HTML page)."""
-from src.surfing_penguin import __version__
-from src.surfing_penguin import surfing_penguin, api, login_manager
+from src.surfing_penguin import surfing_penguin
+from src.surfing_penguin.extensions import login_manager
+from src.surfing_penguin.routes import api
 from flask_restplus import Resource, fields
 from src.surfing_penguin.db_interface import UserFunctions
 from flask_login import login_user, logout_user, current_user, login_required
 
-
-__version__ = __version__[0:3]
 
 # TODO: separate expected and returned api models
 # TODO: add help and others (like default) for each field
@@ -41,7 +40,7 @@ def before_request():
         UserFunctions.update_last_seen(current_user.username)
 
 
-@api.route(f'/api/{__version__}/hi')
+@api.route(f'/hi')
 class hi(Resource):
     @api.marshal_with(api_return_message)
     def get(self):
@@ -50,7 +49,7 @@ class hi(Resource):
         return {'messages': "Hi, stranger!"}
 
 
-@api.route(f'/api/{__version__}/register')
+@api.route(f'/register')
 class register(Resource):
     @api.marshal_with(api_return_user)
     @api.expect(api_get_user)
@@ -62,7 +61,7 @@ class register(Resource):
         return UserFunctions.register(name, password)
 
 
-@api.route(f'/api/{__version__}/login')
+@api.route(f'/login')
 class login(Resource):
     @api.marshal_with(api_return_message)
     @api.expect(api_get_user)
@@ -80,7 +79,7 @@ class login(Resource):
         return {'messages': "Login: {}".format(name)}
 
 
-@api.route(f'/api/{__version__}/logout')
+@api.route(f'/logout')
 class logout(Resource):
     @api.marshal_with(api_return_message)
     def get(self):
@@ -90,7 +89,7 @@ class logout(Resource):
         return {'messages': "You did not logged in"}
 
 
-@api.route(f'/api/{__version__}/show_users')
+@api.route(f'/show_users')
 class show_users(Resource):
     @api.marshal_list_with(api_show_user)
     def get(self):
@@ -98,7 +97,7 @@ class show_users(Resource):
         return users
 
 
-@api.route(f'/api/{__version__}/delete_user')
+@api.route(f'/delete_user')
 class delete_user(Resource):
     @api.marshal_with(api_return_message)
     @api.expect(api_get_user)
@@ -111,7 +110,7 @@ class delete_user(Resource):
         return {'messages': "User {} deleted".format(name)}
 
 
-@api.route(f'/api/{__version__}/search_user')
+@api.route(f'/search_user')
 class search_user(Resource):
     @api.marshal_with(api_show_user_and_time)
     @api.expect(api_show_user)

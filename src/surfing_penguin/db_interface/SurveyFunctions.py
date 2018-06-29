@@ -1,4 +1,4 @@
-from src.surfing_penguin.extentions import session
+from src.surfing_penguin.extensions import session
 from src.surfing_penguin.models import Survey, Question, AnswerList, Answer
 
 

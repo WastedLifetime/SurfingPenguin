@@ -1,10 +1,8 @@
 """routes.py: Each function in this file indicates a web page (HTML page)."""
-from src.surfing_penguin import __version__
-from src.surfing_penguin import api
+from src.surfing_penguin.routes import api
 from flask_restplus import Resource, fields
 from src.surfing_penguin.db_interface import SurveyFunctions
 
-__version__ = __version__[0:3]
 
 # TODO: separate expected and returned api models
 # TODO: add help and others (like default) for each field
@@ -59,7 +57,7 @@ api_return_answerlist = api.model("return_answerlist_model", {
 # (e.g., creating a survey with existing name)
 
 
-@api.route(f'/api/{__version__}/create_survey')
+@api.route(f'/create_survey')
 class create_survey(Resource):
     @api.marshal_with(api_return_message)
     @api.expect(api_get_survey)
@@ -69,14 +67,14 @@ class create_survey(Resource):
         return {'messages': "Survey created"}
 
 
-@api.route(f'/api/{__version__}/show_all_surveys')
+@api.route(f'/show_all_surveys')
 class show_surveys(Resource):
     @api.marshal_list_with(api_return_survey)
     def get(self):
         return SurveyFunctions.get_all_surveys()
 
 
-@api.route(f'/api/{__version__}/search_survey_by_id')
+@api.route(f'/search_survey_by_id')
 class search_survey_by_id(Resource):
     """
     Show the information of a survey, given its name or ID.
@@ -87,7 +85,7 @@ class search_survey_by_id(Resource):
         return SurveyFunctions.id_get_survey(api.payload['id'])
 
 
-@api.route(f'/api/{__version__}/search_survey_by_name')
+@api.route(f'/search_survey_by_name')
 class search_survey_by_name(Resource):
     """
     Show the information of a survey, given its name or ID.
@@ -98,7 +96,7 @@ class search_survey_by_name(Resource):
         return SurveyFunctions.name_get_survey(api.payload['name'])
 
 
-@api.route(f'/api/{__version__}/answer_a_survey')
+@api.route(f'/answer_a_survey')
 class answer_survey(Resource):
     @api.marshal_with(api_return_message)
     @api.expect(api_get_answerlist)
@@ -109,7 +107,7 @@ class answer_survey(Resource):
         return {'messages': "Survey not found"}
 
 
-@api.route(f'/api/{__version__}/show_answers')
+@api.route(f'/show_answers')
 class show_answerlists(Resource):
     @api.marshal_with(api_return_answerlist)
     @api.expect(api_get_survey_id)
