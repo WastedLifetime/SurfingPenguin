@@ -1,0 +1,16 @@
+language: python
+python:
+  - "3.6"
+# command to install dependencies
+install:
+  - pip install -r requirements.txt
+script:
+  - cd src
+  - pytest # or py.test for Python versions 3.5 and below
+#deploy:
+#  provider: heroku
+#  api_key:
+#    secure: "Mtu/M9dOJc/BZN2MesXyFXY1z0ugIrAFAIjb01u+jn0xWHNDR2P1BjwJEq1aax8f91pncxtwgU2V5wWBjhKK2M6x/h1+Rhp+6nDbrwQvV1wbW6bDsCt3i9Tbhnosp4b1Nfk1gTrT/12xK/hM1FkFygDuCyS8YesPh51HLQgWB9cBtAzY0jr8vl0BFtmDT7PyRWp7W5dz250lHr0INMbdBqkAJBKkxt4z2Ufa7S0EDB3XYpfXbXB5r7v9ldM07CQc3LWAab4+yVKQx8Fp1jnbWjpOAdTib83N/YmVFuKQKYZPjmGcOFrXdqO8epfVytF0EQhBF6hc8of9lTXyzy+jatsBUSZ/CPV8k3DxxA2XPV2HN6wn8qIxQmNdgzy7paXKyvYO4lCr7VdOZW9OoQQjQgkLKC1S9mqukYRfg80bLtT8vP34/C0jP1rpYrTDyCttpG+0b/z8U+1zlybMMPA1+vvavU2TF5EURjP/ItaA5bCFy0apvaV/TtsWbBrwTkQn/g35F3Ap82qIYx/VBuE1rdOvSoHvjEaWXr+hLzhG17pfxc8H2dWXIZClVSSMrFE1bsoUORs3YpKZDXLdMqFTiS4xxL0gY7QIaMy8ig8o8mMxFKlOLlNxD4uPPEzojH43YXspyH1j/D1TRETXVL9qAYNCPPr5I5ieqPBK1PWY4Dg=" 
+#  app: surfing-penguin
+#  on:
+#    repo: WastedLifetime/SurfingPenguin

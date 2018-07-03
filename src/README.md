@@ -39,9 +39,10 @@ Under *src*:
 pytest
 ```
 
-## Deploying on Heroku
+## Automatically deploy with Travis CI and Heroku
 
-Here, we will teach you how to use Heroku Cli to deploy the website.
+Here, we will teach you how to automatically deploy the website with Travis CI
+and Heroku.
 
 1. First, create a heroku app and then connect it.
 ```
@@ -60,17 +61,22 @@ heroku addons:create heroku-postgresql:hobby-dev
 DATABASE_URL="Your database url" or you will use sqlite as your database
 ENV="Staging" or "Production" or you will use the DevelopmentConfig
 ```
-
-4. Push it to the heroku master branch.
+4. Create an account on Travis CI and link it with your repository
 ```
-git push heroku <branch-to-deploy>:master
-heroku config:set $(cat .env | sed '/^$/d; /#[[:print:]]*$/d')
-heroku ps:scale web=1
-heroku open
+To do that you can go to https://travis-ci.org/, to make it easier create your account using your Github.
+
+You will see the Authorize Screen telling to accept and link Travis CI with your Github account.
 ```
-
-5. After open, you can see the website on the heroku.
-
+5. Set it to the heroku master branch.
+```
+Go to Heroku website.
+At Deploy tab on the “Automatic deploys” section don't forget to check the "Wait for CI to pass before deploy" option and enable the Automatic Deploys:
+```
+6. After setting, it will automatically deploy the website with Travis CI
+and Heroku. And you can see the website on the heroku.
+```
+Preference: https://medium.com/@felipeluizsoares/automatically-deploy-with-travis-ci-and-heroku-ddba1361647f
+```
 ## Author
 
 * Frank [zfrank7777](https://github.com/zfrank7777)
