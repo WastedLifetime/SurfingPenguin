@@ -56,7 +56,7 @@ class register(Resource):
     def post(self):
         name = api.payload['username']
         password = api.payload['password']
-        if UserFunctions.search_user(name) is True:
+        if UserFunctions.get_user(name) is not None:
             return {'messages': "Use another name"}
         return UserFunctions.register(name, password)
 
@@ -70,7 +70,7 @@ class login(Resource):
             return {'messages': "You had logged in before."}
         name = api.payload['username']
         password = api.payload['password']
-        if UserFunctions.search_user(name) is False:
+        if UserFunctions.get_user(name) is None:
             return {'messages': "User not found"}
         if UserFunctions.check_password(name, password) is False:
             return {'messages': "Wrong passwd"}

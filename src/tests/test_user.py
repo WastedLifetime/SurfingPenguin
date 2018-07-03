@@ -90,15 +90,21 @@ class TestRegister():
     def test_login_again(self, client, login_as_c, api_prefix):
         test_data = {'username': 'c', 'password': 'b'}
         url = api_prefix+'login'
+        response = post_json(client, url, test_data)
+        assert json_of_response(response)['messages'] == "Login: c"
         response = post_json(client, url,  test_data)
         assert json_of_response(response)['messages'] == \
             "You had logged in before."
         assert response.status_code == 200
 
     def test_hi_c(self, client, login_as_c, api_prefix):
+        test_data = {'username': 'c', 'password': 'b'}
+        url = api_prefix+'login'
+        response = post_json(client, url, test_data)
+        assert json_of_response(response)['messages'] == "Login: c"
         url = api_prefix+'hi'
         response = client.get(url)
-        assert json_of_response(response)['messages'] == "hi, c!"
+        assert json_of_response(response)['messages'] == "Hi, c!"
         assert response.status_code == 200
 
     def test_logout_without_login(self, client, api_prefix):
@@ -109,9 +115,13 @@ class TestRegister():
         assert response.status_code == 200
 
     def test_logout(self, client, login_as_c, api_prefix):
+        test_data = {'username': 'c', 'password': 'b'}
+        url = api_prefix+'login'
+        response = post_json(client, url, test_data)
+        assert json_of_response(response)['messages'] == "Login: c"
         url = api_prefix+'logout'
         response = client.get(url)
-        assert json_of_response(response)['messages'] == "user logged out"
+        assert json_of_response(response)['messages'] == "User logged out"
         assert response.status_code == 200
         response = client.get('/api/logout')  # check for actually log out.
         assert json_of_response(response)['messages'] == \
