@@ -28,6 +28,7 @@ api_show_user = api.model("show_user_model", {
     })
 
 api_show_user_and_time = api.model("show_user_and_time_model", {
+        'messages': fields.String,
         'username': fields.String,
         'last_seen': fields.DateTime
     })
@@ -116,8 +117,8 @@ class search_user(Resource):
     @api.expect(api_show_user)
     def post(self):
         search_name = api.payload['username']
-        if UserFunctions.search_user(search_name) is False:
-            return {'messages': "User does not exist"}
+        if UserFunctions.get_user(search_name) is None:
+            return {'messages': "user does not exist"}
         return UserFunctions.get_user(search_name)
 
 
@@ -125,5 +126,4 @@ class search_user(Resource):
 @api.marshal_with(api_return_message)
 def unauthorized():
     # TODO: Flash this message somewhere.
-    print("entering")
     return {'message': "Please login first"}

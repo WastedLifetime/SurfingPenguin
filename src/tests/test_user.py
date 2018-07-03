@@ -8,10 +8,10 @@ sys.path.append(parent_path)
 
 
 @pytest.fixture(scope="function")
-def login_as_c(client):
+def login_as_c(client, api_prefix):
     test_data = {'username': 'c', 'password': 'b'}
-    post_json(client, '/api/register', test_data)
-    post_json(client, '/api/login', test_data)
+    post_json(client, api_prefix+'register', test_data)
+    post_json(client, api_prefix+'login', test_data)
     return
 
 
@@ -90,18 +90,12 @@ class TestRegister():
     def test_login_again(self, client, login_as_c, api_prefix):
         test_data = {'username': 'c', 'password': 'b'}
         url = api_prefix+'login'
-        response = post_json(client, url, test_data)
-        assert json_of_response(response)['messages'] == "Login: c"
         response = post_json(client, url,  test_data)
         assert json_of_response(response)['messages'] == \
             "You had logged in before."
         assert response.status_code == 200
 
     def test_hi_c(self, client, login_as_c, api_prefix):
-        test_data = {'username': 'c', 'password': 'b'}
-        url = api_prefix+'login'
-        response = post_json(client, url, test_data)
-        assert json_of_response(response)['messages'] == "Login: c"
         url = api_prefix+'hi'
         response = client.get(url)
         assert json_of_response(response)['messages'] == "Hi, c!"
@@ -115,15 +109,11 @@ class TestRegister():
         assert response.status_code == 200
 
     def test_logout(self, client, login_as_c, api_prefix):
-        test_data = {'username': 'c', 'password': 'b'}
-        url = api_prefix+'login'
-        response = post_json(client, url, test_data)
-        assert json_of_response(response)['messages'] == "Login: c"
         url = api_prefix+'logout'
         response = client.get(url)
         assert json_of_response(response)['messages'] == "User logged out"
         assert response.status_code == 200
-        response = client.get('/api/logout')  # check for actually log out.
+        response = client.get(api_prefix+'logout')  # check for log out.
         assert json_of_response(response)['messages'] == \
             "You did not logged in"
         assert response.status_code == 200
@@ -132,7 +122,7 @@ class TestRegister():
         test_data = {'username': 'd'}
         url = api_prefix+'delete_user'
         response = post_json(client, url, test_data)
-        assert json_of_response(response)['messages'] == "user not found"
+        assert json_of_response(response)['messages'] == "User not found"
         assert response.status_code == 200
 
     def test_delete_user_not_login(self, client, api_prefix):
@@ -146,5 +136,5 @@ class TestRegister():
         test_data = {'username': 'c'}
         url = api_prefix+'delete_user'
         response = post_json(client, url, test_data)
-        assert json_of_response(response)['messages'] == "user c deleted"
+        assert json_of_response(response)['messages'] == "User c deleted"
         assert response.status_code == 200
