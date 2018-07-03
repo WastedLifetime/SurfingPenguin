@@ -1,17 +1,17 @@
-import React, { Component } from 'react';
-import './App.css';
+import React, { Component } from 'react'
+import './App.css'
 
-import TopNavBar from './containers/TopNavBar';
+import TopNavBar from './containers/TopNavBar'
 
 class App extends Component {
-  render() {
+  render () {
     return (
-      <div className="App">
+      <div className='App'>
         <TopNavBar />
         { this.props.children }
       </div>
-    );
+    )
   }
 }
 
-export default App;
+export default App

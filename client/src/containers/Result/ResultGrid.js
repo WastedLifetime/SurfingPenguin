@@ -1,16 +1,16 @@
-import React from 'react';
-import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
-import ResultGridView from '../../components/Result/ResultGrid';
-import { resultsToGrid, getRowSelects, getAllSelected } from '../../reducers/data';
-import { openModal } from '../../actions/gridModal';
-import { toggleRowSelect, selectAll, unSelectAll, deleteRows } from '../../actions/data';
+import React from 'react'
+import { connect } from 'react-redux'
+import { bindActionCreators } from 'redux'
+import ResultGridView from '../../components/Result/ResultGrid'
+import { resultsToGrid, getRowSelects, getAllSelected } from '../../reducers/data'
+import { openModal } from '../../actions/gridModal'
+import { toggleRowSelect, selectAll, unSelectAll, deleteRows } from '../../actions/data'
 
 class ResultGrid extends React.Component {
-  render() {
+  render () {
     return (
-      <ResultGridView {...this.props}/>
-    );
+      <ResultGridView {...this.props} />
+    )
   }
 }
 
@@ -19,8 +19,8 @@ const mapStateToProps = (state) => {
     grid: resultsToGrid(state.data),
     rowSelects: getRowSelects(state.data),
     allSelected: getAllSelected(state.data)
-  };
-};
+  }
+}
 
 const mapDispatchToProps = (dispatch) => {
   return {
@@ -29,8 +29,7 @@ const mapDispatchToProps = (dispatch) => {
     onSelectAll: bindActionCreators(selectAll, dispatch),
     onUnSelectAll: bindActionCreators(unSelectAll, dispatch),
     onDeleteRow: bindActionCreators(deleteRows, dispatch)
-  };
-};
+  }
+}
 
-export default connect(mapStateToProps, mapDispatchToProps)(ResultGrid);
-
+export default connect(mapStateToProps, mapDispatchToProps)(ResultGrid)

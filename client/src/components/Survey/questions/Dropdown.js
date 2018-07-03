@@ -1,7 +1,7 @@
 // @flow
 
-import * as React from "react";
-import { Field } from 'formik';
+import * as React from 'react'
+import { Field } from 'formik'
 
 type Props = {
   _id: string,
@@ -12,26 +12,25 @@ type Props = {
   }[]
 };
 
-
 class Dropdown extends React.Component<Props> {
-  render() {
-    const { title, options, _id } = this.props;
+  render () {
+    const { title, options, _id } = this.props
     return (
-        <div>
-          <h3 className="question-title">{title}</h3>
-          <div className="form-group">
-            <Field component="select" className="form-control" name={_id}>
-              <option></option>
-              {options.map((option, index) => {
-                return (
-                    <option value={option._id} key={option._id}>{option.content}</option>
-                )
-              })}
-            </Field>
-          </div>
+      <div>
+        <h3 className='question-title'>{title}</h3>
+        <div className='form-group'>
+          <Field component='select' className='form-control' name={_id}>
+            <option />
+            {options.map((option, index) => {
+              return (
+                <option value={option._id} key={option._id}>{option.content}</option>
+              )
+            })}
+          </Field>
         </div>
-    );
+      </div>
+    )
   }
 }
 
-export default Dropdown;
+export default Dropdown

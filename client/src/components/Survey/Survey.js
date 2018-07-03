@@ -1,76 +1,76 @@
-import * as React from 'react';
-import QuestionWrapper from './QuestionWrapper';
-import { withFormik } from 'formik';
-import './Survey.css';
+import * as React from 'react'
+import QuestionWrapper from './QuestionWrapper'
+import { withFormik } from 'formik'
+import './Survey.css'
 
 type Props = {
-  survey: object,
+  survey: Object,
   isLoading: bool,
-  error: object,
-  onSubmit: func,
+  error: Object,
+  onSubmit: Function,
   isSuccess: bool
 };
 
 class Survey extends React.Component<Props> {
-  renderError() {
+  renderError () {
     return <div>Error!</div>
   }
 
-  renderLoading() {
+  renderLoading () {
     return <div>Loading...</div>
   }
 
-  renderSuccess() {
+  renderSuccess () {
     return <div>
       <h1>Submit Success!</h1>
     </div>
   }
 
-  render() {
-    let { survey, isLoading, error, handleSubmit, isSuccess } = this.props;
+  render () {
+    let { survey, isLoading, error, handleSubmit, isSuccess } = this.props
 
-    let { title, subTitle, questions } = survey;
+    let { title, subTitle, questions } = survey
 
     if (isLoading) {
-      return this.renderLoading();
+      return this.renderLoading()
     }
 
     if (error) {
-      return this.renderError();
+      return this.renderError()
     }
 
     if (!survey) {
-      return <div/>;
+      return <div />
     }
 
     if (isSuccess) {
-      return this.renderSuccess();
+      return this.renderSuccess()
     }
 
     return (
-        <div className="Survey">
-          <form onSubmit={handleSubmit}>
-            <header>
-              <h3>{title}</h3>
-              <p>{subTitle}</p>
-            </header>
-            <ul className="list-unstyled">
-              {questions.map(question => {
-                return <li key={question._id}><QuestionWrapper question={question}/></li>
-              })}
-            </ul>
-            <div className="form-group">
-              <input type="submit" className="btn btn-primary"/>
-            </div>
-          </form>
-        </div>
-    );
+      <div className='Survey'>
+        <form onSubmit={handleSubmit}>
+          <header>
+            <h3>{title}</h3>
+            <p>{subTitle}</p>
+          </header>
+          <ul className='list-unstyled'>
+            {questions.map(question => {
+              return <li key={question._id}><QuestionWrapper question={question} /></li>
+            })}
+          </ul>
+          <div className='form-group'>
+            <input type='submit' className='btn btn-primary' />
+          </div>
+        </form>
+      </div>
+    )
   }
 }
 
 export default withFormik({
   mapPropsToValues: () => {},
-  handleSubmit: ( values, { props }) => {
+  handleSubmit: (values, { props }) => {
     props.onSubmit(props.survey.id, values)
   }
-})(Survey);
+})(Survey)

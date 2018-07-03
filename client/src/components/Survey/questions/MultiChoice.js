@@ -1,7 +1,6 @@
 // @flow
-import * as React from 'react';
-import { Field } from 'formik';
-
+import * as React from 'react'
+import { Field } from 'formik'
 
 type Props = {
   _id: string,
@@ -13,26 +12,26 @@ type Props = {
 };
 
 class MultiChoice extends React.Component<Props> {
-  render() {
-    const { title, options, _id } = this.props;
+  render () {
+    const { title, options, _id } = this.props
     return (
+      <div>
+        <h3 className='question-title'>{title}</h3>
         <div>
-          <h3 className="question-title">{title}</h3>
-          <div>
           {options.map((option, index) => {
             return (
-                <div key={index} className="radio">
-                  <label>
-                    <Field component="input" type="radio" name={_id} value={option._id} />
-                    {option.content}
-                  </label>
-                </div>
+              <div key={index} className='radio'>
+                <label>
+                  <Field component='input' type='radio' name={_id} value={option._id} />
+                  {option.content}
+                </label>
+              </div>
             )
           })}
-          </div>
         </div>
-    );
+      </div>
+    )
   }
 }
 
-export default MultiChoice;
+export default MultiChoice

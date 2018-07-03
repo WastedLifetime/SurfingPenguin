@@ -1,20 +1,20 @@
-import { Component } from 'react';
-import { connect } from 'react-redux';
-import { logout } from '../actions/logout';
+import { Component } from 'react'
+import { connect } from 'react-redux'
+import { logout } from '../actions/logout'
 
 class Logout extends Component {
-  componentWillMount() {
+  componentWillMount () {
     this.props.logout().then(() => {
     }).catch(() => {
-    });
-    this.props.router.push('/login');
+    })
+    this.props.router.push('/login')
   }
 
-  render() {
-    return null;
+  render () {
+    return null
   }
 }
 
 export default connect(null, {
   logout
-})(Logout);
+})(Logout)

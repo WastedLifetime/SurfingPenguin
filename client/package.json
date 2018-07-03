@@ -6,9 +6,12 @@
     "@storybook/addon-actions": "^3.2.16",
     "@storybook/addon-links": "^3.2.16",
     "@storybook/react": "^3.2.16",
+    "babel-eslint": "^8.2.5",
     "flow-bin": "^0.59.0",
     "gh-pages": "^0.12.0",
-    "react-scripts": "1.0.17"
+    "react-scripts": "1.0.17",
+    "eslint-plugin-flowtype": "^2.30.4",
+    "standard": "^10.0.1"
   },
   "homepage": ".",
   "dependencies": {
@@ -37,8 +40,13 @@
     "deploy": "gh-pages -d build",
     "storybook": "start-storybook -p 9009 -s public",
     "build-storybook": "build-storybook -s public"
+
   },
   "eslintConfig": {
     "extends": "./node_modules/react-scripts/config/eslint.js"
+  },
+  "standard": {
+    "parser": "babel-eslint"
   }
+
 }

@@ -1,8 +1,7 @@
 // @flow
 
-import * as React from "react";
-import { Field } from 'formik';
-
+import * as React from 'react'
+import { Field } from 'formik'
 
 type Props = {
   _id: string,
@@ -11,17 +10,17 @@ type Props = {
 };
 
 class MultiLineText extends React.Component<Props> {
-  render() {
-    const { title, placeholder, _id } = this.props;
+  render () {
+    const { title, placeholder, _id } = this.props
     return (
-        <div>
-          <h3 className="question-title">{title}</h3>
-          <div className="form-group">
-            <Field component="textarea" className="form-control" placeholder={placeholder} name={_id}></Field>
-          </div>
+      <div>
+        <h3 className='question-title'>{title}</h3>
+        <div className='form-group'>
+          <Field component='textarea' className='form-control' placeholder={placeholder} name={_id} />
         </div>
-    );
+      </div>
+    )
   }
 }
 
-export default MultiLineText;
+export default MultiLineText

@@ -1,22 +1,22 @@
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import LoginFormView from '../components/LoginForm';
-import { loginRequest, loginRequestSuccess, loginRequestFail,loginRequestFailUserNotFound,loginRequestFailWrongPasswd } from '../actions/login';
-import { home } from '../reducers/session';
+import React, { Component } from 'react'
+import { connect } from 'react-redux'
+import LoginFormView from '../components/LoginForm'
+import { loginRequest, loginRequestSuccess, loginRequestFail, loginRequestFailUserNotFound, loginRequestFailWrongPasswd } from '../actions/login'
+import { home } from '../reducers/session'
 
 class LoginPage extends Component {
-  componentWillReceiveProps(nextProps) {
+  componentWillReceiveProps (nextProps) {
     if (nextProps.isLoginSuccess) {
-      this.props.router.push(home(nextProps.currentUser));
+      this.props.router.push(home(nextProps.currentUser))
     }
   }
 
-  render() {
+  render () {
     return (
-        <div className="col-md-4 col-md-offset-4" style={{marginTop: '40px'}}>
-          <LoginFormView {...this.props}/>
-          
-        </div>
+      <div className='col-md-4 col-md-offset-4' style={{marginTop: '40px'}}>
+        <LoginFormView {...this.props} />
+
+      </div>
     )
   }
 }
@@ -26,31 +26,28 @@ const mapStateToProps = (state) => {
     isLoginSuccess: state.session.isSuccess,
     currentUser: state.session.user
   }
-};
+}
 
 const mapDispatchToProps = (dispatch) => {
   return {
     onSubmit: (values) => {
       return dispatch(loginRequest(values.username, values.password)).then(res => {
-        if(res==='user not found'){
-        dispatch(loginRequestFailUserNotFound(res));
-        return Promise.reject(res);
-        }
-        else if(res==='wrong passwd')
-        {
-          dispatch(loginRequestFailWrongPasswd(res));
-        return Promise.reject(res);
-        }
-        else{
-        dispatch(loginRequestSuccess(res));
-        return Promise.resolve(res);
+        if (res === 'user not found') {
+          dispatch(loginRequestFailUserNotFound(res))
+          return Promise.reject(res)
+        } else if (res === 'wrong passwd') {
+          dispatch(loginRequestFailWrongPasswd(res))
+          return Promise.reject(res)
+        } else {
+          dispatch(loginRequestSuccess(res))
+          return Promise.resolve(res)
         }
       }).catch(err => {
-        dispatch(loginRequestFail(err));
-        return Promise.reject(err);
-      });
+        dispatch(loginRequestFail(err))
+        return Promise.reject(err)
+      })
     }
   }
-};
+}
 
-export default connect(mapStateToProps, mapDispatchToProps)(LoginPage);
+export default connect(mapStateToProps, mapDispatchToProps)(LoginPage)
