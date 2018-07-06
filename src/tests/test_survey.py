@@ -6,7 +6,7 @@ from utils import post_json, json_of_response
 parent_path = os.path.dirname(os.getcwd())
 sys.path.append(parent_path)
 
-from src.surfing_penguin.models import Survey, Question # NOQA
+from src.surfing_penguin.models import Survey, Question, AnswerList, Answer # NOQA
 import src.surfing_penguin.db_interface.SurveyFunctions as SurveyFunctions  # NOQA
 
 
@@ -45,6 +45,14 @@ def survey_data(question_data):
     return survey
 
 
+@pytest.fixture
+def survey_with_question(question_data):
+    # NOTE: This fixture should only be used
+    # after TestSurvey class passes the tests.
+    survey = SurveyFunctions.new_survey("survey_with_question", question_data)
+    return survey
+
+
 @pytest.mark.usefixtures('session')
 class TestSurvey():
 
@@ -54,6 +62,7 @@ class TestSurvey():
     def test_survey_model(self, survey):
         assert(survey.surveyname == "test")
         assert(survey.question_num == 0)
+        assert(survey.answerlist_num == 0)
 
     def test_question_model(self, survey):
         question = Question("TITLE", "CONTENT", survey)
@@ -110,3 +119,25 @@ class TestSurvey():
         response = post_json(client, url, {'name': "test"})
         assert response.status_code == 200
         assert json_of_response(response)['id'] == 1
+
+
+@pytest.mark.usefixtures('session')
+class TestAnswer():
+
+    """ Testing models """
+    def test_answerlist_model(self, survey):
+        test_answerlist = AnswerList(survey)
+        assert test_answerlist.survey_id == survey.id
+        assert test_answerlist.idx == survey.answerlist_num
+
+    def test_answer_model(self, session, survey_with_question):
+        test_answerlist = AnswerList(survey_with_question)
+        target_question = session.query(Question).filter_by(
+            survey_id=survey_with_question.id).first()
+        test_answer = Answer(test_answerlist, target_question, "answer:123")
+        assert test_answer.answerlist_id == test_answerlist.id
+        assert test_answer.idx == target_question.idx
+        assert test_answer.question_id == target_question.id
+        assert test_answer.content == "answer:123"
+
+    """ Testing db operations """
