@@ -33,7 +33,14 @@ npm install
 export REACT_APP_ENDPOINT=http://localhost:3000
 npm start
 ```
-
+Or you can deploy it on Netlify.
+1. Login to Netlify and connect with your github.
+2. Env settings.
+```
+NPM_CONFIG_PRODUCTION:false
+REACT_APP_ENDPOINT: $YOUR_BACKEND_URL
+```
+3. And deploy the branch.
 ### For Backend
 
 Get the backend part from [here](https://github.com/aisensiy/rails-survey-backend). This is a rails5 application. You need install ruby on your machine. 
