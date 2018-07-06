@@ -42,15 +42,22 @@ api_answer = api.model("answer_model", {
         'content': fields.String
     })
 
+api_answerlist = api.model("answerlist_model", {
+        'answers': fields.List(fields.Nested(api_answer)),
+        'messages': fields.String
+    })
+
 api_get_answerlist = api.model("get_answerlist_model", {
         'survey_id': fields.Integer,
         'answers': fields.List(fields.Nested(api_answer))
     })
 
-api_return_answerlist = api.model("return_answerlist_model", {
-        'answers': fields.List(fields.Nested(api_answer)),
-        'messages': fields.String
+api_return_answerlists = api.model("return_ansewrlists_model", {
+        'survey_id': fields.Integer,
+        'answerlist_num': fields.Integer,
+        'answerlists': fields.List(fields.Nested(api_answerlist))
     })
+
 
 """ survey associated APIs """
 # TODO: add error handling for functions that change the database
@@ -109,9 +116,15 @@ class answer_survey(Resource):
 
 @api.route(f'/show_answers')
 class show_answerlists(Resource):
-    @api.marshal_with(api_return_answerlist)
+    @api.marshal_with(api_return_answerlists)
     @api.expect(api_get_survey_id)
     def post(self):
         if SurveyFunctions.id_get_survey(api.payload['id']):
-            return SurveyFunctions.id_get_answerlists(api.payload['id'])
+            return {
+                "survey_id": api.payload['id'],
+                "answerlist_num":
+                    SurveyFunctions.id_get_answerlist_num(api.payload['id']),
+                "answerlists":
+                    SurveyFunctions.id_get_answerlists(api.payload['id'])
+            }
         return {'messages': "Survey not found"}

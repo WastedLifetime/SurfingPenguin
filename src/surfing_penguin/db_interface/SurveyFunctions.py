@@ -48,12 +48,17 @@ def new_answerlist(data):
         question = session.query(Question).filter_by(
                 survey_id=survey.id, idx=i+1).first()
         new_answer(answerlist, question, data["answers"][i])
+    return answerlist
 
 
 def new_answer(answerlist, question, data):
     answer = Answer(answerlist, question, data["content"])
     session.add(answer)
     session.commit()
+
+
+def id_get_answerlist_num(ID):
+    return session.query(AnswerList).filter_by(survey_id=ID).count()
 
 
 def id_get_answerlists(ID):
