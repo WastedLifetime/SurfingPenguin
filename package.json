@@ -1,6 +1,6 @@
 {
-  "name": "react-survey",
-  "version": "0.0.1",
+  "name": "surfing-penguin",
+  "version": "0.1.0",
   "private": true,
   "devDependencies": {
     "@storybook/addon-actions": "^3.2.16",
@@ -10,7 +10,7 @@
     "gh-pages": "^0.12.0",
     "react-scripts": "1.0.17"
   },
-  "homepage": "http://aisensiy.github.io/react-survey",
+  "homepage": ".",
   "dependencies": {
     "axios": "^0.14.0",
     "bootstrap": "^3.3.7",
