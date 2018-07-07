@@ -8,7 +8,7 @@ blueprint = Blueprint("api",
                       url_prefix=api_prefix)
 
 api = Api(blueprint,
-          version="0.1",
+          version=__version__[0:3],
           title="Surfing Penguin API",
           doc="/doc")
 
