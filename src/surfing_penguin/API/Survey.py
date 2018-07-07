@@ -64,7 +64,7 @@ api_return_answerlists = api.model("return_ansewrlists_model", {
 # (e.g., creating a survey with existing name)
 
 
-@api.route(f'/create_survey')
+@api.route('/create_survey')
 class create_survey(Resource):
     @api.marshal_with(api_return_message)
     @api.expect(api_get_survey)
@@ -74,14 +74,14 @@ class create_survey(Resource):
         return {'messages': "Survey created"}
 
 
-@api.route(f'/show_all_surveys')
+@api.route('/show_all_surveys')
 class show_surveys(Resource):
     @api.marshal_list_with(api_return_survey)
     def get(self):
         return SurveyFunctions.get_all_surveys()
 
 
-@api.route(f'/search_survey_by_id')
+@api.route('/search_survey_by_id')
 class search_survey_by_id(Resource):
     """
     Show the information of a survey, given its name or ID.
@@ -92,7 +92,7 @@ class search_survey_by_id(Resource):
         return SurveyFunctions.id_get_survey(api.payload['id'])
 
 
-@api.route(f'/search_survey_by_name')
+@api.route('/search_survey_by_name')
 class search_survey_by_name(Resource):
     """
     Show the information of a survey, given its name or ID.
@@ -103,7 +103,7 @@ class search_survey_by_name(Resource):
         return SurveyFunctions.name_get_survey(api.payload['name'])
 
 
-@api.route(f'/answer_a_survey')
+@api.route('/answer_a_survey')
 class answer_survey(Resource):
     @api.marshal_with(api_return_message)
     @api.expect(api_get_answerlist)
@@ -114,7 +114,7 @@ class answer_survey(Resource):
         return {'messages': "Survey not found"}
 
 
-@api.route(f'/show_answers')
+@api.route('/show_answers')
 class show_answerlists(Resource):
     @api.marshal_with(api_return_answerlists)
     @api.expect(api_get_survey_id)

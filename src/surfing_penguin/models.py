@@ -71,7 +71,7 @@ class Question(Base):
 class AnswerList(Base):
     """
     AnswerList is a table connecting Survey and Answer,
-    where an Answer is a answer to only a question.
+    where an Answer is an answer to only a question.
     """
     __tablename__ = 'answerlist'
     id = Column(Integer, primary_key=True)

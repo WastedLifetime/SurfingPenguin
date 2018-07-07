@@ -39,6 +39,16 @@ def new_question(survey, data):
 
 
 def new_answerlist(data):
+    """
+    Answerlist is a data structure that stores
+    a list of answers of a specified survey.
+
+    This function should create a new answerlist and all answers in it.
+
+    Args:
+        data: a dictionary with key "survey_id" and a list of
+                answers(which is a dictionary with key 'idx and 'content'')
+    """
     survey = session.query(Survey).filter_by(id=data["survey_id"]).first()
     survey.answerlist_num += 1
     answerlist = AnswerList(survey)

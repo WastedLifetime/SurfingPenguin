@@ -41,7 +41,7 @@ def before_request():
         UserFunctions.update_last_seen(current_user.username)
 
 
-@api.route(f'/hi')
+@api.route('/hi')
 class hi(Resource):
     @api.marshal_with(api_return_message)
     def get(self):
@@ -50,7 +50,7 @@ class hi(Resource):
         return {'messages': "Hi, stranger!"}
 
 
-@api.route(f'/register')
+@api.route('/register')
 class register(Resource):
     @api.marshal_with(api_return_user)
     @api.expect(api_get_user)
@@ -62,7 +62,7 @@ class register(Resource):
         return UserFunctions.register(name, password)
 
 
-@api.route(f'/login')
+@api.route('/login')
 class login(Resource):
     @api.marshal_with(api_return_message)
     @api.expect(api_get_user)
@@ -80,7 +80,7 @@ class login(Resource):
         return {'messages': "Login: {}".format(name)}
 
 
-@api.route(f'/logout')
+@api.route('/logout')
 class logout(Resource):
     @api.marshal_with(api_return_message)
     def get(self):
@@ -90,7 +90,7 @@ class logout(Resource):
         return {'messages': "You did not logged in"}
 
 
-@api.route(f'/show_users')
+@api.route('/show_users')
 class show_users(Resource):
     @api.marshal_list_with(api_show_user)
     def get(self):
@@ -98,7 +98,7 @@ class show_users(Resource):
         return users
 
 
-@api.route(f'/delete_user')
+@api.route('/delete_user')
 class delete_user(Resource):
     @api.marshal_with(api_return_message)
     @api.expect(api_get_user)
@@ -111,7 +111,7 @@ class delete_user(Resource):
         return {'messages': "User {} deleted".format(name)}
 
 
-@api.route(f'/search_user')
+@api.route('/search_user')
 class search_user(Resource):
     @api.marshal_with(api_show_user_and_time)
     @api.expect(api_show_user)

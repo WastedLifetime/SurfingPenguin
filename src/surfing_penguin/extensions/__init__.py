@@ -12,6 +12,7 @@ login_manager = LoginManager()
 Session = sessionmaker()
 session = Session()
 
+
 def init_app(app):
     login_manager.init_app(app)
     db_engine = create_engine(
