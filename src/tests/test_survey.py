@@ -6,7 +6,7 @@ from utils import post_json, json_of_response
 parent_path = os.path.dirname(os.getcwd())
 sys.path.append(parent_path)
 
-from src.surfing_penguin.models import Survey, Question # NOQA
+from src.surfing_penguin.models import Survey, Question, AnswerList, Answer # NOQA
 import src.surfing_penguin.db_interface.SurveyFunctions as SurveyFunctions  # NOQA
 
 
@@ -45,6 +45,38 @@ def survey_data(question_data):
     return survey
 
 
+@pytest.fixture
+def survey_with_question(question_data):
+    # NOTE: This fixture should only be used
+    # after TestSurvey class passes the tests.
+    survey = SurveyFunctions.new_survey("survey_with_question", question_data)
+    return survey
+
+
+@pytest.fixture
+def answer_data():
+    data = [
+        {
+            'idx': 1,
+            'content': "Ans1content"
+        },
+        {
+            'idx': 2,
+            'content': "Ans2content"
+        }
+    ]
+    return data
+
+
+@pytest.fixture
+def answerlist_data(answer_data):
+    anslist = {
+        'survey_id': 2,
+        'answers': answer_data
+    }
+    return anslist
+
+
 @pytest.mark.usefixtures('session')
 class TestSurvey():
 
@@ -54,6 +86,7 @@ class TestSurvey():
     def test_survey_model(self, survey):
         assert(survey.surveyname == "test")
         assert(survey.question_num == 0)
+        assert(survey.answerlist_num == 0)
 
     def test_question_model(self, survey):
         question = Question("TITLE", "CONTENT", survey)
@@ -87,11 +120,10 @@ class TestSurvey():
 
     """ Testing api """
     def test_create_survey(self, survey_data, client, api_prefix):
-
         url = api_prefix+'create_survey'
         response = post_json(client, url, survey_data)
         assert (response.status_code == 200)
-        assert (json_of_response(response)['messages'] == "survey created")
+        assert (json_of_response(response)['messages'] == "Survey created")
 
     def test_show_all_surveys(self, client, api_prefix):
         url = api_prefix+'show_all_surveys'
@@ -110,3 +142,60 @@ class TestSurvey():
         response = post_json(client, url, {'name': "test"})
         assert response.status_code == 200
         assert json_of_response(response)['id'] == 1
+
+
+@pytest.mark.usefixtures('session')
+class TestAnswer():
+
+    """ Testing models """
+    def test_answerlist_model(self, survey):
+        test_answerlist = AnswerList(survey)
+        assert test_answerlist.survey_id == survey.id
+        assert test_answerlist.idx == survey.answerlist_num
+
+    def test_answer_model(self, session, survey_with_question):
+        test_answerlist = AnswerList(survey_with_question)
+        target_question = session.query(Question).filter_by(
+            survey_id=survey_with_question.id).first()
+        test_answer = Answer(test_answerlist, target_question, "answer:123")
+        assert test_answer.answerlist_id == test_answerlist.id
+        assert test_answer.idx == target_question.idx
+        assert test_answer.question_id == target_question.id
+        assert test_answer.content == "answer:123"
+
+    """ Testing db operations """
+    def test_new_answerlist(
+            self, session, answerlist_data, survey_with_question):
+        answerlist = SurveyFunctions.new_answerlist(answerlist_data)
+        assert answerlist.survey_id == answerlist_data['survey_id']
+        assert session.query(AnswerList).filter_by(
+                survey_id=answerlist_data['survey_id']).first() is not None
+
+    def test_id_get_answerlist_num(self):
+        num = SurveyFunctions.id_get_answerlist_num(2)
+        assert num == 1
+
+    def test_id_get_answerlists(self):
+        lists = SurveyFunctions.id_get_answerlists(2)
+        assert lists[0].answers[0].idx == 1
+        assert lists[0].answers[0].content == "Ans1content"
+
+    """ Testing api """
+    def test_answer_a_survey(
+            self, client, api_prefix, answerlist_data):
+        url = api_prefix+'answer_a_survey'
+        response = post_json(client, url, answerlist_data)
+        assert response.status_code == 200
+        assert json_of_response(response)['messages'] == "Answer completed"
+
+    def test_show_answers(
+            self, session, client, api_prefix,):
+        url = api_prefix+'show_answers'
+        response = post_json(client, url, {"id": 2})
+        assert response.status_code == 200
+        assert json_of_response(response)['survey_id'] == 2
+        assert json_of_response(response)['answerlist_num'] == 2
+        assert json_of_response(response)['answerlists'][0]['answers'][0] == {
+                    'idx': 1,
+                    'content': "Ans1content"
+                }

@@ -8,17 +8,17 @@ sys.path.append(parent_path)
 
 
 @pytest.fixture(scope="function")
-def login_as_c(client):
+def login_as_c(client, api_prefix):
     test_data = {'username': 'c', 'password': 'b'}
-    post_json(client, '/api/register', test_data)
-    post_json(client, '/api/login', test_data)
+    post_json(client, api_prefix+'register', test_data)
+    post_json(client, api_prefix+'login', test_data)
     return
 
 
 def test_hi(client, api_prefix):
     url = api_prefix+'hi'
     response = client.get(url)
-    assert json_of_response(response)['messages'] == "hi, stranger!"
+    assert json_of_response(response)['messages'] == "Hi, stranger!"
     assert response.status_code == 200
 
 
@@ -42,7 +42,7 @@ class TestRegister():
         test_data = {'username': 'c', 'password': 'b'}
         url = api_prefix+'register'
         response = post_json(client, url, test_data)
-        assert json_of_response(response)['messages'] == "use another name"
+        assert json_of_response(response)['messages'] == "Use another name"
         assert response.status_code == 200
 
     def test_show_users(self, client, api_prefix):
@@ -70,14 +70,14 @@ class TestRegister():
         test_data = {'username': 'd', 'password': 'b'}
         url = api_prefix+'login'
         response = post_json(client, url, test_data)
-        assert json_of_response(response)['messages'] == "user not found"
+        assert json_of_response(response)['messages'] == "User not found"
         assert response.status_code == 200
 
     def test_login_with_wrong_pwd(self, client, api_prefix):
         test_data = {'username': 'c', 'password': 'c'}
         url = api_prefix+'login'
         response = post_json(client, url, test_data)
-        assert json_of_response(response)['messages'] == "wrong passwd"
+        assert json_of_response(response)['messages'] == "Wrong passwd"
         assert response.status_code == 200
 
     def test_login(self, client, api_prefix):
@@ -98,7 +98,7 @@ class TestRegister():
     def test_hi_c(self, client, login_as_c, api_prefix):
         url = api_prefix+'hi'
         response = client.get(url)
-        assert json_of_response(response)['messages'] == "hi, c!"
+        assert json_of_response(response)['messages'] == "Hi, c!"
         assert response.status_code == 200
 
     def test_logout_without_login(self, client, api_prefix):
@@ -111,9 +111,9 @@ class TestRegister():
     def test_logout(self, client, login_as_c, api_prefix):
         url = api_prefix+'logout'
         response = client.get(url)
-        assert json_of_response(response)['messages'] == "user logged out"
+        assert json_of_response(response)['messages'] == "User logged out"
         assert response.status_code == 200
-        response = client.get('/api/logout')  # check for actually log out.
+        response = client.get(api_prefix+'logout')  # check for log out.
         assert json_of_response(response)['messages'] == \
             "You did not logged in"
         assert response.status_code == 200
@@ -122,7 +122,7 @@ class TestRegister():
         test_data = {'username': 'd'}
         url = api_prefix+'delete_user'
         response = post_json(client, url, test_data)
-        assert json_of_response(response)['messages'] == "user not found"
+        assert json_of_response(response)['messages'] == "User not found"
         assert response.status_code == 200
 
     def test_delete_user_not_login(self, client, api_prefix):
@@ -136,5 +136,5 @@ class TestRegister():
         test_data = {'username': 'c'}
         url = api_prefix+'delete_user'
         response = post_json(client, url, test_data)
-        assert json_of_response(response)['messages'] == "user c deleted"
+        assert json_of_response(response)['messages'] == "User c deleted"
         assert response.status_code == 200

@@ -38,14 +38,16 @@ class Survey(Base):
     id = Column(Integer, primary_key=True)
     surveyname = Column(String(128))
     question_num = Column(Integer)
+    answerlist_num = Column(Integer)
     # TODO: add author
     # TODO: add bidirectional relastionship with question
     questions = relationship("Question")
-    # TODO: add answer list
+    answerlists = relationship("AnswerList")
 
     def __init__(self, name):
         self.surveyname = name
         self.question_num = 0
+        self.answerlist_num = 0
 
 
 class Question(Base):
@@ -56,9 +58,44 @@ class Question(Base):
     content = Column(String(1024))
     survey_id = Column(Integer, ForeignKey('survey.id'))
     idx = Column(Integer)  # NO. in that survey
+    answers = relationship("Answer")
+    # TODO: add answer type
 
     def __init__(self, title, content, survey):
         self.title = title
         self.content = content
         self.survey_id = survey.id
         self.idx = survey.question_num
+
+
+class AnswerList(Base):
+    """
+    AnswerList is a table connecting Survey and Answer,
+    where an Answer is an answer to only a question.
+    """
+    __tablename__ = 'answerlist'
+    id = Column(Integer, primary_key=True)
+    survey_id = Column(Integer, ForeignKey('survey.id'))
+    idx = Column(Integer)  # No. in list of answerlist to that survey
+    answers = relationship("Answer")
+    # TODO: add author
+
+    def __init__(self, survey):
+        self.survey_id = survey.id
+        self.idx = survey.answerlist_num
+
+
+class Answer(Base):
+    __tablename__ = 'answer'
+    id = Column(Integer, primary_key=True)
+    answerlist_id = Column(Integer, ForeignKey('answerlist.id'))
+    question_id = Column(Integer, ForeignKey('question.id'))
+    idx = Column(Integer)  # NO. in that answerlist
+    # TODO: add multiple answer type
+    content = Column(String(1024))
+
+    def __init__(self, answerlist, question, content):
+        self.answerlist_id = answerlist.id
+        self.idx = question.idx
+        self.question_id = question.id
+        self.content = content

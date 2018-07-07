@@ -35,5 +35,7 @@ def client(app):
 
 @pytest.fixture
 def api_prefix():
-    prefix = '/api/'
+    from src.surfing_penguin import __version__
+    ver = __version__[0:3]
+    prefix = '/api/'+ver+'/'
     return prefix

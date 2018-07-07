@@ -4,6 +4,9 @@ from flask import Flask
 from src.config import ProductionConfig, DevelopmentConfig, StagingConfig
 
 
+__version__ = '0.1.0'
+
+
 def get_config():
     ENV = os.environ.get('ENV')
 
