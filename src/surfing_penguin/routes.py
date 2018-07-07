@@ -12,4 +12,4 @@ api = Api(blueprint,
           title="Surfing Penguin API",
           doc="/doc")
 
-from src.surfing_penguin.API import User, Survey
+from src.surfing_penguin.API import User, Survey  # noqa
