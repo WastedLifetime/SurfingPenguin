@@ -71,8 +71,6 @@ api_return_answerlists = api.model("return_ansewrlists_model", {
 
 
 """ survey associated APIs """
-# TODO: add error handling for functions that change the database
-# (e.g., creating a survey with existing name)
 
 
 @api.route('/create_survey')
@@ -81,8 +79,11 @@ class create_survey(Resource):
     @api.expect(api_get_survey)
     def post(self):
         try:
-            if (api.payload['surveyname'] is None):
-                return {'messages': "Invalid input"}
+            if api.payload['surveyname'] is None:
+                return {'messages': "Invalid input: No survey name"}, 400
+            if SurveyFunctions.name_get_survey(
+                    api.payload['surveyname']) is not None:
+                return {'messages': "The name of the survey had been used"}
             SurveyFunctions.new_survey(
                     api.payload['surveyname'], api.payload['questions'])
             return {'messages': "Survey created"}
