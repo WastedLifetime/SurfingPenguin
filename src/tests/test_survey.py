@@ -180,6 +180,9 @@ class TestAnswer():
         assert lists[0].answers[0].idx == 1
         assert lists[0].answers[0].content == "Ans1content"
 
+    # NOTE: Function new_answer() is not tested,
+    # because it's called in new_answerlist() in db_operation.
+
     """ Testing api """
     def test_answer_a_survey(
             self, client, api_prefix, answerlist_data):
