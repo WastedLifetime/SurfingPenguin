@@ -56,11 +56,14 @@ class register(Resource):
     @api.marshal_with(api_return_user)
     @api.expect(api_get_user)
     def post(self):
-        name = api.payload['username']
-        password = api.payload['password']
-        if UserFunctions.get_user(name) is not None:
-            return {'messages': "Use another name"}
-        return UserFunctions.register(name, password)
+        try:
+            name = api.payload['username']
+            password = api.payload['password']
+            if UserFunctions.get_user(name) is not None:
+                return {'messages': "Use another name"}
+            return UserFunctions.register(name, password)
+        except KeyError:
+            return {'messages': "Invalid input format"}, 400
 
 
 @api.route('/login')
@@ -70,15 +73,18 @@ class login(Resource):
     def post(self):
         if current_user.is_authenticated:
             return {'messages': "You had logged in before."}
-        name = api.payload['username']
-        password = api.payload['password']
-        if UserFunctions.get_user(name) is None:
-            return {'messages': "User not found"}
-        if UserFunctions.check_password(name, password) is False:
-            return {'messages': "Wrong passwd"}
-        user = UserFunctions.get_user(name)
-        login_user(user)
-        return {'messages': "Login: {}".format(name)}
+        try:
+            name = api.payload['username']
+            password = api.payload['password']
+            if UserFunctions.get_user(name) is None:
+                return {'messages': "User not found"}
+            if UserFunctions.check_password(name, password) is False:
+                return {'messages': "Wrong passwd"}
+            user = UserFunctions.get_user(name)
+            login_user(user)
+            return {'messages': "Login: {}".format(name)}
+        except KeyError:
+            return {'messages': "Invalid input format"}, 400
 
 
 @api.route('/logout')
@@ -105,11 +111,14 @@ class delete_user(Resource):
     @api.expect(api_get_user)
     @login_required
     def post(self):
-        name = api.payload['username']
-        if UserFunctions.search_user(name) is False:
-            return {'messages': "User not found"}
-        UserFunctions.delete_user(name)
-        return {'messages': "User {} deleted".format(name)}
+        try:
+            name = api.payload['username']
+            if UserFunctions.search_user(name) is False:
+                return {'messages': "User not found"}
+            UserFunctions.delete_user(name)
+            return {'messages': "User {} deleted".format(name)}
+        except KeyError:
+            return {'messages': "Invalid input format"}, 400
 
 
 @api.route('/search_user')
@@ -117,10 +126,13 @@ class search_user(Resource):
     @api.marshal_with(api_show_user_and_time)
     @api.expect(api_show_user)
     def post(self):
-        search_name = api.payload['username']
-        if UserFunctions.get_user(search_name) is None:
-            return {'messages': "user does not exist"}
-        return UserFunctions.get_user(search_name)
+        try:
+            search_name = api.payload['username']
+            if UserFunctions.get_user(search_name) is None:
+                return {'messages': "User does not exist"}
+            return UserFunctions.get_user(search_name)
+        except KeyError:
+            return {'messages': "Invalid input format"}, 400
 
 
 @login_manager.unauthorized_handler

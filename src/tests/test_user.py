@@ -63,7 +63,7 @@ class TestRegister():
         test_data = {'username': 'd'}
         url = api_prefix+'search_user'
         response = post_json(client, url, test_data)
-        assert json_of_response(response)['messages'] == "user does not exist"
+        assert json_of_response(response)['messages'] == "User does not exist"
         assert response.status_code == 200
 
     def test_login_with_wrong_name(self, client, api_prefix):
