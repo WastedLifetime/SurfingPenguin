@@ -7,55 +7,68 @@ from src.surfing_penguin.db_interface import SurveyFunctions
 # TODO: separate expected and returned api models
 # TODO: add help and others (like default) for each field
 api_return_message = api.model("return_message_model", {
-        'messages': fields.String
+        'messages': fields.String(description="Messages returned")
     })
 
 api_get_survey_name = api.model("survey_name", {
-        'name': fields.String,
+        'name': fields.String(description="Survey name"),
     })
 
 api_get_survey_id = api.model("survey_id", {
-        'id': fields.Integer
+        'id': fields.Integer(description="Survey ID")
     })
 
 api_question = api.model("question_model", {
-        'idx': fields.Integer,
-        'title': fields.String,
-        'content': fields.String
+        'idx': fields.Integer(description="Index in that survey"),
+        'title': fields.String(description="Question"),
+        'content': fields.String(description="Description of the question")
     })
 
 api_get_survey = api.model("get_survey_model", {
-        'surveyname': fields.String,
-        'questions': fields.List(fields.Nested(api_question))
+        'surveyname': fields.String(description="Survey name"),
+        'questions': fields.List(
+            fields.Nested(api_question),
+            description="All questions in the survey"
+            )
     })
 
 # TODO: add question_num and category (for meta class) in api_survey
 api_return_survey = api.model("return_survey_model", {
-        'id': fields.Integer,
-        'question_num': fields.Integer,
-        'surveyname': fields.String,
-        'questions': fields.List(fields.Nested(api_question))
+        'id': fields.Integer(description="Survey ID"),
+        'question_num': fields.Integer(
+            description="Number of questions in the survey"),
+        'surveyname': fields.String(description="Survey name"),
+        'questions': fields.List(
+            fields.Nested(api_question),
+            description="All questions in the survey"
+            )
     })
 
 api_answer = api.model("answer_model", {
-        'idx': fields.Integer,
-        'content': fields.String
+        'idx': fields.Integer(description="Question index in that survey"),
+        'content': fields.String(description="Answer content")
     })
 
 api_answerlist = api.model("answerlist_model", {
-        'answers': fields.List(fields.Nested(api_answer)),
-        'messages': fields.String
+        'answers': fields.List(
+            fields.Nested(api_answer),
+            description="All answers of the survey"),
+        'messages': fields.String(description="Messages returned")
     })
 
 api_get_answerlist = api.model("get_answerlist_model", {
-        'survey_id': fields.Integer,
-        'answers': fields.List(fields.Nested(api_answer))
+        'survey_id': fields.Integer(description="Survey ID"),
+        'answers': fields.List(
+            fields.Nested(api_answer),
+            description="All answers of the survey"),
     })
 
 api_return_answerlists = api.model("return_ansewrlists_model", {
-        'survey_id': fields.Integer,
-        'answerlist_num': fields.Integer,
-        'answerlists': fields.List(fields.Nested(api_answerlist))
+        'survey_id': fields.Integer(description="Survey ID"),
+        'answerlist_num': fields.Integer(description="Number of answerlists"),
+        'answerlists': fields.List(
+            fields.Nested(api_answerlist),
+            description="All answerlists of the survey")
     })
 
 
