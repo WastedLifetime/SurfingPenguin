@@ -10,27 +10,28 @@ from flask_login import login_user, logout_user, current_user, login_required
 # TODO: separate expected and returned api models
 # TODO: add help and others (like default) for each field
 api_return_message = api.model("return_message_model", {
-        'messages': fields.String
+        'messages': fields.String(description="Messages returned")
     })
 
 api_get_user = api.model("get_user_model", {
-        'username': fields.String,
-        'password': fields.String,
+        'username': fields.String(description="Username"),
+        'password': fields.String(description="Password(not encrypted)"),
     })
 
 api_return_user = api.model("return_user_model", {
-        'username': fields.String,
-        'messages': fields.String,
+        'username': fields.String(description="Username"),
+        'messages': fields.String(description="Messages returned"),
     })
 
 api_show_user = api.model("show_user_model", {
-        'username': fields.String,
+        'username': fields.String(description="Username"),
     })
 
 api_show_user_and_time = api.model("show_user_and_time_model", {
-        'messages': fields.String,
-        'username': fields.String,
-        'last_seen': fields.DateTime
+        'messages': fields.String(description="Messages returned"),
+        'username': fields.String(description="Username"),
+        'last_seen': fields.DateTime(
+            description="Last time the user made a request")
     })
 
 
