@@ -82,9 +82,14 @@ class create_survey(Resource):
     @api.marshal_with(api_return_message)
     @api.expect(api_get_survey)
     def post(self):
-        SurveyFunctions.new_survey(
-                api.payload['surveyname'], api.payload['questions'])
-        return {'messages': "Survey created"}
+        try:
+            if (api.payload['surveyname'] is None):
+                return {'messages': "Invalid input"}
+            SurveyFunctions.new_survey(
+                    api.payload['surveyname'], api.payload['questions'])
+            return {'messages': "Survey created"}
+        except KeyError:
+            return {'messages': "Invalid input format"}, 400
 
 
 @api.route('/show_all_surveys')
@@ -121,10 +126,13 @@ class answer_survey(Resource):
     @api.marshal_with(api_return_message)
     @api.expect(api_get_answerlist)
     def post(self):
-        if SurveyFunctions.id_get_survey(api.payload['survey_id']):
-            SurveyFunctions.new_answerlist(api.payload)
-            return {'messages': "Answer completed"}
-        return {'messages': "Survey not found"}
+        try:
+            if SurveyFunctions.id_get_survey(api.payload['survey_id']):
+                SurveyFunctions.new_answerlist(api.payload)
+                return {'messages': "Answer completed"}
+            return {'messages': "Survey not found"}, 400
+        except KeyError:
+            return {'messages': "Invalid input format"}, 400
 
 
 @api.route('/show_answers')
@@ -132,12 +140,16 @@ class show_answerlists(Resource):
     @api.marshal_with(api_return_answerlists)
     @api.expect(api_get_survey_id)
     def post(self):
-        if SurveyFunctions.id_get_survey(api.payload['id']):
-            return {
-                "survey_id": api.payload['id'],
-                "answerlist_num":
-                    SurveyFunctions.id_get_answerlist_num(api.payload['id']),
-                "answerlists":
-                    SurveyFunctions.id_get_answerlists(api.payload['id'])
-            }
-        return {'messages': "Survey not found"}
+        try:
+            if SurveyFunctions.id_get_survey(api.payload['id']):
+                return {
+                    "survey_id": api.payload['id'],
+                    "answerlist_num":
+                        SurveyFunctions.id_get_answerlist_num(
+                            api.payload['id']),
+                    "answerlists":
+                        SurveyFunctions.id_get_answerlists(api.payload['id'])
+                }
+            return {'messages': "Survey not found"}, 400
+        except KeyError:
+            return {'messages': "Invalid input format"}, 400
