@@ -1,4 +1,4 @@
-"""routes.py: Each function in this file indicates a web page (HTML page)."""
+"""User.py: All user-related APIs"""
 from src.surfing_penguin import surfing_penguin
 from src.surfing_penguin.extensions import login_manager
 from src.surfing_penguin.routes import api
@@ -7,8 +7,6 @@ from src.surfing_penguin.db_interface import UserFunctions
 from flask_login import login_user, logout_user, current_user, login_required
 
 
-# TODO: separate expected and returned api models
-# TODO: add help and others (like default) for each field
 api_return_message = api.model("return_message_model", {
         'messages': fields.String(description="Messages returned")
     })
@@ -37,13 +35,14 @@ api_show_user_and_time = api.model("show_user_and_time_model", {
 
 @surfing_penguin.before_request
 def before_request():
-    # before each operation of a user, update his/her last_seen
+    ''' Before each operation of a user, update his/her last_seen '''
     if current_user.is_authenticated:
         UserFunctions.update_last_seen(current_user.username)
 
 
 @api.route('/hi')
 class hi(Resource):
+    ''' Check who is the current user'''
     @api.marshal_with(api_return_message)
     def get(self):
         if current_user.is_authenticated:
@@ -99,6 +98,7 @@ class logout(Resource):
 
 @api.route('/show_users')
 class show_users(Resource):
+    ''' Show the list of all user'''
     @api.marshal_list_with(api_show_user)
     def get(self):
         users = UserFunctions.get_all_users()
@@ -138,5 +138,4 @@ class search_user(Resource):
 @login_manager.unauthorized_handler
 @api.marshal_with(api_return_message)
 def unauthorized():
-    # TODO: Flash this message somewhere.
     return {'messages': "Please Login First"}

@@ -1,11 +1,9 @@
-"""routes.py: Each function in this file indicates a web page (HTML page)."""
+"""Survey.py: All survey-related APIs"""
 from src.surfing_penguin.routes import api
 from flask_restplus import Resource, fields
 from src.surfing_penguin.db_interface import SurveyFunctions
 
 
-# TODO: separate expected and returned api models
-# TODO: add help and others (like default) for each field
 api_return_message = api.model("return_message_model", {
         'messages': fields.String(description="Messages returned")
     })
@@ -137,6 +135,7 @@ class answer_survey(Resource):
 
 @api.route('/show_answers')
 class show_answerlists(Resource):
+    ''' Show all answerlists of a survey '''
     @api.marshal_with(api_return_answerlists)
     @api.expect(api_get_survey_id)
     def post(self):
