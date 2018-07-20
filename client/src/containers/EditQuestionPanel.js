@@ -1,11 +1,11 @@
 import EditQuestionPanelView from '../components/EditPanel/EditQuestionPanel'
 import { connect } from 'react-redux'
-import { updateQuestion } from '../actions/edit_survey'
-import { getActiveQuestion } from '../reducers/edit_survey'
+import { updateQuestion } from '../actions/editSurvey'
+import { getActiveQuestion } from '../reducers/editSurvey'
 
 const mapStateToProps = (state) => {
   return {
-    question: getActiveQuestion(state.edit_survey)
+    question: getActiveQuestion(state.editSurvey)
   }
 }
 

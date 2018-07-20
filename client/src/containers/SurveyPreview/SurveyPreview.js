@@ -3,8 +3,8 @@ import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import SurveyPreviewView from '../../components/SurveyPreview/SurveyPreview'
 import QuestionList from '../../components/SurveyPreview/QuestionList'
-import { getSurvey, getFetchStatus, getFetchError, isHeaderActive } from '../../reducers/edit_survey'
-import { activeQuestion, cloneQuestion } from '../../actions/edit_survey'
+import { getSurvey, getFetchStatus, getFetchError, isHeaderActive } from '../../reducers/editSurvey'
+import { activeQuestion, cloneQuestion } from '../../actions/editSurvey'
 
 class SurveyPreview extends Component {
   render () {
@@ -19,10 +19,10 @@ class SurveyPreview extends Component {
 
 const mapStateToProps = (state) => {
   return {
-    survey: getSurvey(state.edit_survey),
-    isLoading: getFetchStatus(state.edit_survey),
-    error: getFetchError(state.edit_survey),
-    isHeaderActive: isHeaderActive(state.edit_survey)
+    survey: getSurvey(state.editSurvey),
+    isLoading: getFetchStatus(state.editSurvey),
+    error: getFetchError(state.editSurvey),
+    isHeaderActive: isHeaderActive(state.editSurvey)
   }
 }
 

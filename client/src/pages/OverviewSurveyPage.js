@@ -5,8 +5,8 @@ import React from 'react'
 import Toggle from 'react-toggle'
 import { Button } from 'react-bootstrap'
 import { fetchData } from '../actions/data'
-import { fetchSurvey, updateSurvey, deleteSurvey, resetDeleteState } from '../actions/edit_survey'
-import { getSurvey, assembleSurvey } from '../reducers/edit_survey'
+import { fetchSurvey, updateSurvey, deleteSurvey, resetDeleteState } from '../actions/editSurvey'
+import { getSurvey, assembleSurvey } from '../reducers/editSurvey'
 import { Path } from '../routes'
 import { connect } from 'react-redux'
 import './OverviewPage.css'
@@ -141,9 +141,9 @@ class OverviewSurveyPage extends React.Component {
 const mapStateToProps = (state, { params, router }) => {
   return {
     surveyId: params.surveyId,
-    survey: assembleSurvey(getSurvey(state.edit_survey)),
+    survey: assembleSurvey(getSurvey(state.editSurvey)),
     results: state.data.results,
-    isDeleteSuccess: state.edit_survey.deleteSurvey.isSuccess,
+    isDeleteSuccess: state.editSurvey.deleteSurvey.isSuccess,
     push: router.push
   }
 }

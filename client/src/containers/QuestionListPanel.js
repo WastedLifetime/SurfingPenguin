@@ -1,6 +1,6 @@
 import { connect } from 'react-redux'
 import QuestionListPanelView from '../components/EditPanel/QuestionListPanel'
-import { addQuestion } from '../actions/edit_survey'
+import { addQuestion } from '../actions/editSurvey'
 import { QuestionDescriptions } from '../constants/Questions'
 
 export default connect(() => {

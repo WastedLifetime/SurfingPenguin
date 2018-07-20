@@ -26,10 +26,10 @@ class NewSurvey extends React.Component {
 
 const mapStateToProps = (state) => ({
   currentUser: state.session.user,
-  newSurvey: state.create_survey.survey,
-  isLoading: state.create_survey.isLoading,
-  isSuccess: !!state.create_survey.survey,
-  error: state.create_survey.error
+  newSurvey: state.createSurvey.survey,
+  isLoading: state.createSurvey.isLoading,
+  isSuccess: !!state.createSurvey.survey,
+  error: state.createSurvey.error
 })
 
 const mapDispatchToProps = (dispatch) => {

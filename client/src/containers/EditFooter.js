@@ -3,8 +3,8 @@ import { withRouter } from 'react-router'
 import { connect } from 'react-redux'
 import EditFooterView from '../components/EditPanel/EditFooter'
 import { bindActionCreators } from 'redux'
-import {deleteSurvey, updateSurvey} from '../actions/edit_survey'
-import { assembleSurvey, getSurvey } from '../reducers/edit_survey'
+import {deleteSurvey, updateSurvey} from '../actions/editSurvey'
+import { assembleSurvey, getSurvey } from '../reducers/editSurvey'
 import { Path } from '../routes'
 /* resetDeleteState */
 class EditFooter extends React.Component {
@@ -25,9 +25,9 @@ class EditFooter extends React.Component {
 
 const mapStateToProps = (state, { router }) => {
   return {
-    survey: assembleSurvey(getSurvey(state.edit_survey)),
-    isDeleteSuccess: state.edit_survey.deleteSurvey.isSuccess,
-    isUpdateSuccess: state.edit_survey.updateSurvey.isSuccess,
+    survey: assembleSurvey(getSurvey(state.editSurvey)),
+    isDeleteSuccess: state.editSurvey.deleteSurvey.isSuccess,
+    isUpdateSuccess: state.editSurvey.updateSurvey.isSuccess,
     push: router.push
   }
 }

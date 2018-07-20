@@ -2,7 +2,7 @@ import React from 'react'
 import { connect } from 'react-redux'
 import EditTabView from '../components/EditPanel/EditTab'
 
-import { switchTab } from '../actions/edit_survey'
+import { switchTab } from '../actions/editSurvey'
 import tabTypes from '../constants/TabTypes'
 import QuestionListPanel from './QuestionListPanel'
 import EditQuestionPanel from './EditQuestionPanel'
@@ -10,7 +10,7 @@ import EditSurveyPanel from './EditSurveyPanel'
 
 export default connect((state) => {
   return {
-    activeTab: state.edit_survey.tab,
+    activeTab: state.editSurvey.tab,
     tabs: [
       {
         type: tabTypes.QUESTIONS_TAB,
