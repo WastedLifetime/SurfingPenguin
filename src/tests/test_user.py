@@ -53,6 +53,12 @@ class TestRegister():
         assert json_of_response(response)['messages'] == "Use another name"
         assert response.status_code == 200
 
+    def test_register_bad_request(self, client, api_prefix):
+        url = api_prefix+'register'
+        response = post_json(client, url, {})
+        assert response.status_code == 400
+        assert json_of_response(response)['messages'] == "Invalid input format"
+
     def test_show_users(self, client, api_prefix):
         url = api_prefix+'show_users'
         response = client.get(url)
@@ -73,6 +79,12 @@ class TestRegister():
         response = post_json(client, url, test_data)
         assert json_of_response(response)['messages'] == "User not found"
         assert response.status_code == 200
+
+    def test_search_user_bad_request(self, client, api_prefix):
+        url = api_prefix+'search_user'
+        response = post_json(client, url, {})
+        assert response.status_code == 400
+        assert json_of_response(response)['messages'] == "Invalid input format"
 
     def test_login_with_wrong_name(self, client, api_prefix):
         test_data = {'username': 'd', 'password': 'b'}
@@ -102,6 +114,12 @@ class TestRegister():
         assert json_of_response(response)['messages'] == \
             "You had logged in before."
         assert response.status_code == 200
+
+    def test_login_bad_request(self, client, api_prefix):
+        url = api_prefix+'login'
+        response = post_json(client, url, {})
+        assert json_of_response(response)['messages'] == "Invalid input format"
+        assert response.status_code == 400
 
     def test_hi_c(self, client, login_as_c, api_prefix):
         url = api_prefix+'hi'
@@ -147,6 +165,12 @@ class TestRegister():
         response = post_json(client, url, test_data)
         assert json_of_response(response)['messages'] == "Please Login First"
         assert response.status_code == 200
+
+    def test_delete_user_bad_request(self, client, login_as_c, api_prefix):
+        url = api_prefix+'delete_user'
+        response = post_json(client, url, {})
+        assert json_of_response(response)['messages'] == "Invalid input format"
+        assert response.status_code == 400
 
     def test_delete_user(self, client, login_as_c, api_prefix):
         test_data = {'username': 'c'}
