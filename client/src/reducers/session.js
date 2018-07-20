@@ -1,6 +1,6 @@
-import { Path } from '../routes';
+import { Path } from '../routes'
 
-var initialState = {isSuccess: false, isLoading: false, user: null, prevPath: null};
+var initialState = {isSuccess: false, isLoading: false, user: null, prevPath: null}
 
 export default function (state = initialState, action) {
   switch (action.type) {
@@ -8,7 +8,19 @@ export default function (state = initialState, action) {
       return {
         ...state,
         isLoading: true
-      };
+      }
+    case 'LOGIN_REQUEST_FAIL_USER_NOT_FOUND':
+      return {
+        ...state,
+        isLoading: false,
+        isSuccess: false
+      }
+    case 'LOGIN_REQUEST_FAIL_WRONG_PASSWD':
+      return {
+        ...state,
+        isLoading: false,
+        isSuccess: false
+      }
     case 'LOGIN_REQUEST_SUCCESS':
     case 'CURRENT_USER_REQUEST_SUCCESS':
       return {
@@ -16,20 +28,20 @@ export default function (state = initialState, action) {
         isLoading: false,
         isSuccess: true,
         user: action.payload
-      };
+      }
     case 'LOGIN_REQUEST_FAIL':
       return {
         ...state,
         isLoading: false,
         isSuccess: false
-      };
+      }
     case 'LOGOUT_REQUEST':
-      return initialState;
+      return initialState
     default:
-      return state;
+      return state
   }
 };
 
 export const home = (user) => {
-  return Path.surveyList();
-};
+  return Path.surveyList()
+}

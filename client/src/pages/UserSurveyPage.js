@@ -1,34 +1,33 @@
-import React from 'react';
-import { connect } from 'react-redux';
-import SurveyNavBar from './../containers/SurveyNavBar';
-import { fetchSurvey } from '../actions/edit_survey'
-import './EditSurveyPage.css';
+import React from 'react'
+import { connect } from 'react-redux'
+import SurveyNavBar from './../containers/SurveyNavBar'
+import { fetchSurvey } from '../actions/editSurvey'
+import './EditSurveyPage.css'
 
 class EditSurveyPage extends React.Component {
-  loadData() {
-    this.props.fetchSurvey(this.props.surveyId);
+  loadData () {
+    this.props.fetchSurvey(this.props.surveyId)
   }
 
-  componentDidMount() {
-    this.loadData();
+  componentDidMount () {
+    this.loadData()
   }
 
-  componentDidUpdate(prevProps) {
+  componentDidUpdate (prevProps) {
     if (this.props.surveyId !== prevProps.surveyId) {
-      this.loadData();
+      this.loadData()
     }
   }
 
-
-  render() {
+  render () {
     return (
+      <div>
         <div>
-          <div>
-            <SurveyNavBar/>
-          </div>
-          {this.props.children}
+          <SurveyNavBar />
         </div>
-    );
+        {this.props.children}
+      </div>
+    )
   }
 }
 
@@ -36,4 +35,4 @@ export default connect((state, { params }) => ({
   surveyId: params.surveyId
 }), {
   fetchSurvey
-})(EditSurveyPage);
+})(EditSurveyPage)

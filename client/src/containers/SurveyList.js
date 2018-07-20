@@ -1,40 +1,40 @@
-import React from 'react';
-import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
-import SurveyListView from '../components/SurveyList/SurveyList';
-import { fetchSurveysRequest } from '../actions/surveys';
+import React from 'react'
+import { connect } from 'react-redux'
+import { bindActionCreators } from 'redux'
+import SurveyListView from '../components/SurveyList/SurveyList'
+import { fetchSurveysRequest } from '../actions/surveys'
 
 class SurveyList extends React.Component {
-  loadData() {
-    this.props.fetchSurveys(this.props.currentUser);
+  loadData () {
+    this.props.fetchSurveys(this.props.currentUser)
   }
 
-  componentWillMount() {
-    this.loadData();
+  componentWillMount () {
+    this.loadData()
   }
 
-  renderLoading() {
+  renderLoading () {
     return <div>Loading...</div>
   }
 
-  renderError() {
+  renderError () {
     return <div>Load Error</div>
   }
 
-  render() {
-    const { surveys, isLoading, loadError } = this.props;
+  render () {
+    const { surveys, isLoading, loadError } = this.props
 
     if (isLoading) {
-      return this.renderLoading();
+      return this.renderLoading()
     }
 
     if (loadError) {
-      return this.renderError();
+      return this.renderError()
     }
 
     return (
-        <SurveyListView surveys={surveys}/>
-    );
+      <SurveyListView surveys={surveys} />
+    )
   }
 }
 
@@ -43,12 +43,12 @@ const mapStateToProps = (state) => ({
   isLoading: state.surveys.isLoading,
   loadError: state.surveys.error,
   currentUser: state.session.user
-});
+})
 
 const mapDispatchToProps = (dispatch) => {
   return {
     fetchSurveys: bindActionCreators(fetchSurveysRequest, dispatch)
   }
-};
+}
 
-export default connect(mapStateToProps, mapDispatchToProps)(SurveyList);
+export default connect(mapStateToProps, mapDispatchToProps)(SurveyList)

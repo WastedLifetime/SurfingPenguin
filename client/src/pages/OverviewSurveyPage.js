@@ -1,152 +1,152 @@
 /* global location */
 /* eslint no-restricted-globals: ["off", "location"] */
 
-import React from 'react';
-import Toggle from 'react-toggle';
-import { Button } from 'react-bootstrap';
-import { fetchData } from '../actions/data';
-import { fetchSurvey, updateSurvey, deleteSurvey, resetDeleteState } from '../actions/edit_survey';
-import { getSurvey, assembleSurvey } from '../reducers/edit_survey';
-import { Path } from '../routes';
-import { connect } from 'react-redux';
-import './OverviewPage.css';
+import React from 'react'
+import Toggle from 'react-toggle'
+import { Button } from 'react-bootstrap'
+import { fetchData } from '../actions/data'
+import { fetchSurvey, updateSurvey, deleteSurvey, resetDeleteState } from '../actions/editSurvey'
+import { getSurvey, assembleSurvey } from '../reducers/editSurvey'
+import { Path } from '../routes'
+import { connect } from 'react-redux'
+import './OverviewPage.css'
 
 class OverviewSurveyPage extends React.Component {
-  loadData() {
-    this.props.fetchData(this.props.surveyId);
-    this.props.fetchSurvey(this.props.surveyId);
+  loadData () {
+    this.props.fetchData(this.props.surveyId)
+    this.props.fetchSurvey(this.props.surveyId)
   }
 
-  componentDidMount() {
-    this.loadData();
+  componentDidMount () {
+    this.loadData()
   }
 
-  componentDidUpdate(prevProps, prevState) {
+  componentDidUpdate (prevProps, prevState) {
     if (this.props.surveyId !== prevProps.surveyId) {
-      this.loadData();
+      this.loadData()
     }
   }
 
-  componentWillUnmount() {
-    this.props.resetDeleteState();
+  componentWillUnmount () {
+    this.props.resetDeleteState()
   }
 
-  componentWillReceiveProps(nextProps) {
+  componentWillReceiveProps (nextProps) {
     if (nextProps.isDeleteSuccess) {
-      this.props.push(Path.surveyList());
+      this.props.push(Path.surveyList())
     }
   }
 
-  surveyUrl(survey) {
-    return location.origin + location.pathname + '#' + Path.viewSurvey(survey);
+  surveyUrl (survey) {
+    return location.origin + location.pathname + '#' + Path.viewSurvey(survey)
   }
 
-  render() {
-    let { survey, updateSurvey, results, deleteSurvey } = this.props;
+  render () {
+    let { survey, updateSurvey, results, deleteSurvey } = this.props
     return (
-      <div className="container OverviewPage">
-        <div className="row">
-          <div className="col-md-6">
-            <ul className="list-unstyled card">
-              <li className="clearfix">
-                <div className="title">
+      <div className='container OverviewPage'>
+        <div className='row'>
+          <div className='col-md-6'>
+            <ul className='list-unstyled card'>
+              <li className='clearfix'>
+                <div className='title'>
                   Create At
                 </div>
-                <div className="content">
+                <div className='content'>
                   2016-09-08 22:22:22
                 </div>
               </li>
-              <li className="clearfix">
-                <div className="title">
+              <li className='clearfix'>
+                <div className='title'>
                   Is Or Not Collecting Survey
                 </div>
-                <div className="content">
+                <div className='content'>
                   <Toggle
-                      checked={!!survey.receive_results}
-                      aria-labelledby="biscuit-label"
-                      onChange={() => {
-                        survey.receive_results = !survey.receive_results;
-                        updateSurvey(survey);
-                      }} />
+                    checked={!!survey.receive_results}
+                    aria-labelledby='biscuit-label'
+                    onChange={() => {
+                      survey.receive_results = !survey.receive_results
+                      updateSurvey(survey)
+                    }} />
                 </div>
               </li>
-              <li className="clearfix">
-                <div className="title">
+              <li className='clearfix'>
+                <div className='title'>
                   Share The Result
                 </div>
-                <div className="content">
+                <div className='content'>
                   <Toggle
-                      checked={!!survey.publish_results}
-                      aria-labelledby="biscuit-label"
-                      onChange={() => {
-                        survey.publish_results = !survey.publish_results;
-                        updateSurvey(survey);
-                      }} />
+                    checked={!!survey.publish_results}
+                    aria-labelledby='biscuit-label'
+                    onChange={() => {
+                      survey.publish_results = !survey.publish_results
+                      updateSurvey(survey)
+                    }} />
                 </div>
               </li>
-              <li className="clearfix">
-                <div className="title">
+              <li className='clearfix'>
+                <div className='title'>
                   Link of The Survey
                 </div>
-                <div className="content">
-                  <a href={this.surveyUrl(survey)} title={this.surveyUrl(survey)} target="_blank">{this.surveyUrl(survey)}</a>
+                <div className='content'>
+                  <a href={this.surveyUrl(survey)} title={this.surveyUrl(survey)} target='_blank'>{this.surveyUrl(survey)}</a>
                 </div>
               </li>
             </ul>
           </div>
 
-          <div className="col-md-6">
-            <ul className="list-unstyled card">
-              <li className="clearfix">
-                <div className="title">
+          <div className='col-md-6'>
+            <ul className='list-unstyled card'>
+              <li className='clearfix'>
+                <div className='title'>
                   Current Result Count
                 </div>
-                <div className="content">
+                <div className='content'>
                   {results.length}
                 </div>
               </li>
-              <li className="clearfix">
-                <div className="title">
+              <li className='clearfix'>
+                <div className='title'>
                   Result Submit Today
                 </div>
-                <div className="content">
+                <div className='content'>
                   0
                 </div>
               </li>
-              <li className="clearfix">
-                <div className="title">
+              <li className='clearfix'>
+                <div className='title'>
                   Last Result Submit At
                 </div>
-                <div className="content">
+                <div className='content'>
                   2016-09-08 22:22:22
                 </div>
               </li>
             </ul>
           </div>
         </div>
-        <div className="row">
-          <footer className="col-md-12">
+        <div className='row'>
+          <footer className='col-md-12'>
             <Button
-                className="btn btn-sm btn-danger"
-                onClick={() => {
-                deleteSurvey(survey);
+              className='btn btn-sm btn-danger'
+              onClick={() => {
+                deleteSurvey(survey)
               }}>Delete Survey</Button>
           </footer>
         </div>
       </div>
-    );
+    )
   }
 }
 
 const mapStateToProps = (state, { params, router }) => {
   return {
     surveyId: params.surveyId,
-    survey: assembleSurvey(getSurvey(state.edit_survey)),
+    survey: assembleSurvey(getSurvey(state.editSurvey)),
     results: state.data.results,
-    isDeleteSuccess: state.edit_survey.deleteSurvey.isSuccess,
+    isDeleteSuccess: state.editSurvey.deleteSurvey.isSuccess,
     push: router.push
-  };
-};
+  }
+}
 
 const mapDispatchToProps = {
   fetchData,
@@ -154,6 +154,6 @@ const mapDispatchToProps = {
   updateSurvey,
   deleteSurvey,
   resetDeleteState
-};
+}
 
-export default connect(mapStateToProps, mapDispatchToProps)(OverviewSurveyPage);
+export default connect(mapStateToProps, mapDispatchToProps)(OverviewSurveyPage)

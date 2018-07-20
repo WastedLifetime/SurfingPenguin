@@ -1,44 +1,44 @@
-import React from 'react';
-import SurveyHeader from './SurveyHeader';
+import React from 'react'
+import SurveyHeader from './SurveyHeader'
 
-import './SurveyPreview.css';
+import './SurveyPreview.css'
 
 class SurveyPreview extends React.Component {
-  renderError() {
+  renderError () {
     return <div>Error!</div>
   }
 
-  renderLoading() {
+  renderLoading () {
     return <div>Loading...</div>
   }
 
-  render() {
-    let { survey, isLoading, error, isHeaderActive, onHeaderActive } = this.props;
+  render () {
+    let { survey, isLoading, error, isHeaderActive, onHeaderActive } = this.props
 
     if (isLoading) {
-      return this.renderLoading();
+      return this.renderLoading()
     }
 
     if (error) {
-      return this.renderError();
+      return this.renderError()
     }
 
     if (!survey) {
-      return <div/>;
+      return <div />
     }
 
     return (
-      <div className="SurveyPreview">
+      <div className='SurveyPreview'>
         <form>
           <SurveyHeader
-              title={survey.title}
-              subTitle={survey.subTitle}
-              isActive={isHeaderActive}
-              onActive={onHeaderActive}/>
+            title={survey.title}
+            subTitle={survey.subTitle}
+            isActive={isHeaderActive}
+            onActive={onHeaderActive} />
           {this.props.children}
         </form>
       </div>
-    );
+    )
   }
 }
 
@@ -48,6 +48,6 @@ SurveyPreview.propTypes = {
   error: React.PropTypes.object,
   isHeaderActive: React.PropTypes.bool,
   onHeaderActive: React.PropTypes.func
-};
+}
 
-export default SurveyPreview;
+export default SurveyPreview

@@ -1,4 +1,4 @@
-const initState = {survey: null, isLoading: false, error: null};
+const initState = {survey: null, isLoading: false, error: null}
 
 export default function (state = initState, action) {
   switch (action.type) {
@@ -7,26 +7,26 @@ export default function (state = initState, action) {
         survey: null,
         isLoading: true,
         error: null
-      };
+      }
     case 'CREATE_SURVEY_REQUEST_SUCCESS':
       return {
         isLoading: false,
         error: null,
         survey: action.payload
-      };
+      }
     case 'CREATE_SURVEY_REQUEST_FAIL':
       return {
         survey: null,
         isLoading: false,
         error: action.payload
-      };
+      }
     case 'RESET_CREATE_SURVEY':
-      return {...initState};
+      return {...initState}
     default:
-      return state;
+      return state
   }
 }
 
 export const newSurveyRedirectPath = (survey) => {
-  return `/surveys/${survey.id}/edit`;
-};
+  return `/surveys/${survey.id}/edit`
+}

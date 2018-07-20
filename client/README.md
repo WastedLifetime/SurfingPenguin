@@ -30,7 +30,7 @@ This is just a front end part of the whole application. To make the application 
 
 ```sh
 npm install
-export REACT_APP_ENDPOINT=http://localhost:3000
+export REACT_APP_ENDPOINT=http://localhost:5000/api/<version>
 npm start
 ```
 Or you can deploy it on Netlify.
@@ -41,6 +41,12 @@ NPM_CONFIG_PRODUCTION:false
 REACT_APP_ENDPOINT: $YOUR_BACKEND_URL
 ```
 3. And deploy the branch.
+
+### Cross-Origin Resource Sharing
+
+CORS is needed to connect localhost frontend and backend.
+You can use Allow-Control-Allow-Origin as a chrome plugin.
+
 ### For Backend
 
 Get the backend part from [here](https://github.com/aisensiy/rails-survey-backend). This is a rails5 application. You need install ruby on your machine. 

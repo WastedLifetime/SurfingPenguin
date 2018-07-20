@@ -1,10 +1,10 @@
-export const SET_FILTER = 'REPORT_SET_FILTER';
+export const SET_FILTER = 'REPORT_SET_FILTER'
 
-export default function reducer(state={}, action) {
+export default function reducer (state = {}, action) {
   switch (action.type) {
     case SET_FILTER:
-      return action.payload;
+      return action.payload
     default:
-      return state;
+      return state
   }
 }
