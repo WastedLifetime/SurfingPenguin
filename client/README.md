@@ -30,7 +30,7 @@ This is just a front end part of the whole application. To make the application 
 
 ```sh
 npm install
-export REACT_APP_ENDPOINT=http://localhost:5000/api
+export REACT_APP_ENDPOINT=http://localhost:5000/api/<version>
 npm start
 ```
 Or you can deploy it on Netlify.
