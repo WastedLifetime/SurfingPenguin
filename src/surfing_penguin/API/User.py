@@ -1,4 +1,4 @@
-"""routes.py: Each function in this file indicates a web page (HTML page)."""
+"""User.py: All user-related APIs"""
 from src.surfing_penguin import surfing_penguin
 from src.surfing_penguin.extensions import login_manager
 from src.surfing_penguin.routes import api
@@ -7,42 +7,42 @@ from src.surfing_penguin.db_interface import UserFunctions
 from flask_login import login_user, logout_user, current_user, login_required
 
 
-# TODO: separate expected and returned api models
-# TODO: add help and others (like default) for each field
 api_return_message = api.model("return_message_model", {
-        'messages': fields.String
+        'messages': fields.String(description="Messages returned")
     })
 
 api_get_user = api.model("get_user_model", {
-        'username': fields.String,
-        'password': fields.String,
+        'username': fields.String(description="Username"),
+        'password': fields.String(description="Password(not encrypted)"),
     })
 
 api_return_user = api.model("return_user_model", {
-        'username': fields.String,
-        'messages': fields.String,
+        'username': fields.String(description="Username"),
+        'messages': fields.String(description="Messages returned"),
     })
 
 api_show_user = api.model("show_user_model", {
-        'username': fields.String,
+        'username': fields.String(description="Username"),
     })
 
 api_show_user_and_time = api.model("show_user_and_time_model", {
-        'messages': fields.String,
-        'username': fields.String,
-        'last_seen': fields.DateTime
+        'messages': fields.String(description="Messages returned"),
+        'username': fields.String(description="Username"),
+        'last_seen': fields.DateTime(
+            description="Last time the user made a request")
     })
 
 
 @surfing_penguin.before_request
 def before_request():
-    # before each operation of a user, update his/her last_seen
+    ''' Before each operation of a user, update his/her last_seen '''
     if current_user.is_authenticated:
         UserFunctions.update_last_seen(current_user.username)
 
 
 @api.route('/hi')
 class hi(Resource):
+    ''' Check who is the current user'''
     @api.marshal_with(api_return_message)
     def get(self):
         if current_user.is_authenticated:
@@ -55,11 +55,14 @@ class register(Resource):
     @api.marshal_with(api_return_user)
     @api.expect(api_get_user)
     def post(self):
-        name = api.payload['username']
-        password = api.payload['password']
-        if UserFunctions.get_user(name) is not None:
-            return {'messages': "Use another name"}
-        return UserFunctions.register(name, password)
+        try:
+            name = api.payload['username']
+            password = api.payload['password']
+            if UserFunctions.get_user(name) is not None:
+                return {'messages': "Use another name"}
+            return UserFunctions.register(name, password)
+        except KeyError:
+            return {'messages': "Invalid input format"}, 400
 
 
 @api.route('/login')
@@ -69,15 +72,18 @@ class login(Resource):
     def post(self):
         if current_user.is_authenticated:
             return {'messages': "You had logged in before."}
-        name = api.payload['username']
-        password = api.payload['password']
-        if UserFunctions.get_user(name) is None:
-            return {'messages': "User not found"}
-        if UserFunctions.check_password(name, password) is False:
-            return {'messages': "Wrong passwd"}
-        user = UserFunctions.get_user(name)
-        login_user(user)
-        return {'messages': "Login: {}".format(name)}
+        try:
+            name = api.payload['username']
+            password = api.payload['password']
+            if UserFunctions.get_user(name) is None:
+                return {'messages': "User not found"}
+            if UserFunctions.check_password(name, password) is False:
+                return {'messages': "Wrong passwd"}
+            user = UserFunctions.get_user(name)
+            login_user(user)
+            return {'messages': "Login: {}".format(name)}
+        except KeyError:
+            return {'messages': "Invalid input format"}, 400
 
 
 @api.route('/logout')
@@ -92,6 +98,7 @@ class logout(Resource):
 
 @api.route('/show_users')
 class show_users(Resource):
+    ''' Show the list of all user'''
     @api.marshal_list_with(api_show_user)
     def get(self):
         users = UserFunctions.get_all_users()
@@ -104,11 +111,14 @@ class delete_user(Resource):
     @api.expect(api_get_user)
     @login_required
     def post(self):
-        name = api.payload['username']
-        if UserFunctions.search_user(name) is False:
-            return {'messages': "User not found"}
-        UserFunctions.delete_user(name)
-        return {'messages': "User {} deleted".format(name)}
+        try:
+            name = api.payload['username']
+            if UserFunctions.search_user(name) is False:
+                return {'messages': "User not found"}
+            UserFunctions.delete_user(name)
+            return {'messages': "User {} deleted".format(name)}
+        except KeyError:
+            return {'messages': "Invalid input format"}, 400
 
 
 @api.route('/search_user')
@@ -116,14 +126,16 @@ class search_user(Resource):
     @api.marshal_with(api_show_user_and_time)
     @api.expect(api_show_user)
     def post(self):
-        search_name = api.payload['username']
-        if UserFunctions.get_user(search_name) is None:
-            return {'messages': "user does not exist"}
-        return UserFunctions.get_user(search_name)
+        try:
+            search_name = api.payload['username']
+            if UserFunctions.get_user(search_name) is None:
+                return {'messages': "User does not exist"}
+            return UserFunctions.get_user(search_name)
+        except KeyError:
+            return {'messages': "Invalid input format"}, 400
 
 
 @login_manager.unauthorized_handler
 @api.marshal_with(api_return_message)
 def unauthorized():
-    # TODO: Flash this message somewhere.
     return {'messages': "Please Login First"}
