@@ -65,7 +65,8 @@ api_return_answerlists = api.model("return_ansewrlists_model", {
         'answerlist_num': fields.Integer(description="Number of answerlists"),
         'answerlists': fields.List(
             fields.Nested(api_answerlist),
-            description="All answerlists of the survey")
+            description="All answerlists of the survey"),
+        'messages': fields.String(description="Messages returned")
     })
 
 
