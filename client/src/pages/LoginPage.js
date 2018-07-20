@@ -32,10 +32,10 @@ const mapDispatchToProps = (dispatch) => {
   return {
     onSubmit: (values) => {
       return dispatch(loginRequest(values.username, values.password)).then(res => {
-        if (res === 'user not found') {
+        if (res === 'User not found') {
           dispatch(loginRequestFailUserNotFound(res))
           return Promise.reject(res)
-        } else if (res === 'wrong passwd') {
+        } else if (res === 'Wrong passwd') {
           dispatch(loginRequestFailWrongPasswd(res))
           return Promise.reject(res)
         } else {
