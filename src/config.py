@@ -29,6 +29,5 @@ class DevelopmentConfig(Config):
     ADMIN_NAME = 'admin'
 
 
-
 class TestConfig(Config):
     SQLALCHEMY_DATABASE_URI = 'sqlite:///:memory:'
