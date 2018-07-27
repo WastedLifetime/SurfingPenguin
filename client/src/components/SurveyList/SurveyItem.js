@@ -8,7 +8,7 @@ class SurveyItem extends React.Component {
     let { survey, survey: { title } } = this.props
     return (
       <div className='SurveyItem'>
-        <Link to={Path.survey(survey)}>{title}</Link>
+        <Link to={Path.survey(survey)}>{this.props.survey.surveyname}</Link>
       </div>
     )
   }
