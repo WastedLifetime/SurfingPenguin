@@ -21,7 +21,9 @@ def init_app(app):
     from src.surfing_penguin import models  # noqa: F401
     Base.metadata.create_all(db_engine)
     session.__init__(bind=db_engine)
-    new_user = models.User('admin', 'admin')
+    ADMIN_NAME = app.config['ADMIN_NAME']
+    ADMIN_PASSWORD = app.config['ADMIN_PASSWORD']
+    new_user = models.User(ADMIN_NAME, ADMIN_PASSWORD)
     new_user.user_role = 'admin'
     new_user.id = session.query(models.User).count() + 1
     session.add(new_user)
