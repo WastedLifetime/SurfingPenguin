@@ -15,6 +15,7 @@ class User(UserMixin, Base):
     id = Column(Integer, primary_key=True)
     username = Column(String(32))
     password_hash = Column(String(128))
+    user_role = Column(String(32), default='normal')
     register_time = Column(DateTime, default=datetime.datetime.utcnow)
     last_seen = Column(DateTime, default=datetime.datetime.utcnow)
 
