@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import RegisterFormView from '../components/RegisterForm'
-import {registerRequest, registerRequestSuccess, registerRequestFail, registerRequestFailDuplicateUsername} from '../actions/register'
+import {registerRequest, registerRequestSuccess, registerRequestFail} from '../actions/register'
 
 class RegisterPage extends Component {
   componentWillReceiveProps (nextProps) {
