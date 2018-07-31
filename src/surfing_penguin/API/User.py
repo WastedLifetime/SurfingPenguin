@@ -5,7 +5,7 @@ from flask_restplus import Resource, fields
 from src.surfing_penguin.extensions import login_manager
 from functools import wraps
 from src.surfing_penguin.db_interface import UserFunctions
-from flask_login import login_user, logout_user, current_user, login_required
+from flask_login import login_user, logout_user, current_user
 
 
 # TODO: separate expected and returned api models
