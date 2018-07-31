@@ -2,9 +2,10 @@
 from src.surfing_penguin import surfing_penguin
 from src.surfing_penguin.routes import api
 from flask_restplus import Resource, fields
+from src.surfing_penguin.extensions import login_manager
 from functools import wraps
 from src.surfing_penguin.db_interface import UserFunctions
-from flask_login import login_user, logout_user, current_user
+from flask_login import login_user, logout_user, current_user, login_required
 
 
 # TODO: separate expected and returned api models
@@ -39,11 +40,11 @@ def login_required(role="ANY"):
         @wraps(fn)
         def decorated_view(*args, **kwargs):
             if not current_user.is_authenticated:
-                return error_message("not login")
+                return {'messages': "Please Login First"}
 
-            if ((current_user.user_role not in role.split(',')) and (role !=
-                                                                     "ANY")):
-                return error_message("role")
+            if ((current_user.user_role not in role.split(',')) and
+               (role != "ANY")):
+                return {'messages': "You don't have permission!"}
             return fn(*args, **kwargs)
         return decorated_view
     return wrapper
@@ -87,7 +88,7 @@ class login(Resource):
         name = api.payload['username']
         password = api.payload['password']
         if UserFunctions.get_user(name) is None:
-            return error_message("User not found")
+            return {'messages': "User not found"}
         if UserFunctions.check_password(name, password) is False:
             return {'messages': "Wrong passwd"}
         user = UserFunctions.get_user(name)
@@ -121,9 +122,9 @@ class delete_user(Resource):
     def post(self):
         name = api.payload['username']
         if current_user.user_role != 'admin' and current_user.username != name:
-            return error_message("role")
+            return {'messages': "You don't have permission!"}
         if UserFunctions.search_user(name) is False:
-            return error_message("User not found")
+            return {'messages': "User not found"}
         UserFunctions.delete_user(name)
         return {'messages': "User {} deleted".format(name)}
 
@@ -135,16 +136,12 @@ class search_user(Resource):
     def post(self):
         search_name = api.payload['username']
         if UserFunctions.get_user(search_name) is None:
-            return error_message("User not found")
+            return {'messages': "User not found"}
         return UserFunctions.get_user(search_name)
 
 
+@login_manager.unauthorized_handler
 @api.marshal_with(api_return_message)
-def error_message(message):
-    if message == "not login":
-        return {'messages': "Please Login First"}
-    if message == "role":
-        return {'messages': "You don't have permission!"}
-    if message == "User not found":
-        return {'messages': "User not found"}
+def unauthorized():
+    # TODO: Flash this message somewhere.
     return {'messages': "Please Login First"}

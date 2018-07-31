@@ -22,6 +22,7 @@ def init_app(app):
     from src.surfing_penguin.models import User  # noqa: F401
     Base.metadata.create_all(db_engine)
     session.__init__(bind=db_engine)
+    # TODO: change the way to add role and admin
     ADMIN_NAME = app.config['ADMIN_NAME']
     ADMIN_PASSWORD = app.config['ADMIN_PASSWORD']
     if session.query(User).filter_by(username=ADMIN_NAME).first() is None:
