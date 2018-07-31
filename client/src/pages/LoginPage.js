@@ -36,7 +36,7 @@ const mapDispatchToProps = (dispatch) => {
         return Promise.resolve(res)
       }).catch(err => {
         dispatch(loginRequestFail(err))
-        return Promise.reject(err.response.data.messages)
+        return Promise.reject(err)
       })
     }
   }
