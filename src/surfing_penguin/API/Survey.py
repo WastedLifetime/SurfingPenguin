@@ -81,9 +81,7 @@ class create_survey(Resource):
         try:
             if api.payload['surveyname'] is None:
                 return {'messages': "Invalid input: No survey name"}, 400
-            if SurveyFunctions.name_get_survey(
-                    api.payload['surveyname']) is not None:
-                return {'messages': "The name of the survey had been used"}
+            # TODO: Check if an user duplicates his/her survey
             SurveyFunctions.new_survey(
                     api.payload['surveyname'], api.payload['questions'])
             return {'messages': "Survey created"}

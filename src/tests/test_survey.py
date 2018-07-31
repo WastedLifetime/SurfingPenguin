@@ -135,10 +135,6 @@ class TestSurvey():
         assert (response.status_code == 400)
         assert (json_of_response(response)['messages'] ==
                 "Invalid input: No survey name")
-        response = post_json(client, url, {'surveyname': "test_api"})
-        assert (response.status_code == 200)
-        assert (json_of_response(response)['messages'] ==
-                "The name of the survey had been used")
 
     def test_show_all_surveys(self, client, api_prefix):
         url = api_prefix+'show_all_surveys'
