@@ -51,12 +51,12 @@ class TestRegister():
         url = api_prefix+'register'
         response = post_json(client, url, test_data)
         assert json_of_response(response)['messages'] == "Use another name"
-        assert response.status_code == 200
+        assert response.status_code == 403
 
     def test_register_bad_request(self, client, api_prefix):
         url = api_prefix+'register'
         response = post_json(client, url, {})
-        assert response.status_code == 400
+        assert response.status_code == 403
         assert json_of_response(response)['messages'] == "Invalid input format"
 
     def test_show_users(self, client, api_prefix):
@@ -91,14 +91,14 @@ class TestRegister():
         url = api_prefix+'login'
         response = post_json(client, url, test_data)
         assert json_of_response(response)['messages'] == "User not found"
-        assert response.status_code == 200
+        assert response.status_code == 403
 
     def test_login_with_wrong_pwd(self, client, api_prefix):
         test_data = {'username': 'c', 'password': 'c'}
         url = api_prefix+'login'
         response = post_json(client, url, test_data)
         assert json_of_response(response)['messages'] == "Wrong passwd"
-        assert response.status_code == 200
+        assert response.status_code == 403
 
     def test_login(self, client, api_prefix):
         test_data = {'username': 'c', 'password': 'b'}
@@ -113,7 +113,7 @@ class TestRegister():
         response = post_json(client, url,  test_data)
         assert json_of_response(response)['messages'] == \
             "You had logged in before."
-        assert response.status_code == 200
+        assert response.status_code == 403
 
     def test_login_bad_request(self, client, api_prefix):
         url = api_prefix+'login'
