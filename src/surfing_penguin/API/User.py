@@ -1,11 +1,11 @@
 """routes.py: Each function in this file indicates a web page (HTML page)."""
+from flask_restplus import Resource, fields
+from functools import wraps
+from flask_login import login_user, logout_user, current_user
 from src.surfing_penguin import surfing_penguin
 from src.surfing_penguin.routes import api
-from flask_restplus import Resource, fields
 from src.surfing_penguin.extensions import login_manager
-from functools import wraps
 from src.surfing_penguin.db_interface import UserFunctions
-from flask_login import login_user, logout_user, current_user
 
 
 # TODO: separate expected and returned api models

@@ -1,6 +1,6 @@
 """routes.py: Each function in this file indicates a web page (HTML page)."""
-from src.surfing_penguin.routes import api
 from flask_restplus import Resource, fields
+from src.surfing_penguin.routes import api
 from src.surfing_penguin.db_interface import SurveyFunctions
 
 
