@@ -32,16 +32,11 @@ const mapDispatchToProps = (dispatch) => {
         username: values.username,
         password: values.password
       })).then(res => {
-        if (res.messages === 'use another name') {
-          dispatch(registerRequestFailDuplicateUsername(res))
-          return Promise.reject(res)
-        } else {
-          dispatch(registerRequestSuccess(res))
-          return Promise.resolve(res)
-        }
+        dispatch(registerRequestSuccess(res))
+        return Promise.resolve(res)
       }).catch(err => {
         dispatch(registerRequestFail(err))
-        return Promise.reject(err)
+        return Promise.reject(err.response.data.messages)
       })
     }
   }

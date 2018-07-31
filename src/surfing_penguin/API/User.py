@@ -74,10 +74,10 @@ class register(Resource):
             name = api.payload['username']
             password = api.payload['password']
             if UserFunctions.get_user(name) is not None:
-                return {'messages': "Use another name"}
+                return {'messages': "Use another name"}, 403
             return UserFunctions.register(name, password)
         except KeyError:
-            return {'messages': "Invalid input format"}, 400
+            return {'messages': "Invalid input format"}, 403
 
 
 @api.route('/login')
@@ -86,14 +86,14 @@ class login(Resource):
     @api.expect(api_get_user)
     def post(self):
         if current_user.is_authenticated:
-            return {'messages': "You had logged in before."}
+            return {'messages': "You had logged in before."}, 403
         try:
             name = api.payload['username']
             password = api.payload['password']
             if UserFunctions.get_user(name) is None:
-                return {'messages': "User not found"}
+                return {'messages': "User not found"}, 403
             if UserFunctions.check_password(name, password) is False:
-                return {'messages': "Wrong passwd"}
+                return {'messages': "Wrong passwd"}, 403
             user = UserFunctions.get_user(name)
             login_user(user)
             return {'messages': "Login: {}".format(name)}
