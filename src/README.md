@@ -16,6 +16,8 @@ pip install -r requirements.txt
 ```
 export ENV = "Staging" or "Production" or you will use the DevelopmentConfig
 export DATABASE_URL= "Your database url" or you will use sqlite as your database
+export ADMIN_NAME = "Your admin name"
+export ADMIN_PASSWORD = "Your admin password"
 ```
 
 ## Running the Program

@@ -15,6 +15,14 @@ def login_as_c(client, api_prefix):
     return
 
 
+@pytest.fixture(scope="function")
+def login_as_admin(client, api_prefix):
+    test_data = {'username': 'admin', 'password': 'admin'}
+    post_json(client, api_prefix+'register', test_data)
+    post_json(client, api_prefix+'login', test_data)
+    return
+
+
 def test_hi(client, api_prefix):
     url = api_prefix+'hi'
     response = client.get(url)
@@ -48,7 +56,7 @@ class TestRegister():
     def test_show_users(self, client, api_prefix):
         url = api_prefix+'show_users'
         response = client.get(url)
-        assert json_of_response(response)[0]['username'] == "c"
+        assert json_of_response(response)[1]['username'] == "c"
         assert response.status_code == 200
 
     def test_search_user(self, client, api_prefix):
@@ -63,7 +71,7 @@ class TestRegister():
         test_data = {'username': 'd'}
         url = api_prefix+'search_user'
         response = post_json(client, url, test_data)
-        assert json_of_response(response)['messages'] == "user does not exist"
+        assert json_of_response(response)['messages'] == "User not found"
         assert response.status_code == 200
 
     def test_login_with_wrong_name(self, client, api_prefix):
@@ -118,7 +126,15 @@ class TestRegister():
             "You did not logged in"
         assert response.status_code == 200
 
-    def test_delete_user_not_found(self, client, login_as_c, api_prefix):
+    def test_delete_other_user(self, client, login_as_c, api_prefix):
+        test_data = {'username': 'd'}
+        url = api_prefix+'delete_user'
+        response = post_json(client, url, test_data)
+        assert json_of_response(response)['messages'] == \
+            "You don't have permission!"
+        assert response.status_code == 200
+
+    def test_delete_user_not_found(self, client, login_as_admin, api_prefix):
         test_data = {'username': 'd'}
         url = api_prefix+'delete_user'
         response = post_json(client, url, test_data)

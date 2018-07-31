@@ -1,10 +1,11 @@
 """routes.py: Each function in this file indicates a web page (HTML page)."""
-from src.surfing_penguin import surfing_penguin
-from src.surfing_penguin.extensions import login_manager
-from src.surfing_penguin.routes import api
 from flask_restplus import Resource, fields
+from functools import wraps
+from flask_login import login_user, logout_user, current_user
+from src.surfing_penguin import surfing_penguin
+from src.surfing_penguin.routes import api
+from src.surfing_penguin.extensions import login_manager
 from src.surfing_penguin.db_interface import UserFunctions
-from flask_login import login_user, logout_user, current_user, login_required
 
 
 # TODO: separate expected and returned api models
@@ -32,6 +33,21 @@ api_show_user_and_time = api.model("show_user_and_time_model", {
         'username': fields.String,
         'last_seen': fields.DateTime
     })
+
+
+def login_required(role="ANY"):
+    def wrapper(fn):
+        @wraps(fn)
+        def decorated_view(*args, **kwargs):
+            if not current_user.is_authenticated:
+                return {'messages': "Please Login First"}
+
+            if ((current_user.user_role not in role.split(',')) and
+               (role != "ANY")):
+                return {'messages': "You don't have permission!"}
+            return fn(*args, **kwargs)
+        return decorated_view
+    return wrapper
 
 
 @surfing_penguin.before_request
@@ -102,9 +118,11 @@ class show_users(Resource):
 class delete_user(Resource):
     @api.marshal_with(api_return_message)
     @api.expect(api_get_user)
-    @login_required
+    @login_required(role='ANY')
     def post(self):
         name = api.payload['username']
+        if current_user.user_role != 'admin' and current_user.username != name:
+            return {'messages': "You don't have permission!"}
         if UserFunctions.search_user(name) is False:
             return {'messages': "User not found"}
         UserFunctions.delete_user(name)
@@ -118,7 +136,7 @@ class search_user(Resource):
     def post(self):
         search_name = api.payload['username']
         if UserFunctions.get_user(search_name) is None:
-            return {'messages': "user does not exist"}
+            return {'messages': "User not found"}
         return UserFunctions.get_user(search_name)
 
 
