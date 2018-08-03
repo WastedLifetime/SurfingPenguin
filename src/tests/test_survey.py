@@ -125,6 +125,17 @@ class TestSurvey():
         assert (response.status_code == 200)
         assert (json_of_response(response)['messages'] == "Survey created")
 
+    def test_new_survey_bad_request(self, client, api_prefix):
+        url = api_prefix+'create_survey'
+        response = post_json(client, url, {})
+        assert (response.status_code == 400)
+        assert (json_of_response(response)['messages'] ==
+                "Invalid input format")
+        response = post_json(client, url, {'surveyname': None})
+        assert (response.status_code == 400)
+        assert (json_of_response(response)['messages'] ==
+                "Invalid input: No survey name")
+
     def test_show_all_surveys(self, client, api_prefix):
         url = api_prefix+'show_all_surveys'
         response = client.get(url)
@@ -180,6 +191,9 @@ class TestAnswer():
         assert lists[0].answers[0].idx == 1
         assert lists[0].answers[0].content == "Ans1content"
 
+    # NOTE: Function new_answer() is not tested,
+    # because it's called in new_answerlist() in db_operation.
+
     """ Testing api """
     def test_answer_a_survey(
             self, client, api_prefix, answerlist_data):
@@ -187,6 +201,15 @@ class TestAnswer():
         response = post_json(client, url, answerlist_data)
         assert response.status_code == 200
         assert json_of_response(response)['messages'] == "Answer completed"
+
+    def test_answer_a_survey_bad_request(self, client, api_prefix):
+        url = api_prefix+'answer_a_survey'
+        response = post_json(client, url, {})
+        assert response.status_code == 400
+        assert json_of_response(response)['messages'] == "Invalid input format"
+        response = post_json(client, url, {'survey_id': 100})
+        assert response.status_code == 400
+        assert json_of_response(response)['messages'] == "Survey not found"
 
     def test_show_answers(
             self, session, client, api_prefix,):
@@ -199,3 +222,12 @@ class TestAnswer():
                     'idx': 1,
                     'content': "Ans1content"
                 }
+
+    def test_show_answers_bad_request(self, client, api_prefix):
+        url = api_prefix+'show_answers'
+        response = post_json(client, url, {})
+        assert response.status_code == 400
+        assert json_of_response(response)['messages'] == "Invalid input format"
+        response = post_json(client, url, {"id": 100})
+        assert response.status_code == 400
+        assert json_of_response(response)['messages'] == "Survey not found"

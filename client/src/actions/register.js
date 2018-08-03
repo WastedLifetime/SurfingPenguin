@@ -17,7 +17,3 @@ export const registerRequestFail = (err) => ({
   type: 'REGISTER_REQUEST_FAIL',
   err
 })
-export const registerRequestFailDuplicateUsername = (err) => ({
-  type: 'REGISTER_REQUEST_FAIL_DUPLICATE_USERNAME',
-  err
-})

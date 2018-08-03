@@ -25,14 +25,6 @@ export const loginRequestFail = (err) => ({
   type: 'LOGIN_REQUEST_FAIL',
   payload: err
 })
-export const loginRequestFailUserNotFound = (err) => ({
-  type: 'LOGIN_REQUEST_FAIL_USER_NOT_FOUND',
-  payload: err
-})
-export const loginRequestFailWrongPasswd = (err) => ({
-  type: 'LOGIN_REQUEST_FAIL_WRONG_PASSWD',
-  payload: err
-})
 
 export const fetchCurrentUserRequest = () => dispatch => {
   dispatch({

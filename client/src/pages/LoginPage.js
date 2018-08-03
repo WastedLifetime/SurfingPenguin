@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import LoginFormView from '../components/LoginForm'
-import { loginRequest, loginRequestSuccess, loginRequestFail, loginRequestFailUserNotFound, loginRequestFailWrongPasswd } from '../actions/login'
+import { loginRequest, loginRequestSuccess, loginRequestFail} from '../actions/login'
 import { home } from '../reducers/session'
 
 class LoginPage extends Component {
@@ -32,16 +32,8 @@ const mapDispatchToProps = (dispatch) => {
   return {
     onSubmit: (values) => {
       return dispatch(loginRequest(values.username, values.password)).then(res => {
-        if (res === 'User not found') {
-          dispatch(loginRequestFailUserNotFound(res))
-          return Promise.reject(res)
-        } else if (res === 'Wrong passwd') {
-          dispatch(loginRequestFailWrongPasswd(res))
-          return Promise.reject(res)
-        } else {
-          dispatch(loginRequestSuccess(res))
-          return Promise.resolve(res)
-        }
+        dispatch(loginRequestSuccess(res))
+        return Promise.resolve(res)
       }).catch(err => {
         dispatch(loginRequestFail(err))
         return Promise.reject(err)

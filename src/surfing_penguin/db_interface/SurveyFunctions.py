@@ -26,7 +26,7 @@ def name_get_survey(name):
 
 def new_question(survey, data):
     """
-    Add a question to a survey
+    Add a question to a survey, temporarily only called by new_survey
 
     Args:
         survey: survey object in ORM
@@ -62,6 +62,9 @@ def new_answerlist(data):
 
 
 def new_answer(answerlist, question, data):
+    """
+    Add a new answer to a question, only called by new_answerlist
+    """
     answer = Answer(answerlist, question, data["content"])
     session.add(answer)
     session.commit()

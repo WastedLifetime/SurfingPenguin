@@ -61,10 +61,10 @@ export default withFormik({
       setSubmitting(false)
     }, (errors) => {
       setSubmitting(false)
-      if (typeof (errors) !== 'string') {
+      if (errors.response == null) {
         setErrors({message: 'Network Error'})
       } else {
-        setErrors({message: errors})
+        setErrors({message: errors.response.data.messages})
       }
     })
   }
