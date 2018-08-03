@@ -12,22 +12,19 @@ class Config(object):
 class ProductionConfig(Config):
     SQLALCHEMY_DATABASE_URI = (os.environ.get('DATABASE_URL')
                                if os.environ.get('DATABASE_URL') is not None
-                               else 'sqlite:///%s' % (
-                                   os.path.join(basedir, "example.db")))
+                               else 'sqlite:///:memory:')
 
 
 class StagingConfig(Config):
     SQLALCHEMY_DATABASE_URI = (os.environ.get('DATABASE_URL')
                                if os.environ.get('DATABASE_URL') is not None
-                               else 'sqlite:///%s' % (
-                                   os.path.join(basedir, "example.db")))
+                               else 'sqlite:///:memory:')
 
 
 class DevelopmentConfig(Config):
     SQLALCHEMY_DATABASE_URI = (os.environ.get('DATABASE_URL')
                                if os.environ.get('DATABASE_URL') is not None
-                               else 'sqlite:///%s' % (
-                                   os.path.join(basedir, "example.db")))
+                               else 'sqlite:///:memory:')
     ADMIN_PASSWORD = 'admin'
     ADMIN_NAME = 'admin'
 
