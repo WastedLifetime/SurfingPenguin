@@ -5,7 +5,7 @@ class SurveyItem extends React.Component {
   constructor (props) {
     super(props)
     this.state = {
-      hide: 0
+      hide: false
     }
   }
 
@@ -23,11 +23,11 @@ class SurveyItem extends React.Component {
   }
   showsurvey () {
     this.setState({
-      hide: this.state.hide + 1
+      hide: !this.state.hide
     })
   }
   showquestion () {
-    if (this.state.hide % 2 === 1) {
+    if (this.state.hide) {
       return <div><ul className='list-unstyled'>
         {this.props.survey.questions.map(question => {
           return <li key={question.idx} className='col-md-3'>{question.title}</li>
