@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import LoginFormView from '../components/LoginForm'
-import { loginRequest, loginRequestSuccess, loginRequestFail} from '../actions/login'
+import {loginRequest, loginRequestSuccess, loginRequestFail} from '../actions/login'
 import { home } from '../reducers/session'
 
 class LoginPage extends Component {
