@@ -55,7 +55,7 @@ export const saveResult = (surveyId, result) => {
 }
 
 export const fetchSurvey = (surveyId) => {
-  return fetcher.post(`/search_survey_by_id`,{id: surveyId}).then(res => (res.data))
+  return fetcher.post(`/search_survey_by_id`, {id: surveyId}).then(res => (res.data))
 }
 
 export const deleteSurvey = surveyId => {}
