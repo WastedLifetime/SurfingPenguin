@@ -13,10 +13,10 @@ def get_user(name):
     return session.query(User).filter_by(username=name).first()
 
 
-def register(name, password):
+def register(name, password, user_role='normal'):
     if session.query(User).filter_by(username=name).first() is not None:
         return
-    new_user = User(name, password)
+    new_user = User(name, password, user_role)
     new_user.id = session.query(User).count() + 1
     session.add(new_user)
     session.commit()

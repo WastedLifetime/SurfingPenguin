@@ -19,8 +19,9 @@ class User(UserMixin, Base):
     register_time = Column(DateTime, default=datetime.datetime.utcnow)
     last_seen = Column(DateTime, default=datetime.datetime.utcnow)
 
-    def __init__(self, username, password):
+    def __init__(self, username, password, user_role):
         self.username = username
+        self.user_role = user_role
         self.password_hash = generate_password_hash(password)
 
     def __repr__(self):

@@ -4,7 +4,7 @@ from flask_login import login_user, logout_user, current_user
 from src.surfing_penguin import surfing_penguin
 from src.surfing_penguin.routes import api
 from src.surfing_penguin.extensions import login_manager
-from src.surfing_penguin.db_interface import UserFunctions
+from src.surfing_penguin.db_interface import user_functions
 
 
 api_return_message = api.model("return_message_model", {
@@ -52,7 +52,7 @@ def login_required(role="ANY"):
 def before_request():
     ''' Before each operation of a user, update his/her last_seen '''
     if current_user.is_authenticated:
-        UserFunctions.update_last_seen(current_user.username)
+        user_functions.update_last_seen(current_user.username)
 
 
 @api.route('/hi')
@@ -73,9 +73,9 @@ class register(Resource):
         try:
             name = api.payload['username']
             password = api.payload['password']
-            if UserFunctions.get_user(name) is not None:
+            if user_functions.get_user(name) is not None:
                 return {'messages': "Use another name"}, 403
-            return UserFunctions.register(name, password)
+            return user_functions.register(name, password)
         except KeyError:
             return {'messages': "Invalid input format"}, 403
 
@@ -90,11 +90,11 @@ class login(Resource):
         try:
             name = api.payload['username']
             password = api.payload['password']
-            if UserFunctions.get_user(name) is None:
+            if user_functions.get_user(name) is None:
                 return {'messages': "User not found"}, 403
-            if UserFunctions.check_password(name, password) is False:
+            if user_functions.check_password(name, password) is False:
                 return {'messages': "Wrong passwd"}, 403
-            user = UserFunctions.get_user(name)
+            user = user_functions.get_user(name)
             login_user(user)
             return {'messages': "Login: {}".format(name)}
         except KeyError:
@@ -116,7 +116,7 @@ class show_users(Resource):
     ''' Show the list of all user'''
     @api.marshal_list_with(api_show_user)
     def get(self):
-        users = UserFunctions.get_all_users()
+        users = user_functions.get_all_users()
         return users
 
 
@@ -131,9 +131,9 @@ class delete_user(Resource):
             if (current_user.user_role != 'admin' and
                     current_user.username != name):
                 return {'messages': "You don't have permission!"}
-            if UserFunctions.search_user(name) is False:
+            if user_functions.search_user(name) is False:
                 return {'messages': "User not found"}
-            UserFunctions.delete_user(name)
+            user_functions.delete_user(name)
             return {'messages': "User {} deleted".format(name)}
         except KeyError:
             return {'messages': "Invalid input format"}, 400
@@ -146,9 +146,9 @@ class search_user(Resource):
     def post(self):
         try:
             search_name = api.payload['username']
-            if UserFunctions.get_user(search_name) is None:
+            if user_functions.get_user(search_name) is None:
                 return {'messages': "User not found"}
-            return UserFunctions.get_user(search_name)
+            return user_functions.get_user(search_name)
         except KeyError:
             return {'messages': "Invalid input format"}, 400
 

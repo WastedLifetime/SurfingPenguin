@@ -26,8 +26,7 @@ def init_app(app):
     ADMIN_NAME = app.config['ADMIN_NAME']
     ADMIN_PASSWORD = app.config['ADMIN_PASSWORD']
     if session.query(User).filter_by(username=ADMIN_NAME).first() is None:
-        new_user = User(ADMIN_NAME, ADMIN_PASSWORD)
-        new_user.user_role = 'admin'
+        new_user = User(ADMIN_NAME, ADMIN_PASSWORD, 'admin')
         new_user.id = session.query(User).count() + 1
         session.add(new_user)
         session.commit()
