@@ -1,6 +1,6 @@
 from flask_restplus import Resource, fields
 from src.surfing_penguin.routes import api
-from src.surfing_penguin.db_interface import SurveyFunctions
+from src.surfing_penguin.db_interface import survey_functions
 
 
 api_return_message = api.model("return_message_model", {
@@ -82,7 +82,7 @@ class create_survey(Resource):
             if api.payload['surveyname'] is None:
                 return {'messages': "Invalid input: No survey name"}, 400
             # TODO: Check if an user duplicates his/her survey
-            SurveyFunctions.new_survey(
+            survey_functions.new_survey(
                     api.payload['surveyname'], api.payload['questions'])
             return {'messages': "Survey created"}
         except KeyError:
@@ -93,7 +93,7 @@ class create_survey(Resource):
 class show_surveys(Resource):
     @api.marshal_list_with(api_return_survey)
     def get(self):
-        return SurveyFunctions.get_all_surveys()
+        return survey_functions.get_all_surveys()
 
 
 @api.route('/search_survey_by_id')
@@ -104,7 +104,7 @@ class search_survey_by_id(Resource):
     @api.marshal_list_with(api_return_survey)
     @api.expect(api_get_survey_id)
     def post(self):
-        return SurveyFunctions.id_get_survey(api.payload['id'])
+        return survey_functions.id_get_survey(api.payload['id'])
 
 
 @api.route('/search_survey_by_name')
@@ -115,7 +115,7 @@ class search_survey_by_name(Resource):
     @api.marshal_list_with(api_return_survey)
     @api.expect(api_get_survey_name)
     def post(self):
-        return SurveyFunctions.name_get_survey(api.payload['name'])
+        return survey_functions.name_get_survey(api.payload['name'])
 
 
 @api.route('/answer_a_survey')
@@ -124,8 +124,8 @@ class answer_survey(Resource):
     @api.expect(api_get_answerlist)
     def post(self):
         try:
-            if SurveyFunctions.id_get_survey(api.payload['survey_id']):
-                SurveyFunctions.new_answerlist(api.payload)
+            if survey_functions.id_get_survey(api.payload['survey_id']):
+                survey_functions.new_answerlist(api.payload)
                 return {'messages': "Answer completed"}
             return {'messages': "Survey not found"}, 400
         except KeyError:
@@ -139,14 +139,14 @@ class show_answerlists(Resource):
     @api.expect(api_get_survey_id)
     def post(self):
         try:
-            if SurveyFunctions.id_get_survey(api.payload['id']):
+            if survey_functions.id_get_survey(api.payload['id']):
                 return {
                     "survey_id": api.payload['id'],
                     "answerlist_num":
-                        SurveyFunctions.id_get_answerlist_num(
+                        survey_functions.id_get_answerlist_num(
                             api.payload['id']),
                     "answerlists":
-                        SurveyFunctions.id_get_answerlists(api.payload['id'])
+                        survey_functions.id_get_answerlists(api.payload['id'])
                 }
             return {'messages': "Survey not found"}, 400
         except KeyError:

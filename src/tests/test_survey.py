@@ -7,7 +7,7 @@ parent_path = os.path.dirname(os.getcwd())
 sys.path.append(parent_path)
 
 from src.surfing_penguin.models import Survey, Question, AnswerList, Answer # NOQA
-import src.surfing_penguin.db_interface.SurveyFunctions as SurveyFunctions  # NOQA
+from src.surfing_penguin.db_interface import survey_functions  # NOQA
 
 
 @pytest.fixture
@@ -49,7 +49,7 @@ def survey_data(question_data):
 def survey_with_question(question_data):
     # NOTE: This fixture should only be used
     # after TestSurvey class passes the tests.
-    survey = SurveyFunctions.new_survey("survey_with_question", question_data)
+    survey = survey_functions.new_survey("survey_with_question", question_data)
     return survey
 
 
@@ -97,22 +97,22 @@ class TestSurvey():
 
     """ Testing db operations """
     def test_new_survey(self, session, question_data):
-        test_survey = SurveyFunctions.new_survey("test", question_data)
+        test_survey = survey_functions.new_survey("test", question_data)
         assert(test_survey.surveyname == "test")
         assert(test_survey.question_num == len(question_data))
         assert(session.query(Question).filter_by(
             survey_id=test_survey.id).count() == len(question_data))
 
     def test_get_all_surveys(self):
-        surveys = SurveyFunctions.get_all_surveys()
+        surveys = survey_functions.get_all_surveys()
         assert (surveys[0].surveyname == "test")
 
     def test_id_get_survey(self):
-        survey = SurveyFunctions.id_get_survey(1)
+        survey = survey_functions.id_get_survey(1)
         assert (survey.surveyname == "test")
 
     def test_name_get_survey(self):
-        survey = SurveyFunctions.name_get_survey("test")
+        survey = survey_functions.name_get_survey("test")
         assert (survey.question_num == 2)
 
     # NOTE: Function new_question() is not tested,
@@ -177,17 +177,17 @@ class TestAnswer():
     """ Testing db operations """
     def test_new_answerlist(
             self, session, answerlist_data, survey_with_question):
-        answerlist = SurveyFunctions.new_answerlist(answerlist_data)
+        answerlist = survey_functions.new_answerlist(answerlist_data)
         assert answerlist.survey_id == answerlist_data['survey_id']
         assert session.query(AnswerList).filter_by(
                 survey_id=answerlist_data['survey_id']).first() is not None
 
     def test_id_get_answerlist_num(self):
-        num = SurveyFunctions.id_get_answerlist_num(2)
+        num = survey_functions.id_get_answerlist_num(2)
         assert num == 1
 
     def test_id_get_answerlists(self):
-        lists = SurveyFunctions.id_get_answerlists(2)
+        lists = survey_functions.id_get_answerlists(2)
         assert lists[0].answers[0].idx == 1
         assert lists[0].answers[0].content == "Ans1content"
 
