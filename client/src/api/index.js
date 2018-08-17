@@ -6,10 +6,6 @@ import axios from 'axios'
 const fetcher = axios.create({
   baseURL: process.env.REACT_APP_ENDPOINT,
   headers: {
-    'Access-Control-Allow-Origin': 'foo.example',
-    'Access-Control-Allow-Methods': 'GET, POST, PATCH, PUT, DELETE, OPTIONS',
-    'Access-Control-Allow-Headers': 'Origin, Content-Type, X-Auth-Token',
-    'Access-Control-Allow-Credentials': 'true',
     'Content-Type': 'application/json',
     'Authorization': window.localStorage.session
   }
