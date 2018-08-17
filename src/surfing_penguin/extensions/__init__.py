@@ -1,5 +1,6 @@
 """ __init__.py: Initialization of the server """
 
+from flask_cors import CORS
 from flask_login import LoginManager
 from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
@@ -14,6 +15,7 @@ session = Session()
 
 
 def init_app(app):
+    CORS(app, resources={r"/api/*": {"origins": app.config['FRONTEND_URL']}})
     login_manager.init_app(app)
     db_engine = create_engine(
         app.config['SQLALCHEMY_DATABASE_URI'],
