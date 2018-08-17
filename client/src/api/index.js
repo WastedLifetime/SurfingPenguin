@@ -6,6 +6,7 @@ import axios from 'axios'
 const fetcher = axios.create({
   baseURL: process.env.REACT_APP_ENDPOINT,
   headers: {
+    'Access-Control-Allow-Credentials': 'true',
     'Content-Type': 'application/json',
     'Authorization': window.localStorage.session
   }
