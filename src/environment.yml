@@ -41,4 +41,3 @@ dependencies:
   - xz=5.2.4=h14c3975_4
   - zlib=1.2.11=ha838bed_2
 prefix: /home/allen/miniconda3/envs/surfing_penguin
-

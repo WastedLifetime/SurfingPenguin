@@ -92,6 +92,7 @@ class Answer(Base):
     id = Column(Integer, primary_key=True)
     answerlist_id = Column(Integer, ForeignKey('answerlist.id'))
     question_id = Column(Integer, ForeignKey('question.id'))
+    test = Column(Integer)
     idx = Column(Integer)  # NO. in that answerlist
     # TODO: add multiple answer type
     content = Column(String(1024))

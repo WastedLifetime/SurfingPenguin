@@ -2,13 +2,16 @@
 
 from flask_cors import CORS
 from flask_login import LoginManager
+from flask_migrate import Migrate
 from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 
+
 Base = declarative_base()
 
 login_manager = LoginManager()
+migrate = Migrate()
 
 Session = sessionmaker()
 session = Session()
@@ -24,6 +27,7 @@ def init_app(app):
     from src.surfing_penguin.models import User  # noqa: F401
     Base.metadata.create_all(db_engine)
     session.__init__(bind=db_engine)
+    migrate.init_app(app, Base)
     # TODO: change the way to add role and admin
     ADMIN_NAME = app.config['ADMIN_NAME']
     ADMIN_PASSWORD = app.config['ADMIN_PASSWORD']
