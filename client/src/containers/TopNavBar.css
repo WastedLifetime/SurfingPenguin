@@ -1,8 +1,98 @@
-.TopNavBar {
-  border-bottom: 1px solid #95989A;
-  margin-bottom: 0;
-}
-
 .TopNavBar .navbar-brand img {
   max-height: 100%;
 }
+
+.TopNavBar .navbar-brand {
+  max-height: 100%;
+	color: black;
+}
+
+.TopNavBar {
+	background-color: #80644D;
+	color: #ffffff;
+	cursor: default;
+	font-size: 1.1em;
+	height: 3em;
+	line-height: 3em;
+	width: 100%;
+	z-index: 10000;
+}
+
+	.TopNavBar h1 {
+		color: #ffffff;
+		height: inherit;
+		left: 3em;
+		line-height: inherit;
+		margin: 0;
+		padding: 0;
+		position: absolute;
+	}
+
+		.TopNavBar h1 a {
+			font-size: 1.25em;
+		}
+
+	.TopNavBar nav {
+		height: inherit;
+		line-height: inherit;
+		position: absolute;
+		right: 3em;
+		vertical-align: middle;
+	}
+
+		.TopNavBar nav > ul {
+			list-style: none;
+			margin: 0;
+			padding-left: 0;
+		}
+
+			.TopNavBar nav > ul > li {
+				border-radius: 4px;
+				display: inline-block;
+				margin-left: 2em;
+				padding-left: 0;
+			}
+
+				.TopNavBar nav > ul > li a {
+					-moz-transition: color 0.2s ease-in-out;
+					-webkit-transition: color 0.2s ease-in-out;
+					-o-transition: color 0.2s ease-in-out;
+					-ms-transition: color 0.2s ease-in-out;
+					transition: color 0.2s ease-in-out;
+					color: #cdced0;
+					display: inline-block;
+					text-decoration: none;
+				}
+
+					.TopNavBar nav > ul > li a:active, #header nav > ul > li a:hover {
+						color: #ffffff;
+					}
+
+				.TopNavBar nav > ul > li:first-child {
+					margin-left: 0;
+				}
+
+				.TopNavBar nav > ul > li .button {
+					background-color: #fff;
+					color: #444 !important;
+					height: 2.25em;
+					line-height: 2.25em;
+					margin-bottom: 0;
+					padding: 0 1em;
+					position: relative;
+					top: -0.075em;
+					vertical-align: middle;
+				}
+
+	.TopNavBar .container {
+		position: relative;
+	}
+
+		.TopNavBar .container h1 {
+			left: 0;
+		}
+
+		.TopNavBar .container nav {
+			right: 0;
+		}
+
