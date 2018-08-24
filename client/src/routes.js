@@ -2,7 +2,7 @@ import React from 'react'
 import { Route, IndexRoute } from 'react-router'
 import App from './App'
 import Home from './pages/HomePage'
-import Surveys from './Survey'
+import Surveys from './pages/Survey'
 import RegisterPage from './pages/RegisterPage'
 import LoginPage from './pages/LoginPage'
 import UserSurveysPage from './pages/UserSurveysPage'
@@ -51,10 +51,10 @@ export default function routes (store) {
 
   return (
     <Route path='/' component={App}>
+      <IndexRoute component={Home} />
       <Route path='register' component={RegisterPage} />
       <Route path='login' component={LoginPage} />
-      <IndexRoute component={Home} />
-      <Route path='surveys' component={Surveys} onEnter={requireAuth}>
+      <Route path='surveys' component={Surveys}>
         <Route path='logout' component={LogoutPage} />
         <Route path='user/surveys' component={UserSurveysPage} />
         <Route path='surveys/:surveyId' component={SurveyPage} />
