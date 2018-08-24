@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import './App.css'
+import './css/style.css'
 
 import TopNavBar from './containers/TopNavBar'
 
