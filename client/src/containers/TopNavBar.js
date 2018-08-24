@@ -32,19 +32,23 @@ class TopNavBar extends Component {
 
   render () {
     // eslint-disable-next-line
-    let pathname=location.pathname;
+    let indexPathname = '/'
+    let surveyPathname = '/surveys/'
     let { currentUser } = this.props
-    if (currentUser) { pathname = '#/user/surveys' }
+    if (currentUser) { indexPathname = '/surveys/' }
     return (
       <Navbar className='TopNavBar'>
         <Navbar.Header>
           <Navbar.Brand>
-            <a href={pathname}>
+            <a href={indexPathname}>
                 Surfing Penguin
             </a>
           </Navbar.Brand>
           <Navbar.Toggle />
         </Navbar.Header>
+        <Nav>
+          <NavItem eventKey={1} href={surveyPathname}>Surveys</NavItem>
+        </Nav>
         <Navbar.Collapse>
           {currentUser ? this.loginView() : this.unLoginView()}
         </Navbar.Collapse>
