@@ -19,6 +19,7 @@ class User(UserMixin, Base):
     register_time = Column(DateTime, default=datetime.datetime.utcnow)
     last_seen = Column(DateTime, default=datetime.datetime.utcnow)
 
+
     def __init__(self, username, password, user_role):
         self.username = username
         self.user_role = user_role
@@ -92,7 +93,6 @@ class Answer(Base):
     id = Column(Integer, primary_key=True)
     answerlist_id = Column(Integer, ForeignKey('answerlist.id'))
     question_id = Column(Integer, ForeignKey('question.id'))
-    test = Column(Integer)
     idx = Column(Integer)  # NO. in that answerlist
     # TODO: add multiple answer type
     content = Column(String(1024))

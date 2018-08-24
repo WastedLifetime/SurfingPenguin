@@ -27,7 +27,7 @@ def init_app(app):
     from src.surfing_penguin.models import User  # noqa: F401
     Base.metadata.create_all(db_engine)
     session.__init__(bind=db_engine)
-    migrate.init_app(app, Base)
+    migrate.init_app(app, Base, render_as_batch=True)
     # TODO: change the way to add role and admin
     ADMIN_NAME = app.config['ADMIN_NAME']
     ADMIN_PASSWORD = app.config['ADMIN_PASSWORD']
