@@ -1,7 +1,5 @@
 import os
 import sys
-import pytest
-from flask_migrate import MigrateCommand
 from flask_script import Manager
 
 
@@ -11,9 +9,10 @@ sys.path.append(parent_path)
 
 from src.config import TestConfig  # NOQA
 from src.surfing_penguin import create_app  # NOQA
-from src.surfing_penguin.extensions import session #NOQA
+from src.surfing_penguin.extensions import session # NOQA
 from src.surfing_penguin.models import User  # NOQA
-from src.config import ProductionConfig, DevelopmentConfig, StagingConfig #NOQA
+from src.config import ProductionConfig, DevelopmentConfig, StagingConfig # NOQA
+
 
 def get_config():
     ENV = os.environ.get('ENV')
@@ -27,13 +26,27 @@ def get_config():
 
     return config
 
+
 config = get_config()
 app = create_app(config)
 manager = Manager(app)
-manager.add_command('db', MigrateCommand)
+
 
 @manager.command
-def initrole():
+def deploy():
+    """Run deployment tasks."""
+    from flask_migrate import init, migrate, upgrade
+    # migrate database to latest revision
+    try:
+        init()
+    except: # NOQA
+        pass
+    migrate()
+    upgrade()
+
+
+@manager.command
+def init_admin():
     name = app.config['ADMIN_NAME']
     pwd = app.config['ADMIN_PASSWORD'] or input("Pls input Flask admin pwd:")
     if session.query(User).filter_by(username=name).first() is None:
@@ -41,9 +54,9 @@ def initrole():
         new_user.id = session.query(User).count() + 1
         session.add(new_user)
         session.commit()
-        print("Roles added!")
+        print("Admin added!")
     else:
-        print("Name has been used.")
+        pass
 
 
 if __name__ == "__main__":

@@ -1,2 +1,2 @@
-release: python src/manage.py db migrate & src/manage.py db upgrade
+release: python src/manage.py deploy & src/manage.py init_admin
 web: gunicorn src.surfing_penguin:surfing_penguin

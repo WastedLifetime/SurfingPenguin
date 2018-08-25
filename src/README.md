@@ -24,6 +24,8 @@ export ADMIN_PASSWORD = "Your admin password"
 
 Under *src*, the following commands could help you start the server of the website.
 ```
+python manage.py deploy
+python manage.py init_admin
 export FLASK_APP=surfing_penguin.py
 flask run
 ```

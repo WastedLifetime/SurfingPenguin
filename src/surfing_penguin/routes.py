@@ -9,7 +9,8 @@ from src.surfing_penguin.models import User
 
 class View(ModelView):
     def is_accessible(self):
-        return current_user.is_authenticated and current_user.user_role == 'admin'
+        return current_user.is_authenticated and (
+                                            current_user.user_role == 'admin')
 
 
 flask_admin.add_view(View(User, session, endpoint="Users"))
