@@ -1,10 +1,10 @@
 from flask import Blueprint
 from flask_restplus import Api
 from flask_login import current_user
-from src.surfing_penguin import __version__
-from src.surfing_penguin.extensions import flask_admin, session
 from flask_admin.contrib.sqla import ModelView
+from src.surfing_penguin import __version__
 from src.surfing_penguin.models import User
+from src.surfing_penguin.extensions import flask_admin, session
 
 
 class View(ModelView):
