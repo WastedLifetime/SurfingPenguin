@@ -6,6 +6,7 @@ import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
 import Typography from '@material-ui/core/Typography';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import './SurveyItem.css'
+import { withRouter, Link } from 'react-router'
 
 class SurveyItem extends React.Component<Props> {
   constructor (props) {
@@ -16,7 +17,7 @@ class SurveyItem extends React.Component<Props> {
   }
 
   render () {
-    let { survey } = this.props
+    let { survey, location } = this.props
     return (
       <ExpansionPanel>
         <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
@@ -41,6 +42,7 @@ class SurveyItem extends React.Component<Props> {
         {this.props.survey.questions.map(question => {
           return <li key={question.idx} className='col-md-3'>{question.title}</li>
         })}
+        <Link to={`/surveys/${this.props.survey.id}/`}>{"Show detail"}</Link>
       </ul></div>
     }
   }
