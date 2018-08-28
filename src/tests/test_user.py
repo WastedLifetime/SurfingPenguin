@@ -18,7 +18,6 @@ def login_as_c(client, api_prefix):
 @pytest.fixture(scope="function")
 def login_as_admin(client, api_prefix):
     test_data = {'username': 'admin', 'password': 'admin'}
-    post_json(client, api_prefix+'register', test_data)
     post_json(client, api_prefix+'login', test_data)
     return
 
