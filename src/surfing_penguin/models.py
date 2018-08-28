@@ -19,7 +19,6 @@ class User(UserMixin, Base):
     register_time = Column(DateTime, default=datetime.datetime.utcnow)
     last_seen = Column(DateTime, default=datetime.datetime.utcnow)
 
-
     def __init__(self, username, password, user_role):
         self.username = username
         self.user_role = user_role
