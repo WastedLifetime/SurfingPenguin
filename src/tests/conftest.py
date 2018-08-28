@@ -20,6 +20,11 @@ def app():
 @pytest.fixture(scope='class')
 def session(app):
     from src.surfing_penguin.extensions import session
+    from src.surfing_penguin.models import User
+    new_user = User('admin', 'admin', 'admin')
+    new_user.id = session.query(User).count() + 1
+    session.add(new_user)
+    session.commit()
     return session
 
 
