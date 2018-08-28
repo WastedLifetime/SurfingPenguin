@@ -1,5 +1,6 @@
 import React from 'react'
 import './SurveyItem.css'
+import { withRouter, Link } from 'react-router'
 
 class SurveyItem extends React.Component {
   constructor (props) {
@@ -10,7 +11,7 @@ class SurveyItem extends React.Component {
   }
 
   render () {
-    let { survey } = this.props
+    let { survey, location } = this.props
     return (
       <div className='SurveyItem'>
         <button onClick={() => this.showsurvey()} >{survey.surveyname}</button>
@@ -32,6 +33,7 @@ class SurveyItem extends React.Component {
         {this.props.survey.questions.map(question => {
           return <li key={question.idx} className='col-md-3'>{question.title}</li>
         })}
+        <Link to={`/surveys/${this.props.survey.id}/`}>{"Show detail"}</Link>
       </ul></div>
     }
   }
