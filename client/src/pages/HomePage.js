@@ -24,21 +24,21 @@ class HomePage extends React.Component {
                 <section className='box'>
                   <i className='icon big rounded color1 fa-cloud' />
                   <h3>Lorem ipsum dolor</h3>
-                  <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Enim quam consectetur quibusdam magni minus aut modi aliquid.</p>
+                  <p>Fix CSS</p>
                 </section>
               </div>
               <div className='4u 12u$(medium)'>
                 <section className='box'>
                   <i className='icon big rounded color9 fa-desktop' />
                   <h3>Consectetur adipisicing</h3>
-                  <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Laudantium ullam consequatur repellat debitis maxime.</p>
+                  <p>Fix CSS</p>
                 </section>
               </div>
               <div className='4u$ 12u$(medium)'>
                 <section className='box'>
                   <i className='icon big rounded color6 fa-rocket' />
                   <h3>Adipisicing elit totam</h3>
-                  <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Atque eaque eveniet, nesciunt molestias. Ipsam, voluptate vero.</p>
+                  <p>Fix CSS</p>
                 </section>
               </div>
             </div>
