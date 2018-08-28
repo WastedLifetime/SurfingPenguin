@@ -1,20 +1,13 @@
 from flask import Blueprint
 from flask_restplus import Api
-from flask_login import current_user
-from flask_admin.contrib.sqla import ModelView
 from src.surfing_penguin import __version__
 from src.surfing_penguin.models import User
+from src.surfing_penguin.view import view
 from src.surfing_penguin.extensions import flask_admin, session
 
 
-class View(ModelView):
-    def is_accessible(self):
-        return current_user.is_authenticated and (
-                                            current_user.user_role == 'admin')
-
-
-flask_admin.add_view(View(User, session, endpoint="Users"))
-
+flask_admin.add_view(view.Admin_View(User, session, endpoint="Users"))
+# flask_admin should add in extensions but it doesn't work
 
 api_prefix = "/api/"+__version__[0:3]
 blueprint = Blueprint("api",

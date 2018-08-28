@@ -7,6 +7,7 @@ from flask_admin import Admin
 from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
+from src.surfing_penguin.view import view
 
 
 Base = declarative_base()
