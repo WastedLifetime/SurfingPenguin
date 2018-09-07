@@ -12,6 +12,7 @@ import EditSurveyPage from './pages/EditSurveyPage'
 import SurveyDataPage from './pages/SurveyDataPage'
 import OverviewSurveyPage from './pages/OverviewSurveyPage'
 import SurveyReportPage from './pages/SurveyReportPage'
+import SurveyDetailPage from './pages/SurveyDetailPage'
 import SurveyPage from './pages/SurveyPage'
 
 import { fetchCurrentUserRequest, fetchCurrentUserRequestSuccess, fetchCurrentUserRequestFail } from './actions/login'

@@ -37,6 +37,7 @@ class SurveyItem extends React.Component<Props> {
     })
   }
   showquestion () {
+    // TODO: Pass props (survey) through link
     if (this.state.hide) {
       return <div><ul className='list-unstyled'>
         {this.props.survey.questions.map(question => {

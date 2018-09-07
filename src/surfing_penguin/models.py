@@ -36,10 +36,22 @@ class User(UserMixin, Base):
         return check_password_hash(self.password_hash, password)
 
 
+# A survey should include: title, author, time,
+#   prize, description, type, num of answers
 class Survey(Base):
     __tablename__ = 'survey'
     id = Column(Integer, primary_key=True)
     surveyname = Column(String(128))
+
+    # TODO: connect author with user
+    author = Column(String(128))
+
+    prize_description = Column(String(128))
+    survey_description = Column(String(1024))
+    survey_type = Column(String(128))
+    create_time = Column(DateTime, default=datetime.datetime.utcnow)
+
+    # TODO: add bidirectional relastionship with question
     question_num = Column(Integer)
     answerlist_num = Column(Integer)
     author_id = Column(Integer, ForeignKey('user.id'))
