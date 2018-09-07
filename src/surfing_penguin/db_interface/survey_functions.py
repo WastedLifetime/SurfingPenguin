@@ -56,7 +56,7 @@ def new_answerlist(data):
     session.commit()
     for i in range(len(data["answers"])):
         question = session.query(Question).filter_by(
-                survey_id=survey.id, idx=i+1).first()
+                survey_id=survey.id, index_in_survey=i+1).first()
         new_answer(answerlist, question, data["answers"][i])
     return answerlist
 

@@ -16,7 +16,7 @@ api_get_survey_id = api.model("survey_id", {
     })
 
 api_question = api.model("question_model", {
-        'idx': fields.Integer(description="Index in that survey"),
+        'index_in_survey': fields.Integer(description="Index in that survey"),
         'title': fields.String(description="Question"),
         'content': fields.String(description="Description of the question")
     })
@@ -42,7 +42,7 @@ api_return_survey = api.model("return_survey_model", {
     })
 
 api_answer = api.model("answer_model", {
-        'idx': fields.Integer(description="Question index in that survey"),
+        'question_index': fields.Integer(description="index in that survey"),
         'content': fields.String(description="Answer content")
     })
 

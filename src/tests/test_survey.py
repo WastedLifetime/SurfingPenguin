@@ -21,12 +21,12 @@ def survey():
 def question_data():
     data = [
         {
-            'idx': 1,
+            'index_in_survey': 1,
             'title': "testQ1",
             'content': "Q1content"
         },
         {
-            'idx': 2,
+            'index_in_survey': 2,
             'title': "testQ2",
             'content': "Q2content"
             }
@@ -57,11 +57,11 @@ def survey_with_question(question_data):
 def answer_data():
     data = [
         {
-            'idx': 1,
+            'index_in_survey': 1,
             'content': "Ans1content"
         },
         {
-            'idx': 2,
+            'index_in_survey': 2,
             'content': "Ans2content"
         }
     ]
@@ -93,7 +93,7 @@ class TestSurvey():
         assert(question.title == "TITLE")
         assert(question.content == "CONTENT")
         assert(question.survey_id == survey.id)
-        assert(question.idx == survey.question_num)
+        assert(question.index_in_survey == survey.question_num)
 
     """ Testing db operations """
     def test_new_survey(self, session, question_data):
@@ -162,7 +162,7 @@ class TestAnswer():
     def test_answerlist_model(self, survey):
         test_answerlist = AnswerList(survey)
         assert test_answerlist.survey_id == survey.id
-        assert test_answerlist.idx == survey.answerlist_num
+        assert test_answerlist.index_in_survey == survey.answerlist_num
 
     def test_answer_model(self, session, survey_with_question):
         test_answerlist = AnswerList(survey_with_question)
@@ -170,7 +170,7 @@ class TestAnswer():
             survey_id=survey_with_question.id).first()
         test_answer = Answer(test_answerlist, target_question, "answer:123")
         assert test_answer.answerlist_id == test_answerlist.id
-        assert test_answer.idx == target_question.idx
+        assert test_answer.question_index == target_question.index_in_survey
         assert test_answer.question_id == target_question.id
         assert test_answer.content == "answer:123"
 
@@ -188,7 +188,7 @@ class TestAnswer():
 
     def test_id_get_answerlists(self):
         lists = survey_functions.id_get_answerlists(2)
-        assert lists[0].answers[0].idx == 1
+        assert lists[0].answers[0].question_index == 1
         assert lists[0].answers[0].content == "Ans1content"
 
     # NOTE: Function new_answer() is not tested,
@@ -219,7 +219,7 @@ class TestAnswer():
         assert json_of_response(response)['survey_id'] == 2
         assert json_of_response(response)['answerlist_num'] == 2
         assert json_of_response(response)['answerlists'][0]['answers'][0] == {
-                    'idx': 1,
+                    'question_index': 1,
                     'content': "Ans1content"
                 }
 

@@ -59,15 +59,14 @@ class Question(Base):
     title = Column(String(128))
     content = Column(String(1024))
     survey_id = Column(Integer, ForeignKey('survey.id'))
-    idx = Column(Integer)  # NO. in that survey
-    answers = relationship("Answer")
+    index_in_survey = Column(Integer)  # NO. in that survey
     # TODO: add answer type
 
     def __init__(self, title, content, survey):
         self.title = title
         self.content = content
         self.survey_id = survey.id
-        self.idx = survey.question_num
+        self.index_in_survey = survey.question_num
 
 
 class AnswerList(Base):
@@ -78,13 +77,13 @@ class AnswerList(Base):
     __tablename__ = 'answerlist'
     id = Column(Integer, primary_key=True)
     survey_id = Column(Integer, ForeignKey('survey.id'))
-    idx = Column(Integer)  # No. in list of answerlist to that survey
+    index_in_survey = Column(Integer)
     answers = relationship("Answer")
     # TODO: add author
 
     def __init__(self, survey):
         self.survey_id = survey.id
-        self.idx = survey.answerlist_num
+        self.index_in_survey = survey.answerlist_num
 
 
 class Answer(Base):
@@ -92,12 +91,13 @@ class Answer(Base):
     id = Column(Integer, primary_key=True)
     answerlist_id = Column(Integer, ForeignKey('answerlist.id'))
     question_id = Column(Integer, ForeignKey('question.id'))
-    idx = Column(Integer)  # NO. in that answerlist
+    question_index = Column(Integer, ForeignKey('question.index_in_survey'))
     # TODO: add multiple answer type
     content = Column(String(1024))
+    question = relationship("Question", foreign_keys=[question_index])
 
     def __init__(self, answerlist, question, content):
         self.answerlist_id = answerlist.id
-        self.idx = question.idx
+        self.question_index = question.index_in_survey
         self.question_id = question.id
         self.content = content
