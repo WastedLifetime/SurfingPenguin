@@ -1,0 +1,121 @@
+@charset "UTF-8";
+@import url(font-awesome.min.css);
+@import url(http://fonts.googleapis.com/css?family=Raleway:700,400);
+body{
+	font-family: Microsoft JhengHei;
+	background: #FDECE0;
+}
+body .navbar {
+		color: #ffffff;
+		min-height: 50px;
+	}
+	.navbar-brand {
+			left: 2.5em;	
+			position: absolute;
+	}
+	.collapse {
+			left: 14em;	
+			position: absolute;
+	}
+	.message{
+		padding: 5px;
+		color: #CDB9A9;
+	}
+	.message :hover{
+		color: #ffffff;
+	}
+/*sidebar*/
+#sidebar{
+	width: 240px;
+	height: 700px;
+	float: left;
+	background: #FDECE0;
+}
+#sidebar ul{
+	margin-left: 70px;
+	margin-top: 100px;
+}
+#sidebar li a{
+	color: #80644D;
+	font-size: 18px;
+}
+#sidebar li a:hover{
+	color: #000000;
+}
+/*search*/
+#search{
+		width: 700px;
+		height: 50px;
+		border:1px solid #80644D;
+		border-radius: 6px;
+		margin: 32px 50px 24px 50px;
+		float: left;
+		background-color: #d6b294;
+}
+
+#search form{
+		padding: 5px 50px;
+		float: right;
+}
+#search form .form-control{
+	padding: 10px;
+	font-size: 14px;
+	color: #80644D;
+}
+#search form i{
+	color:#80644D;
+}
+#search form i:active{
+	color:#ffffff;
+}
+/*select*/
+#select{
+	width: 700px;
+	height: 30px;
+	margin: 0px 50px;
+	float: left;
+	background-color: #FDECE0;
+}
+#select li{
+	display:inline;
+}
+#select li a{
+	color: #80644D;
+	font-size: 16px;
+	margin-right: 40px;
+}
+#select li a:active {
+	text-decoration:underline;
+}
+#select li button{
+	border:2px solid #80644D;
+	border-radius: 6px;
+	background-color: #FDECE0;
+	color: #80644D;
+	font-size: 16px;
+	float: right;
+	margin: -10px 40px;
+}
+#select li button:active {
+	background-color: #80644D;
+	color: #FDECE0;
+}	
+/*content*/
+#content{
+		width: 800px;
+		height: auto;
+		border:2px solid #80644D;
+		border-radius: 6px;
+		float: left;
+		background-color: #ffffff;
+}
+#content .list-group h5, p, small{
+	color: #80644D;
+}
+#content .list-group i{
+	color: #d6b294;
+	margin: 0px 10px;
+}
+#content .list-group i:hover{
+	color: #80644D;
+}
