@@ -90,7 +90,8 @@ class create_survey(Resource):
             if api.payload['surveyname'] is None:
                 return {'messages': "Invalid input: No survey name"}, 400
             # TODO: Check if an user duplicates his/her survey
-            survey_functions.new_survey(api.payload)
+            # TODO: Find current user and treat him/her as author
+            survey_functions.new_survey(api.payload, "(username)")
             return {'messages': "Survey created"}
         except KeyError:
             return {'messages': "Invalid input format"}, 400

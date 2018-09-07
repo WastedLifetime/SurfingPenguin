@@ -2,8 +2,8 @@ from src.surfing_penguin.extensions import session
 from src.surfing_penguin.models import Survey, Question, AnswerList, Answer
 
 
-def new_survey(data):
-    survey = Survey(data)
+def new_survey(data, author):
+    survey = Survey(data, author)
     session.add(survey)
     session.commit()
     for i in range(len(data['questions'])):
