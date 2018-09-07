@@ -56,8 +56,11 @@ class Survey(Base):
     questions = relationship("Question")
     answerlists = relationship("AnswerList")
 
-    def __init__(self, name):
-        self.surveyname = name
+    def __init__(self, data):
+        self.surveyname = data['name']
+        self.author = data['author']
+        self.survey_description = data['survey_description']
+        self.prize_description = data['prize_description']
         self.question_num = 0
         self.answerlist_num = 0
 
