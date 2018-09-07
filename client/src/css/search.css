@@ -1,29 +1,10 @@
 @charset "UTF-8";
 @import url(font-awesome.min.css);
 @import url(http://fonts.googleapis.com/css?family=Raleway:700,400);
-body{
+.App{
 	font-family: Microsoft JhengHei;
 	background: #FDECE0;
 }
-body .navbar {
-		color: #ffffff;
-		min-height: 50px;
-	}
-	.navbar-brand {
-			left: 2.5em;	
-			position: absolute;
-	}
-	.collapse {
-			left: 14em;	
-			position: absolute;
-	}
-	.message{
-		padding: 5px;
-		color: #CDB9A9;
-	}
-	.message :hover{
-		color: #ffffff;
-	}
 /*sidebar*/
 #sidebar{
 	width: 240px;
