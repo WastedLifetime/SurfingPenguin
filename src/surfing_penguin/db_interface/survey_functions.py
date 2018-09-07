@@ -7,8 +7,8 @@ def new_survey(user, name, questions, is_anonymous):
     survey = Survey(user, name, is_anonymous)
     session.add(survey)
     session.commit()
-    for i in range(len(questions)):
-        new_question(survey, questions[i])
+    for i in range(len(data['questions'])):
+        new_question(survey, data['questions'][i])
     return survey
 
 
