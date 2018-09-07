@@ -2,7 +2,7 @@ import React from 'react'
 import { Route, IndexRoute } from 'react-router'
 import App from './App'
 import Home from './pages/HomePage'
-import Surveys from './pages/Survey'
+import SurveyListPage from './pages/SurveyListPage'
 import RegisterPage from './pages/RegisterPage'
 import LoginPage from './pages/LoginPage'
 import UserSurveysPage from './pages/UserSurveysPage'
@@ -50,11 +50,12 @@ export default function routes (store) {
   }
 
   return (
+    // TODO: fix authentication
     <Route path='/' component={App}>
       <IndexRoute component={Home} />
       <Route path='register' component={RegisterPage} />
       <Route path='login' component={LoginPage} />
-      <Route path='surveys' component={Surveys}>
+      <Route path='surveys' component={SurveyListPage}>
         <Route path='logout' component={LogoutPage} />
         <Route path='user/surveys' component={UserSurveysPage} />
         <Route path='surveys/:surveyId' component={SurveyPage} />
