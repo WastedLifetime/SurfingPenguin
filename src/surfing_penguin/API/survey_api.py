@@ -23,6 +23,10 @@ api_question = api.model("question_model", {
 
 api_get_survey = api.model("get_survey_model", {
         'surveyname': fields.String(description="Survey name"),
+        'survey_description': fields.String(
+            description="Detailed description of the survey"),
+        'prize_description': fields.String(
+            description="Description of prize of the survey"),
         'questions': fields.List(
             fields.Nested(api_question),
             description="All questions in the survey"
@@ -35,6 +39,10 @@ api_return_survey = api.model("return_survey_model", {
         'question_num': fields.Integer(
             description="Number of questions in the survey"),
         'surveyname': fields.String(description="Survey name"),
+        'survey_description': fields.String(
+            description="Detailed description of the survey"),
+        'prize_description': fields.String(
+            description="Description of prize of the survey"),
         'questions': fields.List(
             fields.Nested(api_question),
             description="All questions in the survey"
@@ -82,8 +90,7 @@ class create_survey(Resource):
             if api.payload['surveyname'] is None:
                 return {'messages': "Invalid input: No survey name"}, 400
             # TODO: Check if an user duplicates his/her survey
-            survey_functions.new_survey(
-                    api.payload['surveyname'], api.payload['questions'])
+            survey_functions.new_survey(api.payload)
             return {'messages': "Survey created"}
         except KeyError:
             return {'messages': "Invalid input format"}, 400
