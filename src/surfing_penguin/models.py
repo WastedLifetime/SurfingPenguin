@@ -59,7 +59,6 @@ class Survey(Base):
     questions = relationship("Question")
     answerlists = relationship("AnswerList")
 
-<<<<<<< HEAD
     def __init__(self, user, name, is_anonymous):
         self.surveyname = name
         self.author_id = user.id
