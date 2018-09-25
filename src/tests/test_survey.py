@@ -6,13 +6,23 @@ from utils import post_json, json_of_response
 parent_path = os.path.dirname(os.getcwd())
 sys.path.append(parent_path)
 
-from src.surfing_penguin.models import Survey, Question, AnswerList, Answer # NOQA
+from src.surfing_penguin.models import Survey, Question, AnswerList, Answer, User # NOQA
 from src.surfing_penguin.db_interface import survey_functions  # NOQA
 
 
 @pytest.fixture
+def login_as_c(client, api_prefix):
+    test_data = {'username': 'c', 'password': 'b'}
+    post_json(client, api_prefix+'register', test_data)
+    post_json(client, api_prefix+'login', test_data)
+    return
+
+
+@pytest.fixture
 def survey():
-    new_survey = Survey("test")
+    new_user = User("test", "testpwd", "normal")
+    new_user.id = 1
+    new_survey = Survey(new_user, "test")
     return new_survey
 
 
@@ -49,7 +59,10 @@ def survey_data(question_data):
 def survey_with_question(question_data):
     # NOTE: This fixture should only be used
     # after TestSurvey class passes the tests.
-    survey = survey_functions.new_survey("survey_with_question", question_data)
+    new_user = User("test", "testpwd", "normal")
+    new_user.id = 1
+    survey = survey_functions.new_survey(new_user, "survey_with_question",
+                                         question_data)
     return survey
 
 
@@ -97,7 +110,10 @@ class TestSurvey():
 
     """ Testing db operations """
     def test_new_survey(self, session, question_data):
-        test_survey = survey_functions.new_survey("test", question_data)
+        new_user = User("test", "testpwd", "normal")
+        new_user.id = 1
+        test_survey = survey_functions.new_survey(new_user, "test",
+                                                  question_data)
         assert(test_survey.surveyname == "test")
         assert(test_survey.question_num == len(question_data))
         assert(session.query(Question).filter_by(
@@ -113,19 +129,19 @@ class TestSurvey():
 
     def test_name_get_survey(self):
         survey = survey_functions.name_get_survey("test")
-        assert (survey.question_num == 2)
+        assert (survey[0].surveyname == "test")
 
     # NOTE: Function new_question() is not tested,
     # because it's called in new_survey() in db_operation.
 
     """ Testing api """
-    def test_create_survey(self, survey_data, client, api_prefix):
+    def test_create_survey(self, survey_data, login_as_c, client, api_prefix):
         url = api_prefix+'create_survey'
         response = post_json(client, url, survey_data)
         assert (response.status_code == 200)
         assert (json_of_response(response)['messages'] == "Survey created")
 
-    def test_new_survey_bad_request(self, client, api_prefix):
+    def test_new_survey_bad_request(self, client, login_as_c, api_prefix):
         url = api_prefix+'create_survey'
         response = post_json(client, url, {})
         assert (response.status_code == 400)
@@ -152,7 +168,7 @@ class TestSurvey():
         url = api_prefix+'search_survey_by_name'
         response = post_json(client, url, {'name': "test"})
         assert response.status_code == 200
-        assert json_of_response(response)['id'] == 1
+        assert json_of_response(response)[0]['id'] == 1
 
 
 @pytest.mark.usefixtures('session')

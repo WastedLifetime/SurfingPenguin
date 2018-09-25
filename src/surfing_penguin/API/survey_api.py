@@ -6,7 +6,7 @@ from src.surfing_penguin.db_interface import survey_functions, user_functions
 
 
 api_return_message = api.model("return_message_model", {
-        'error_messages': fields.String(description="Messages returned")
+        'messages': fields.String(description="Messages returned")
     })
 
 api_get_survey_name = api.model("survey_name", {
@@ -46,7 +46,7 @@ api_return_survey = api.model("return_survey_model", {
             fields.Nested(api_question),
             description="All questions in the survey"
             ),
-        'messages': fields.String(description="Messages returned")
+        'error_messages': fields.String(description="Messages returned")
     })
 
 api_answer = api.model("answer_model", {
