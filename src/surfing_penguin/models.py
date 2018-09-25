@@ -18,6 +18,7 @@ class User(UserMixin, Base):
     user_role = Column(String(32), default='normal')
     register_time = Column(DateTime, default=datetime.datetime.utcnow)
     last_seen = Column(DateTime, default=datetime.datetime.utcnow)
+    survey = relationship("Survey")
 
     def __init__(self, username, password, user_role):
         self.username = username
@@ -41,13 +42,13 @@ class Survey(Base):
     surveyname = Column(String(128))
     question_num = Column(Integer)
     answerlist_num = Column(Integer)
-    # TODO: add author
-    # TODO: add bidirectional relastionship with question
+    author_id = Column(Integer, ForeignKey('user.id'))
     questions = relationship("Question")
     answerlists = relationship("AnswerList")
 
-    def __init__(self, name):
+    def __init__(self, user, name):
         self.surveyname = name
+        self.author_id = user.id
         self.question_num = 0
         self.answerlist_num = 0
 

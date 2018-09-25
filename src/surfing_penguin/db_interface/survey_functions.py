@@ -1,9 +1,10 @@
 from src.surfing_penguin.extensions import session
 from src.surfing_penguin.models import Survey, Question, AnswerList, Answer
+from src.surfing_penguin.db_interface import user_functions
 
 
-def new_survey(name, questions):
-    survey = Survey(name)
+def new_survey(user, name, questions):
+    survey = Survey(user, name)
     session.add(survey)
     session.commit()
     for i in range(len(questions)):
@@ -21,7 +22,12 @@ def id_get_survey(ID):
 
 
 def name_get_survey(name):
-    return session.query(Survey).filter_by(surveyname=name).first()
+    return session.query(Survey).filter_by(surveyname=name).all()
+
+
+def author_get_survey(author):
+    user = user_functions.get_user(author)
+    return session.query(Survey).filter_by(author_id=user.id).all()
 
 
 def new_question(survey, data):

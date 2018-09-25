@@ -1,10 +1,12 @@
 from flask_restplus import Resource, fields
+from flask_login import current_user
 from src.surfing_penguin.routes import api
-from src.surfing_penguin.db_interface import survey_functions
+from src.surfing_penguin.API.user_api import login_required
+from src.surfing_penguin.db_interface import survey_functions, user_functions
 
 
 api_return_message = api.model("return_message_model", {
-        'messages': fields.String(description="Messages returned")
+        'error_messages': fields.String(description="Messages returned")
     })
 
 api_get_survey_name = api.model("survey_name", {
@@ -13,6 +15,10 @@ api_get_survey_name = api.model("survey_name", {
 
 api_get_survey_id = api.model("survey_id", {
         'id': fields.Integer(description="Survey ID")
+    })
+
+api_get_survey_author = api.model("survey_author", {
+        'author': fields.String(description="Survey Author")
     })
 
 api_question = api.model("question_model", {
@@ -32,13 +38,15 @@ api_get_survey = api.model("get_survey_model", {
 # TODO: add question_num and category (for meta class) in api_survey
 api_return_survey = api.model("return_survey_model", {
         'id': fields.Integer(description="Survey ID"),
+        'author_id': fields.Integer(description="Author ID"),
         'question_num': fields.Integer(
             description="Number of questions in the survey"),
         'surveyname': fields.String(description="Survey name"),
         'questions': fields.List(
             fields.Nested(api_question),
             description="All questions in the survey"
-            )
+            ),
+        'messages': fields.String(description="Messages returned")
     })
 
 api_answer = api.model("answer_model", {
@@ -77,13 +85,16 @@ api_return_answerlists = api.model("return_ansewrlists_model", {
 class create_survey(Resource):
     @api.marshal_with(api_return_message)
     @api.expect(api_get_survey)
+    @login_required(role='ANY')
     def post(self):
         try:
             if api.payload['surveyname'] is None:
                 return {'messages': "Invalid input: No survey name"}, 400
             # TODO: Check if an user duplicates his/her survey
             survey_functions.new_survey(
-                    api.payload['surveyname'], api.payload['questions'])
+                    current_user,
+                    api.payload['surveyname'],
+                    api.payload['questions'])
             return {'messages': "Survey created"}
         except KeyError:
             return {'messages': "Invalid input format"}, 400
@@ -116,6 +127,19 @@ class search_survey_by_name(Resource):
     @api.expect(api_get_survey_name)
     def post(self):
         return survey_functions.name_get_survey(api.payload['name'])
+
+
+@api.route('/search_survey_by_author')
+class search_survey_by_author(Resource):
+    """
+    Show the information of a survey, given its name or ID.
+    """
+    @api.marshal_list_with(api_return_survey)
+    @api.expect(api_get_survey_author)
+    def post(self):
+        if user_functions.get_user(api.payload['author']) is None:
+            return {'error_messages': "User not found"}
+        return survey_functions.author_get_survey(api.payload['author'])
 
 
 @api.route('/answer_a_survey')
