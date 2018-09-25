@@ -12,6 +12,7 @@ class LoginPage extends Component {
   }
 
   render () {
+    console.log(this.props)
     return (
       <div className='col-md-4 col-md-offset-4' style={{marginTop: '40px'}}>
         <LoginFormView {...this.props} />

@@ -49,7 +49,8 @@ export const fetchSurvey = surveyId => dispatch => {
   api.fetchSurvey(surveyId).then(res => {
     dispatch({
       type: 'FETCH_SURVEY_REQUEST_SUCCESS',
-      payload: normalizeSurvey(res)
+      //payload: normalizeSurvey(res)
+      payload: res
     })
   }).catch(err => {
     dispatch({

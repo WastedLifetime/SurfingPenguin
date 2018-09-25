@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import SurveyNavBar from './../containers/SurveyNavBar'
-import { fetchSurvey } from '../actions/editSurvey'
+import { fetchSurvey } from '../actions/survey'
 
 class SurveyDetailPage extends Component {
   loadData () {
@@ -28,7 +28,15 @@ class SurveyDetailPage extends Component {
     )
   }
 }
-export default connect((state, { params }) => ({
+
+const mapStateToProps = (state) => {
+  console.log(state)
+  return {
+    Survey: state.fetchSurvey
+  }
+}
+
+export default connect(mapStateToProps, (state, { params }) => ({
   surveyId: params.surveyId
 }), {
   fetchSurvey
