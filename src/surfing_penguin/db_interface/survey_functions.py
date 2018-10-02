@@ -44,7 +44,7 @@ def new_question(survey, data):
     session.commit()
 
 
-def new_answerlist(data):
+def new_answerlist(user, data):
     """
     Answerlist is a data structure that stores
     a list of answers of a specified survey.
@@ -57,7 +57,7 @@ def new_answerlist(data):
     """
     survey = session.query(Survey).filter_by(id=data["survey_id"]).first()
     survey.answerlist_num += 1
-    answerlist = AnswerList(survey)
+    answerlist = AnswerList(user, survey, data["nickname"])
     session.add(answerlist)
     session.commit()
     for i in range(len(data["answers"])):

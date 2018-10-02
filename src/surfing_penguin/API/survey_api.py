@@ -55,9 +55,12 @@ api_answer = api.model("answer_model", {
     })
 
 api_answerlist = api.model("answerlist_model", {
+        'nickname': fields.String(descritption="who answer"),
+        'answeruser_id': fields.Integer(description="answer user's id"),
         'answers': fields.List(
             fields.Nested(api_answer),
             description="All answers of the survey"),
+        ''
         'messages': fields.String(description="Messages returned")
     })
 
@@ -66,6 +69,7 @@ api_get_answerlist = api.model("get_answerlist_model", {
         'answers': fields.List(
             fields.Nested(api_answer),
             description="All answers of the survey"),
+        'nickname': fields.String(description="Your nickname"),
     })
 
 api_return_answerlists = api.model("return_ansewrlists_model", {
@@ -115,7 +119,10 @@ class search_survey_by_id(Resource):
     @api.marshal_list_with(api_return_survey)
     @api.expect(api_get_survey_id)
     def post(self):
-        return survey_functions.id_get_survey(api.payload['id'])
+        if survey_functions.id_get_survey(api.payload['id']) is None:
+            return {'error_messages': "Survey not found"}
+        else:
+            return survey_functions.id_get_survey(api.payload['id'])
 
 
 @api.route('/search_survey_by_name')
@@ -146,10 +153,11 @@ class search_survey_by_author(Resource):
 class answer_survey(Resource):
     @api.marshal_with(api_return_message)
     @api.expect(api_get_answerlist)
+    @login_required(role='ANY')
     def post(self):
         try:
             if survey_functions.id_get_survey(api.payload['survey_id']):
-                survey_functions.new_answerlist(api.payload)
+                survey_functions.new_answerlist(current_user, api.payload)
                 return {'messages': "Answer completed"}
             return {'messages': "Survey not found"}, 400
         except KeyError:

@@ -78,13 +78,17 @@ class AnswerList(Base):
     __tablename__ = 'answerlist'
     id = Column(Integer, primary_key=True)
     survey_id = Column(Integer, ForeignKey('survey.id'))
+    nickname = Column(String(128))
+    answeruser_id = Column(Integer, ForeignKey('user.id'))
     index_in_survey = Column(Integer)
     answers = relationship("Answer")
     # TODO: add author
 
-    def __init__(self, survey):
+    def __init__(self, user, survey, nickname):
         self.survey_id = survey.id
         self.index_in_survey = survey.answerlist_num
+        self.answeruser_id = user.id
+        self.nickname = nickname
 
 
 class Answer(Base):
