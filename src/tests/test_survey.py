@@ -85,7 +85,9 @@ def answer_data():
 def answerlist_data(answer_data):
     anslist = {
         'survey_id': 2,
-        'answers': answer_data
+        'answers': answer_data,
+        'answeruser_id': 1,
+        'nickname': "client"
     }
     return anslist
 
@@ -176,12 +178,14 @@ class TestAnswer():
 
     """ Testing models """
     def test_answerlist_model(self, survey):
-        test_answerlist = AnswerList(survey)
+        new_user = User("test", "testpwd", "normal")
+        test_answerlist = AnswerList(new_user, survey, "client")
         assert test_answerlist.survey_id == survey.id
         assert test_answerlist.index_in_survey == survey.answerlist_num
 
     def test_answer_model(self, session, survey_with_question):
-        test_answerlist = AnswerList(survey_with_question)
+        new_user = User("test", "testpwd", "normal")
+        test_answerlist = AnswerList(new_user, survey_with_question, "client")
         target_question = session.query(Question).filter_by(
             survey_id=survey_with_question.id).first()
         test_answer = Answer(test_answerlist, target_question, "answer:123")
@@ -193,7 +197,8 @@ class TestAnswer():
     """ Testing db operations """
     def test_new_answerlist(
             self, session, answerlist_data, survey_with_question):
-        answerlist = survey_functions.new_answerlist(answerlist_data)
+        new_user = User("test", "testpwd", "normal")
+        answerlist = survey_functions.new_answerlist(new_user, answerlist_data)
         assert answerlist.survey_id == answerlist_data['survey_id']
         assert session.query(AnswerList).filter_by(
                 survey_id=answerlist_data['survey_id']).first() is not None
@@ -212,13 +217,13 @@ class TestAnswer():
 
     """ Testing api """
     def test_answer_a_survey(
-            self, client, api_prefix, answerlist_data):
+            self, client, api_prefix, login_as_c, answerlist_data):
         url = api_prefix+'answer_a_survey'
         response = post_json(client, url, answerlist_data)
         assert response.status_code == 200
         assert json_of_response(response)['messages'] == "Answer completed"
 
-    def test_answer_a_survey_bad_request(self, client, api_prefix):
+    def test_answer_a_survey_bad_request(self, client, login_as_c, api_prefix):
         url = api_prefix+'answer_a_survey'
         response = post_json(client, url, {})
         assert response.status_code == 400
