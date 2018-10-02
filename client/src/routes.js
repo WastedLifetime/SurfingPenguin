@@ -1,6 +1,8 @@
 import React from 'react'
 import { Route, IndexRoute } from 'react-router'
 import App from './App'
+import Home from './pages/HomePage'
+import SurveyListPage from './pages/SurveyListPage'
 import RegisterPage from './pages/RegisterPage'
 import LoginPage from './pages/LoginPage'
 import UserSurveysPage from './pages/UserSurveysPage'
@@ -48,17 +50,21 @@ export default function routes (store) {
   }
 
   return (
-    <Route path='/' component={App} onEnter={requireAuth}>
+    // TODO: fix authentication
+    <Route path='/' component={App}>
+      <IndexRoute component={Home} />
       <Route path='register' component={RegisterPage} />
       <Route path='login' component={LoginPage} />
-      <Route path='logout' component={LogoutPage} />
-      <Route path='user/surveys' component={UserSurveysPage} />
-      <Route path='surveys/:surveyId' component={SurveyPage} />
-      <Route path='user/surveys/:surveyId/' component={UserSurveyPage}>
-        <Route path='edit' component={EditSurveyPage} />
-        <Route path='data' component={SurveyDataPage} />
-        <Route path='report' component={SurveyReportPage} />
-        <IndexRoute component={OverviewSurveyPage} />
+      <Route path='surveys' component={SurveyListPage}>
+        <Route path='logout' component={LogoutPage} />
+        <Route path='user/surveys' component={UserSurveysPage} />
+        <Route path='surveys/:surveyId' component={SurveyPage} />
+        <Route path='user/surveys/:surveyId/' component={UserSurveyPage}>
+          <Route path='edit' component={EditSurveyPage} />
+          <Route path='data' component={SurveyDataPage} />
+          <Route path='report' component={SurveyReportPage} />
+          // <IndexRoute component={OverviewSurveyPage} />
+        </Route>
       </Route>
     </Route>
   )

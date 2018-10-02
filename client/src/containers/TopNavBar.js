@@ -5,6 +5,7 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router'
 import {Navbar, Nav, NavItem, NavDropdown, MenuItem} from 'react-bootstrap'
+import '../css/style.css'
 import './TopNavBar.css'
 
 class TopNavBar extends Component {
@@ -32,15 +33,21 @@ class TopNavBar extends Component {
 
   render () {
     // eslint-disable-next-line
-    let pathname=location.pathname;
+    let indexPathname = '#/'
+    let surveyPathname = '#/surveys'
     let { currentUser } = this.props
-    if (currentUser) { pathname = '#/user/surveys' }
+    // if (currentUser) { indexPathname = '#/surveys' }
     return (
       <Navbar className='TopNavBar'>
         <Navbar.Header>
           <Navbar.Brand>
-            <a href={pathname}>
+            <a href={indexPathname}>
                 Surfing Penguin
+            </a>
+          </Navbar.Brand>
+          <Navbar.Brand>
+            <a href={surveyPathname}>
+                Surveys
             </a>
           </Navbar.Brand>
           <Navbar.Toggle />
