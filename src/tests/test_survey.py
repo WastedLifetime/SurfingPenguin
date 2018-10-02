@@ -22,7 +22,7 @@ def login_as_c(client, api_prefix):
 def survey():
     new_user = User("test", "testpwd", "normal")
     new_user.id = 1
-    new_survey = Survey(new_user, "test")
+    new_survey = Survey(new_user, "test", 0)
     return new_survey
 
 
@@ -48,9 +48,9 @@ def question_data():
 @pytest.fixture
 def survey_data(question_data):
     survey = {
-        'id': 2,
         'surveyname': 'test_api',
-        'questions': question_data
+        'questions': question_data,
+        'is_anonymous': 0
     }
     return survey
 
@@ -62,7 +62,7 @@ def survey_with_question(question_data):
     new_user = User("test", "testpwd", "normal")
     new_user.id = 1
     survey = survey_functions.new_survey(new_user, "survey_with_question",
-                                         question_data)
+                                         question_data, 0)
     return survey
 
 
@@ -115,7 +115,7 @@ class TestSurvey():
         new_user = User("test", "testpwd", "normal")
         new_user.id = 1
         test_survey = survey_functions.new_survey(new_user, "test",
-                                                  question_data)
+                                                  question_data, 0)
         assert(test_survey.surveyname == "test")
         assert(test_survey.question_num == len(question_data))
         assert(session.query(Question).filter_by(

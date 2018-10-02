@@ -32,7 +32,8 @@ api_get_survey = api.model("get_survey_model", {
         'questions': fields.List(
             fields.Nested(api_question),
             description="All questions in the survey"
-            )
+            ),
+        'is_anonymous': fields.Integer(description="is_anonymous or not")
     })
 
 # TODO: add question_num and category (for meta class) in api_survey
@@ -46,6 +47,7 @@ api_return_survey = api.model("return_survey_model", {
             fields.Nested(api_question),
             description="All questions in the survey"
             ),
+        'is_anonymous': fields.Integer(description="is_anonymous or not"),
         'error_messages': fields.String(description="Messages returned")
     })
 
@@ -98,7 +100,8 @@ class create_survey(Resource):
             survey_functions.new_survey(
                     current_user,
                     api.payload['surveyname'],
-                    api.payload['questions'])
+                    api.payload['questions'],
+                    api.payload['is_anonymous'])
             return {'messages': "Survey created"}
         except KeyError:
             return {'messages': "Invalid input format"}, 400

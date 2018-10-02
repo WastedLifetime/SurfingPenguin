@@ -3,8 +3,8 @@ from src.surfing_penguin.models import Survey, Question, AnswerList, Answer
 from src.surfing_penguin.db_interface import user_functions
 
 
-def new_survey(user, name, questions):
-    survey = Survey(user, name)
+def new_survey(user, name, questions, is_anonymous):
+    survey = Survey(user, name, is_anonymous)
     session.add(survey)
     session.commit()
     for i in range(len(questions)):
