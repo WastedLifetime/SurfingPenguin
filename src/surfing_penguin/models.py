@@ -43,8 +43,8 @@ class Survey(Base):
     question_num = Column(Integer)
     answerlist_num = Column(Integer)
     author_id = Column(Integer, ForeignKey('user.id'))
-    questions = relationship("Question")
     is_anonymous = Column(Integer, default=0)
+    questions = relationship("Question")
     answerlists = relationship("AnswerList")
 
     def __init__(self, user, name, is_anonymous):

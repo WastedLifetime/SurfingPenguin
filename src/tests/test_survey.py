@@ -231,6 +231,24 @@ class TestAnswer():
         response = post_json(client, url, {'survey_id': 100})
         assert response.status_code == 400
         assert json_of_response(response)['messages'] == "Survey not found"
+        data = [
+            {
+                'index_in_survey': 5,
+                'content': "Ans1content"
+            },
+            {
+                'index_in_survey': 3,
+                'content': "Ans2content"
+            }
+        ]
+        response = post_json(client, url, {
+                'survey_id': 2,
+                'answers': data,
+                'answeruser_id': 1,
+                'nickname': "client"
+                })
+        assert response.status_code == 400
+        assert json_of_response(response)['messages'] == "Question not found"
 
     def test_show_answers(
             self, session, client, api_prefix,):

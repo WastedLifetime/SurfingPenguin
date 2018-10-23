@@ -160,6 +160,11 @@ class answer_survey(Resource):
     def post(self):
         try:
             if survey_functions.id_get_survey(api.payload['survey_id']):
+                now = survey_functions.id_get_survey(api.payload['survey_id'])
+                now_answers = api.payload['answers']
+                for i in now_answers:
+                    if i['index_in_survey'] > now.question_num:
+                        return {'messages': "Question not found"}, 400
                 survey_functions.new_answerlist(current_user, api.payload)
                 return {'messages': "Answer completed"}
             return {'messages': "Survey not found"}, 400
