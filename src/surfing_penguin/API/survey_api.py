@@ -136,7 +136,7 @@ class search_survey_by_name(Resource):
     @api.marshal_list_with(api_return_survey)
     @api.expect(api_get_survey_name)
     def post(self):
-        return survey_functions.name_get_survey(api.payload['name'])
+        return survey_functions.name_get_surveys(api.payload['name'])
 
 
 @api.route('/search_survey_by_author')
@@ -149,7 +149,7 @@ class search_survey_by_author(Resource):
     def post(self):
         if user_functions.get_user(api.payload['author']) is None:
             return {'error_messages': "User not found"}
-        return survey_functions.author_get_survey(api.payload['author'])
+        return survey_functions.author_get_surveys(api.payload['author'])
 
 
 @api.route('/answer_a_survey')
@@ -160,10 +160,11 @@ class answer_survey(Resource):
     def post(self):
         try:
             if survey_functions.id_get_survey(api.payload['survey_id']):
-                now = survey_functions.id_get_survey(api.payload['survey_id'])
-                now_answers = api.payload['answers']
-                for i in now_answers:
-                    if i['index_in_survey'] > now.question_num:
+                survey = survey_functions.id_get_survey(
+                        api.payload['survey_id'])
+                answers = api.payload['answers']
+                for answer in answers:
+                    if answer['index_in_survey'] > survey.question_num:
                         return {'messages': "Question not found"}, 400
                 survey_functions.new_answerlist(current_user, api.payload)
                 return {'messages': "Answer completed"}

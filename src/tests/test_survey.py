@@ -130,7 +130,7 @@ class TestSurvey():
         assert (survey.surveyname == "test")
 
     def test_name_get_survey(self):
-        survey = survey_functions.name_get_survey("test")
+        survey = survey_functions.name_get_surveys("test")
         assert (survey[0].surveyname == "test")
 
     # NOTE: Function new_question() is not tested,

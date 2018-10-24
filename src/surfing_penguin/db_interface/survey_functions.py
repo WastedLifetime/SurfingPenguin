@@ -21,11 +21,11 @@ def id_get_survey(ID):
     return session.query(Survey).filter_by(id=ID).first()
 
 
-def name_get_survey(name):
+def name_get_surveys(name):
     return session.query(Survey).filter_by(surveyname=name).all()
 
 
-def author_get_survey(author):
+def author_get_surveys(author):
     user = user_functions.get_user(author)
     return session.query(Survey).filter_by(author_id=user.id).all()
 
