@@ -1,9 +1,10 @@
 from src.surfing_penguin.extensions import session
 from src.surfing_penguin.models import Survey, Question, AnswerList, Answer
+from src.surfing_penguin.db_interface import user_functions
 
 
-def new_survey(name, questions):
-    survey = Survey(name)
+def new_survey(user, name, questions, is_anonymous):
+    survey = Survey(user, name, is_anonymous)
     session.add(survey)
     session.commit()
     for i in range(len(questions)):
@@ -20,8 +21,13 @@ def id_get_survey(ID):
     return session.query(Survey).filter_by(id=ID).first()
 
 
-def name_get_survey(name):
-    return session.query(Survey).filter_by(surveyname=name).first()
+def name_get_surveys(name):
+    return session.query(Survey).filter_by(surveyname=name).all()
+
+
+def author_get_surveys(author):
+    user = user_functions.get_user(author)
+    return session.query(Survey).filter_by(author_id=user.id).all()
 
 
 def new_question(survey, data):
@@ -38,7 +44,7 @@ def new_question(survey, data):
     session.commit()
 
 
-def new_answerlist(data):
+def new_answerlist(user, data):
     """
     Answerlist is a data structure that stores
     a list of answers of a specified survey.
@@ -51,12 +57,12 @@ def new_answerlist(data):
     """
     survey = session.query(Survey).filter_by(id=data["survey_id"]).first()
     survey.answerlist_num += 1
-    answerlist = AnswerList(survey)
+    answerlist = AnswerList(user, survey, data["nickname"])
     session.add(answerlist)
     session.commit()
     for i in range(len(data["answers"])):
         question = session.query(Question).filter_by(
-                survey_id=survey.id, idx=i+1).first()
+                survey_id=survey.id, index_in_survey=i+1).first()
         new_answer(answerlist, question, data["answers"][i])
     return answerlist
 
