@@ -1,5 +1,9 @@
 import React, { Component } from 'react'
+import { connect } from 'react-redux'
 import SurveyItem from '../components/SurveyList/SurveyItem'
+import { bindActionCreators } from 'redux'
+import { getSurvey, getFetchError, getFetchStatus, getSubmitStatus } from '../reducers/survey'
+import { fetchSurvey } from '../actions/survey'
 import '../css/search.css'
 // import '../css/bootstrap.css'
 import '../css/font-awesome/css/font-awesome.min.css'
@@ -85,5 +89,18 @@ class SurveyList extends Component {
     )
   }
 }
+const mapStateToProps = (state, { params }) => {
+  return {
+    survey: getSurvey(state.survey),
+    isLoading: getFetchStatus(state.survey),
+    surveyId: params.surveyId,
+    isSuccess: getSubmitStatus(state.survey)
+  }
+}
 
-export default SurveyList
+const mapDispatchToProps = (dispatch) => {
+  return {
+    fetchSurvey: bindActionCreators(fetchSurvey, dispatch)
+  }
+}
+export default connect(mapStateToProps, mapDispatchToProps)(SurveyList)
