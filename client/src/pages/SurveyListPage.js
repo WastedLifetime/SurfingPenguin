@@ -1,10 +1,12 @@
 import React, { Component } from 'react'
+import SurveyItem from '../components/SurveyList/SurveyItem'
 import '../css/search.css'
 // import '../css/bootstrap.css'
 import '../css/font-awesome/css/font-awesome.min.css'
 
 class SurveyList extends Component {
   render () {
+    console.log(this.props)
     return (
       <div className='SurveyList'>
         <div id='sidebar'>
@@ -36,6 +38,8 @@ class SurveyList extends Component {
         </div>
         <div id='content'>
           <div className='list-group'>
+            <SurveyItem {...this.props}>
+            </SurveyItem>
 
             <a href='#' className='list-group-item list-group-item-action flex-column align-items-start'>
               <div className='d-flex w-100 justify-content-between'>

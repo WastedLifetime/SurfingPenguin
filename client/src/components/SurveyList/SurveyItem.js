@@ -1,23 +1,27 @@
 import React from 'react'
 import './SurveyItem.css'
 
-class SurveyItem extends React.Component {
-  constructor (props) {
-    super(props)
-    this.state = {
-      hide: false
-    }
-  }
-
+class SurveyItem extends React.Component<Props> {
   render () {
     let { survey } = this.props
+    console.log(this.props)
     return (
-      <div className='SurveyItem'>
+      <a href='#' className='list-group-item list-group-item-action flex-column align-items-start'>
+        <div className='d-flex w-100 justify-content-between'>
+      // <div className='SurveyItem'>
+          <h5 className='mb-1'>標題</h5>
+          <small>已截止</small>
+        </div>
+
+      // </div>
+        <p className='mb-1'>Donec id elit non mi porta gravida at eget metus. Maecenas sed diam eget risus varius blandit.</p>
         <button onClick={() => this.showsurvey()} >{survey.surveyname}</button>
         <div>
           {this.showquestion()}
         </div>
-      </div>
+        <i className='fa fa-bookmark' aria-hidden='true'> 收藏</i>
+        <i className='fa fa-pencil' aria-hidden='true'> 60</i>
+      </a>
 
     )
   }
