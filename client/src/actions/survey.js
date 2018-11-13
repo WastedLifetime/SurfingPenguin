@@ -4,7 +4,7 @@ import * as api from '../api'
 export const fetchSurvey = surveyId => dispatch => {
   dispatch({
     type: Survey.FETCH_SURVEY_REQUEST,
-    surveyId
+    payload: surveyId
   })
 
   api.fetchSurvey(surveyId).then(res => {

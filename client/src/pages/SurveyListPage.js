@@ -10,7 +10,6 @@ import '../css/font-awesome/css/font-awesome.min.css'
 
 class SurveyList extends Component {
   render () {
-    console.log(this.props)
     return (
       <div className='SurveyList'>
         <div id='sidebar'>
