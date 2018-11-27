@@ -10,6 +10,7 @@ import '../css/font-awesome/css/font-awesome.min.css'
 
 class SurveyList extends Component {
   render () {
+    console.log(this.props)
     return (
       <div className='SurveyList'>
         <div id='sidebar'>
@@ -44,35 +45,6 @@ class SurveyList extends Component {
             <SurveyItem {...this.props}>
             </SurveyItem>
 
-            <a href='#' className='list-group-item list-group-item-action flex-column align-items-start'>
-              <div className='d-flex w-100 justify-content-between'>
-                <h5 className='mb-1'>標題</h5>
-                <small>已截止</small>
-              </div>
-              <p className='mb-1'>Donec id elit non mi porta gravida at eget metus. Maecenas sed diam eget risus varius blandit.</p>
-              <i className='fa fa-bookmark' aria-hidden='true'> 收藏</i>
-              <i className='fa fa-pencil' aria-hidden='true'> 60</i>
-            </a>
-
-            <a href='#' className='list-group-item list-group-item-action flex-column align-items-start'>
-              <div className='d-flex w-100 justify-content-between'>
-                <h5 className='mb-1'>標題</h5>
-                <small>進行中</small>
-              </div>
-              <p className='mb-1'>Donec id elit non mi porta gravida at eget metus. Maecenas sed diam eget risus varius blandit.</p>
-              <i className='fa fa-bookmark' aria-hidden='true'>收藏</i>
-              <i className='fa fa-pencil' aria-hidden='true'> 50</i>
-            </a>
-
-            <a href='#' className='list-group-item list-group-item-action flex-column align-items-start'>
-              <div className='d-flex w-100 justify-content-between'>
-                <h5 className='mb-1'>標題</h5>
-                <small>已截止</small>
-              </div>
-              <p className='mb-1'>Donec id elit non mi porta gravida at eget metus. Maecenas sed diam eget risus varius blandit.</p>
-              <i className='fa fa-bookmark' aria-hidden='true'>收藏</i>
-              <i className='fa fa-pencil' aria-hidden='true'> 100</i>
-            </a>
             <a href='#' className='list-group-item list-group-item-action flex-column align-items-start'>
               <div className='d-flex w-100 justify-content-between'>
                 <h5 className='mb-1'>標題</h5>

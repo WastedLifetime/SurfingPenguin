@@ -6,6 +6,7 @@ import './SurveyList.css'
 class SurveyList extends React.Component {
   render () {
     let { surveys } = this.props
+    console.log(surveys)
     return (
       <div className='SurveyList row'>
         <ul className='list-unstyled'>
