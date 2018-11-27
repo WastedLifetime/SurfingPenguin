@@ -22,7 +22,7 @@ def login_as_c(client, api_prefix):
 def survey():
     new_user = User("test", "testpwd", "normal")
     new_user.id = 1
-    new_survey = Survey(new_user, "test", 0)
+    new_survey = Survey(new_user, "test", "content", 0)
     return new_survey
 
 
@@ -49,6 +49,7 @@ def question_data():
 def survey_data(question_data):
     survey = {
         'survey_title': 'test_api',
+        'survey_content': 'test_content',
         'questions': question_data,
         'is_anonymous': 0
     }
@@ -62,7 +63,7 @@ def survey_with_question(question_data):
     new_user = User("test", "testpwd", "normal")
     new_user.id = 1
     survey = survey_functions.new_survey(new_user, "survey_with_question",
-                                         question_data, 0)
+                                         "content", question_data, 0)
     return survey
 
 
@@ -100,6 +101,7 @@ class TestSurvey():
     """ Testing models """
     def test_survey_model(self, survey):
         assert(survey.survey_title == "test")
+        assert(survey.survey_content == "content")
         assert(survey.question_num == 0)
         assert(survey.answerlist_num == 0)
 
@@ -115,8 +117,9 @@ class TestSurvey():
         new_user = User("test", "testpwd", "normal")
         new_user.id = 1
         test_survey = survey_functions.new_survey(new_user, "test",
-                                                  question_data, 0)
+                                                  "content", question_data, 0)
         assert(test_survey.survey_title == "test")
+        assert(test_survey.survey_content == "content")
         assert(test_survey.question_num == len(question_data))
         assert(session.query(Question).filter_by(
             survey_id=test_survey.id).count() == len(question_data))

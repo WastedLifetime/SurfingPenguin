@@ -41,15 +41,17 @@ class Survey(Base):
     id = Column(Integer, primary_key=True)
     author_id = Column(Integer, ForeignKey('user.id'))
     survey_title = Column(String(128))
+    survey_content = Column(String(128))  # Briefly describe it
     question_num = Column(Integer)
     is_anonymous = Column(Integer, default=0)
     answerlist_num = Column(Integer)
     questions = relationship("Question")
     answerlists = relationship("AnswerList")
 
-    def __init__(self, user, name, is_anonymous):
+    def __init__(self, user, name, content, is_anonymous):
         self.survey_title = name
         self.author_id = user.id
+        self.survey_content = content
         self.question_num = 0
         self.answerlist_num = 0
         self.is_anonymous = is_anonymous

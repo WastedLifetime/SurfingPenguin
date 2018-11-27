@@ -29,6 +29,7 @@ api_question = api.model("question_model", {
 
 api_get_survey = api.model("get_survey_model", {
         'survey_title': fields.String(description="Survey name"),
+        'survey_content': fields.String(description="Survey content"),
         'questions': fields.List(
             fields.Nested(api_question),
             description="All questions in the survey"
@@ -43,6 +44,7 @@ api_return_survey = api.model("return_survey_model", {
         'question_num': fields.Integer(
             description="Number of questions in the survey"),
         'survey_title': fields.String(description="Survey name"),
+        'survey_content': fields.String(description="Survey content"),
         'questions': fields.List(
             fields.Nested(api_question),
             description="All questions in the survey"
@@ -100,6 +102,7 @@ class create_survey(Resource):
             survey_functions.new_survey(
                     current_user,
                     api.payload['survey_title'],
+                    api.payload['survey_content'],
                     api.payload['questions'],
                     api.payload['is_anonymous'])
             return {'messages': "Survey created"}

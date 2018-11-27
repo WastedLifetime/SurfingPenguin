@@ -3,8 +3,8 @@ from src.surfing_penguin.models import Survey, Question, AnswerList, Answer
 from src.surfing_penguin.db_interface import user_functions
 
 
-def new_survey(user, name, questions, is_anonymous):
-    survey = Survey(user, name, is_anonymous)
+def new_survey(user, name, content, questions, is_anonymous):
+    survey = Survey(user, name, content, is_anonymous)
     session.add(survey)
     session.commit()
     for i in range(len(questions)):
@@ -31,13 +31,6 @@ def author_get_surveys(author):
 
 
 def new_question(survey, data):
-    """
-    Add a question to a survey, temporarily only called by new_survey
-
-    Args:
-        survey: survey object in ORM
-        data: a dictionary with key "content" and "title"
-    """
     survey.question_num += 1
     question = Question(data["title"], data["content"], survey)
     session.add(question)
@@ -45,16 +38,6 @@ def new_question(survey, data):
 
 
 def new_answerlist(user, data):
-    """
-    Answerlist is a data structure that stores
-    a list of answers of a specified survey.
-
-    This function should create a new answerlist and all answers in it.
-
-    Args:
-        data: a dictionary with key "survey_id" and a list of
-                answers(which is a dictionary with key 'idx and 'content'')
-    """
     survey = session.query(Survey).filter_by(id=data["survey_id"]).first()
     survey.answerlist_num += 1
     answerlist = AnswerList(user, survey, data["nickname"])
@@ -68,9 +51,6 @@ def new_answerlist(user, data):
 
 
 def new_answer(answerlist, question, data):
-    """
-    Add a new answer to a question, only called by new_answerlist
-    """
     answer = Answer(answerlist, question, data["content"])
     session.add(answer)
     session.commit()
