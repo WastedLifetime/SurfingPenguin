@@ -48,7 +48,7 @@ def question_data():
 @pytest.fixture
 def survey_data(question_data):
     survey = {
-        'surveyname': 'test_api',
+        'survey_title': 'test_api',
         'questions': question_data,
         'is_anonymous': 0
     }
@@ -99,7 +99,7 @@ class TestSurvey():
 
     """ Testing models """
     def test_survey_model(self, survey):
-        assert(survey.surveyname == "test")
+        assert(survey.survey_title == "test")
         assert(survey.question_num == 0)
         assert(survey.answerlist_num == 0)
 
@@ -116,22 +116,22 @@ class TestSurvey():
         new_user.id = 1
         test_survey = survey_functions.new_survey(new_user, "test",
                                                   question_data, 0)
-        assert(test_survey.surveyname == "test")
+        assert(test_survey.survey_title == "test")
         assert(test_survey.question_num == len(question_data))
         assert(session.query(Question).filter_by(
             survey_id=test_survey.id).count() == len(question_data))
 
     def test_get_all_surveys(self):
         surveys = survey_functions.get_all_surveys()
-        assert (surveys[0].surveyname == "test")
+        assert (surveys[0].survey_title == "test")
 
     def test_id_get_survey(self):
         survey = survey_functions.id_get_survey(1)
-        assert (survey.surveyname == "test")
+        assert (survey.survey_title == "test")
 
     def test_name_get_survey(self):
         survey = survey_functions.name_get_surveys("test")
-        assert (survey[0].surveyname == "test")
+        assert (survey[0].survey_title == "test")
 
     # NOTE: Function new_question() is not tested,
     # because it's called in new_survey() in db_operation.
@@ -149,7 +149,7 @@ class TestSurvey():
         assert (response.status_code == 400)
         assert (json_of_response(response)['messages'] ==
                 "Invalid input format")
-        response = post_json(client, url, {'surveyname': None})
+        response = post_json(client, url, {'survey_title': None})
         assert (response.status_code == 400)
         assert (json_of_response(response)['messages'] ==
                 "Invalid input: No survey name")
@@ -158,13 +158,13 @@ class TestSurvey():
         url = api_prefix+'show_all_surveys'
         response = client.get(url)
         assert response.status_code == 200
-        assert json_of_response(response)[0]['surveyname'] == "test"
+        assert json_of_response(response)[0]['survey_title'] == "test"
 
     def test_search_survey_by_id(self, client, api_prefix):
         url = api_prefix+'search_survey_by_id'
         response = post_json(client, url, {'id': 1})
         assert response.status_code == 200
-        assert json_of_response(response)['surveyname'] == "test"
+        assert json_of_response(response)['survey_title'] == "test"
 
     def test_search_survey_by_name(self, client, api_prefix):
         url = api_prefix+'search_survey_by_name'

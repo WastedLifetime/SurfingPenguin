@@ -22,7 +22,7 @@ def id_get_survey(ID):
 
 
 def name_get_surveys(name):
-    return session.query(Survey).filter_by(surveyname=name).all()
+    return session.query(Survey).filter_by(survey_title=name).all()
 
 
 def author_get_surveys(author):

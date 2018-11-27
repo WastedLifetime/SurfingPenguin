@@ -28,7 +28,7 @@ api_question = api.model("question_model", {
     })
 
 api_get_survey = api.model("get_survey_model", {
-        'surveyname': fields.String(description="Survey name"),
+        'survey_title': fields.String(description="Survey name"),
         'questions': fields.List(
             fields.Nested(api_question),
             description="All questions in the survey"
@@ -42,7 +42,7 @@ api_return_survey = api.model("return_survey_model", {
         'author_id': fields.Integer(description="Author ID"),
         'question_num': fields.Integer(
             description="Number of questions in the survey"),
-        'surveyname': fields.String(description="Survey name"),
+        'survey_title': fields.String(description="Survey name"),
         'questions': fields.List(
             fields.Nested(api_question),
             description="All questions in the survey"
@@ -94,12 +94,12 @@ class create_survey(Resource):
     @login_required(role='ANY')
     def post(self):
         try:
-            if api.payload['surveyname'] is None:
+            if api.payload['survey_title'] is None:
                 return {'messages': "Invalid input: No survey name"}, 400
             # TODO: Check if an user duplicates his/her survey
             survey_functions.new_survey(
                     current_user,
-                    api.payload['surveyname'],
+                    api.payload['survey_title'],
                     api.payload['questions'],
                     api.payload['is_anonymous'])
             return {'messages': "Survey created"}

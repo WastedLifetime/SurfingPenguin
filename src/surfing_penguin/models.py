@@ -39,16 +39,16 @@ class User(UserMixin, Base):
 class Survey(Base):
     __tablename__ = 'survey'
     id = Column(Integer, primary_key=True)
-    surveyname = Column(String(128))
-    question_num = Column(Integer)
-    answerlist_num = Column(Integer)
     author_id = Column(Integer, ForeignKey('user.id'))
+    survey_title = Column(String(128))
+    question_num = Column(Integer)
     is_anonymous = Column(Integer, default=0)
+    answerlist_num = Column(Integer)
     questions = relationship("Question")
     answerlists = relationship("AnswerList")
 
     def __init__(self, user, name, is_anonymous):
-        self.surveyname = name
+        self.survey_title = name
         self.author_id = user.id
         self.question_num = 0
         self.answerlist_num = 0
