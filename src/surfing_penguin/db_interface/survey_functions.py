@@ -32,7 +32,8 @@ def author_get_surveys(author):
 
 def new_question(survey, data):
     survey.question_num += 1
-    question = Question(data["title"], data["content"], survey)
+    question = Question(data["title"], data["content"], data["format"],
+                        data["choice_num"], survey)
     session.add(question)
     session.commit()
 

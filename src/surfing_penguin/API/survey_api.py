@@ -24,7 +24,9 @@ api_get_survey_author = api.model("survey_author", {
 api_question = api.model("question_model", {
         'index_in_survey': fields.Integer(description="Index in that survey"),
         'title': fields.String(description="Question"),
-        'content': fields.String(description="Description of the question")
+        'content': fields.String(description="Description of the question"),
+        'format': fields.String(description="Question format"),
+        'choice_num': fields.Integer(description="Question")
     })
 
 api_get_survey = api.model("get_survey_model", {

@@ -33,12 +33,16 @@ def question_data():
         {
             'index_in_survey': 1,
             'title': "testQ1",
-            'content': "Q1content"
+            'content': "Q1content",
+            'format': "formatQ1",
+            'choice_num': 1
         },
         {
             'index_in_survey': 2,
             'title': "testQ2",
-            'content': "Q2content"
+            'content': "Q2content",
+            'format': "formatQ2",
+            'choice_num': 2
             }
     ]
     return data
@@ -106,9 +110,11 @@ class TestSurvey():
         assert(survey.answerlist_num == 0)
 
     def test_question_model(self, survey):
-        question = Question("TITLE", "CONTENT", survey)
+        question = Question("TITLE", "CONTENT", "format", 1, survey)
         assert(question.title == "TITLE")
         assert(question.content == "CONTENT")
+        assert(question.format == "format")
+        assert(question.choice_num == 1)
         assert(question.survey_id == survey.id)
         assert(question.index_in_survey == survey.question_num)
 
