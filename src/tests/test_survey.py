@@ -76,11 +76,13 @@ def answer_data():
     data = [
         {
             'index_in_survey': 1,
-            'content': "Ans1content"
+            'content_string': "Ans1content",
+            'content_array': [1, 2]
         },
         {
             'index_in_survey': 2,
-            'content': "Ans2content"
+            'content_string': "Ans2content",
+            'content_array': [2, 3]
         }
     ]
     return data
@@ -197,11 +199,13 @@ class TestAnswer():
         test_answerlist = AnswerList(new_user, survey_with_question, "client")
         target_question = session.query(Question).filter_by(
             survey_id=survey_with_question.id).first()
-        test_answer = Answer(test_answerlist, target_question, "answer:123")
+        test_answer = Answer(test_answerlist, target_question,
+                             "answer:123", [1, 2])
         assert test_answer.answerlist_id == test_answerlist.id
         assert test_answer.question_index == target_question.index_in_survey
         assert test_answer.question_id == target_question.id
-        assert test_answer.content == "answer:123"
+        assert test_answer.content_string == "answer:123"
+        assert test_answer.content_array == [1, 2]
 
     """ Testing db operations """
     def test_new_answerlist(
@@ -219,7 +223,8 @@ class TestAnswer():
     def test_id_get_answerlists(self):
         lists = survey_functions.id_get_answerlists(2)
         assert lists[0].answers[0].question_index == 1
-        assert lists[0].answers[0].content == "Ans1content"
+        assert lists[0].answers[0].content_string == "Ans1content"
+        assert lists[0].answers[0].content_array == [1, 2]
 
     # NOTE: Function new_answer() is not tested,
     # because it's called in new_answerlist() in db_operation.
@@ -243,11 +248,13 @@ class TestAnswer():
         data = [
             {
                 'index_in_survey': 5,
-                'content': "Ans1content"
+                'content_string': "Ans1content",
+                'content_array': [0, 1]
             },
             {
                 'index_in_survey': 3,
-                'content': "Ans2content"
+                'content_string': "Ans2content",
+                'content_array': [0, 1]
             }
         ]
         response = post_json(client, url, {
@@ -268,7 +275,8 @@ class TestAnswer():
         assert json_of_response(response)['answerlist_num'] == 2
         assert json_of_response(response)['answerlists'][0]['answers'][0] == {
                     'question_index': 1,
-                    'content': "Ans1content"
+                    'content_string': "Ans1content",
+                    'content_array': [1, 2]
                 }
 
     def test_show_answers_bad_request(self, client, api_prefix):
