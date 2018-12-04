@@ -4,7 +4,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router'
-import {Navbar, Nav, NavItem, NavDropdown, MenuItem} from 'react-bootstrap'
+import {Col, Navbar, Nav, NavItem, NavDropdown, MenuItem} from 'react-bootstrap'
 import '../css/style.css'
 import './TopNavBar.css'
 
@@ -13,8 +13,10 @@ class TopNavBar extends Component {
     let { currentUser } = this.props
     return (
       <Nav pullRight>
-        <MenuItem href='#/logout'>Logout</MenuItem>
         <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
+        <NavDropdown title={currentUser}>
+          <MenuItem href='#/logout'>Logout </MenuItem>
+        </NavDropdown>
       </Nav>
     )
   }
@@ -36,11 +38,11 @@ class TopNavBar extends Component {
     let { currentUser } = this.props
     // if (currentUser) { indexPathname = '#/surveys' }
     return (
-      <Navbar className='TopNavBar'>
+      <Navbar bsStyle='TopNavBar'>
         <Navbar.Header>
           <Navbar.Brand>
             <a href={currentUser ? surveyPathname : indexPathname}>
-                Surfing Penguin
+                Survey Penguin
             </a>
           </Navbar.Brand>
           <Navbar.Toggle />
