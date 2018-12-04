@@ -13,10 +13,8 @@ class TopNavBar extends Component {
     let { currentUser } = this.props
     return (
       <Nav pullRight>
-        <NavDropdown eventKey={3} title={currentUser.substring(7)} id='basic-nav-dropdown'>
-          <MenuItem divider />
-          <MenuItem href='#/logout'>Logout</MenuItem>
-        </NavDropdown>
+        <MenuItem href='#/logout'>Logout</MenuItem>
+        <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
       </Nav>
     )
   }
@@ -41,13 +39,8 @@ class TopNavBar extends Component {
       <Navbar className='TopNavBar'>
         <Navbar.Header>
           <Navbar.Brand>
-            <a href={indexPathname}>
+            <a href={currentUser ? surveyPathname : indexPathname}>
                 Surfing Penguin
-            </a>
-          </Navbar.Brand>
-          <Navbar.Brand>
-            <a href={surveyPathname}>
-                Surveys
             </a>
           </Navbar.Brand>
           <Navbar.Toggle />
