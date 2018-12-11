@@ -55,17 +55,10 @@ export default function routes (store) {
       <IndexRoute component={Home} />
       <Route path='register' component={RegisterPage} />
       <Route path='login' component={LoginPage} />
-      <Route path='surveys' component={SurveyListPage}>
-        <Route path='logout' component={LogoutPage} />
-        <Route path='user/surveys' component={UserSurveysPage} />
-        <Route path='surveys/:surveyId' component={SurveyPage} />
-        <Route path='user/surveys/:surveyId/' component={UserSurveyPage}>
-          <Route path='edit' component={EditSurveyPage} />
-          <Route path='data' component={SurveyDataPage} />
-          <Route path='report' component={SurveyReportPage} />
-          // <IndexRoute component={OverviewSurveyPage} />
-        </Route>
-      </Route>
+      <Route path='surveys' component={SurveyListPage} />
+      <Route path='logout' component={LogoutPage} />
+      <Route path='user/surveys' component={UserSurveysPage} />
+      <Route path='surveys/:surveyId' component={SurveyPage} />
     </Route>
   )
 }
