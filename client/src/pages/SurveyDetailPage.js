@@ -7,17 +7,17 @@ import SurveyNavBar from './../containers/SurveyNavBar'
 import { fetchSurvey } from '../actions/survey'
 
 class SurveyDetailPage extends Component {
-  loadData () {
-    this.props.fetchSurvey(this.props.surveyId)
+  loaddata () {
+    this.props.fetchsurvey(this.props.surveyid)
   }
 
-  componentDidMount () {
-    this.loadData()
+  componentdidmount () {
+    this.loaddata()
   }
 
-  componentDidUpdate (prevProps) {
-    if (this.props.surveyId !== prevProps.surveyId) {
-      this.loadData()
+  componentdidupdate (prevprops) {
+    if (this.props.surveyid !== prevprops.surveyid) {
+      this.loaddata()
     }
   }
   render () {

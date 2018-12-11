@@ -1,4 +1,5 @@
-export default function (state = {surveys: [], isLoading: false, error: null}, action) {
+import { combineReducers } from 'redux'
+export const fetchReducer = (state = {surveys: [], isLoading: false, error: null}, action) => {
   switch (action.type) {
     case 'FETCH_SURVEYS_REQUEST':
       return {
@@ -39,4 +40,18 @@ export default function (state = {surveys: [], isLoading: false, error: null}, a
     default:
       return state
   }
+}
+
+export default combineReducers({
+  fetchSurvey: fetchReducer,
+})
+
+export const getSurveys = (state) => state.fetchSurvey.surveys
+
+export const getFetchStatus = (state) => {
+  return state.fetchSurvey.isLoading
+}
+
+export const getFetchError = (state) => {
+  return state.fetchSurvey.error
 }

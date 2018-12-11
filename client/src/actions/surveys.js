@@ -1,13 +1,12 @@
 import * as api from '../api'
 import initSurvey from '../constants/InitSurvey'
 
-export const fetchSurveysRequest = user => dispatch => {
+export const fetchSurveysRequest = () => dispatch => {
   dispatch({
     type: 'FETCH_SURVEYS_REQUEST',
-    payload: user
   })
 
-  return api.fetchUserSurveys(user).then(res => {
+  return api.fetchAllSurveys().then(res => {
     dispatch({
       type: 'FETCH_SURVEYS_REQUEST_SUCCESS',
       payload: res

@@ -38,7 +38,7 @@ export const fetchCurrentUser = () => {
   })
 }
 
-export const fetchUserSurveys = (user) => {
+export const fetchAllSurveys = () => {
   return fetcher.get(`/show_all_surveys`).then(res => res.data)
 }
 

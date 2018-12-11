@@ -2,13 +2,29 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import SurveyItem from '../components/SurveyList/SurveyItem'
 import { bindActionCreators } from 'redux'
-import { getSurvey, getFetchError, getFetchStatus, getSubmitStatus } from '../reducers/survey'
-import { fetchSurvey } from '../actions/survey'
+import { getSurveys, getFetchError, getFetchStatus, getSubmitStatus } from '../reducers/surveys'
 import '../css/search.css'
 // import '../css/bootstrap.css'
 import '../css/font-awesome/css/font-awesome.min.css'
+import { fetchSurveysRequest } from '../actions/surveys'
 
 class SurveyList extends Component {
+  loaddata () {
+    this.props.fetchsurvey()
+  }
+
+  componentdidmount () {
+    this.getSurveys()
+  }
+  getSurveys() {
+    fetch('http:/localhost:5000/api/0.1/show_all_surveys')
+      .then(({ results }) => this.setState({ surveys: results }));
+  }
+
+  componentdidupdate (prevprops) {
+    this.loaddata()
+  }
+
   render () {
     console.log(this.props)
     return (
@@ -62,16 +78,14 @@ class SurveyList extends Component {
 }
 const mapStateToProps = (state, { params }) => {
   return {
-    survey: getSurvey(state.survey),
-    isLoading: getFetchStatus(state.survey),
-    surveyId: params.surveyId,
-    isSuccess: getSubmitStatus(state.survey)
+    survey: getSurveys(state.surveys),
+    isLoading: getFetchStatus(state.surveys),
   }
 }
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    fetchSurvey: bindActionCreators(fetchSurvey, dispatch)
+    fetchSurveys: bindActionCreators(fetchSurveysRequest, dispatch)
   }
 }
 export default connect(mapStateToProps, mapDispatchToProps)(SurveyList)
