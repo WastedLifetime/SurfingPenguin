@@ -30,3 +30,12 @@
   width: 100%;
   align: center;
 }
+.caret {
+  display: none;
+}
+.dropdown-menu::before, 
+.dropdown-menu::after {
+      border: none;
+          content: none;
+
+}

@@ -13,9 +13,13 @@ class SideNavBar extends Component {
     // if (currentUser) { indexPathname = '#/surveys' }
     return (
       <Nav pullRight bsStyle='SideNavBar'>
-        <span class='glyphicon glyphicon-user' aria-hidden='true' />
-        <NavDropdown title={currentUser}>
+
+        <NavDropdown title={<span class='glyphicon glyphicon-user' aria-hidden='true'> {currentUser} </span>}>
           <MenuItem href='#/logout'>Logout </MenuItem>
+          <MenuItem href='#/' active>Donate</MenuItem>
+          <MenuItem divider />
+          <MenuItem href='#/logout'>登出 </MenuItem>
+          <MenuItem href='#/' active>Donate</MenuItem>
         </NavDropdown>
       </Nav>
     )
