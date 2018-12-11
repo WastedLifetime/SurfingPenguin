@@ -1,41 +1,10 @@
-.navbar {
-  align: center;
-  top: 50%;
-  margin: 0;
-}
-.navbar-SideNavBar {
-  background-color: #0277bd;
+.dropdown-menu {
+  background-color: white;
   color: white;
-  font-size: 1.25em;
-  height: 5%;
-  width: 100%;
+  font-size: 1em;
 }
-
-.navbar a {
-  background-color: #0277bd;
-  color: white;
-  top: 50%;
-}
-
-.navbar-SideNavBar .navbar-brand {
-  font-size: 1.75em;
-}
-.navbar-header {
-  padding: 0 0 0 40%;
-}
-.navbar-right {
-  margin-right: 1%;
-}
-.navbar-collapse {
-  width: 100%;
-  align: center;
-}
-.caret {
-  display: none;
-}
-.dropdown-menu::before, 
-.dropdown-menu::after {
-      border: none;
-          content: none;
-
+.dropdown-menu > li > a {
+  background-color: white;
+  color: black;
+  font-size: 1em;
 }
