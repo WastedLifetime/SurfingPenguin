@@ -48,6 +48,27 @@ def question_data():
     return data
 
 
+@pytest.fixture
+def question_fail_data():
+    fail_data = [
+        {
+            'index_in_survey': 1,
+            'title': "testQ1",
+            'content': "Q1content",
+            'format': "Shortanswer",
+            'choice_num': 1
+        },
+        {
+            'index_in_survey': 2,
+            'title': "testQ2",
+            'content': "Q2content",
+            'format': "Multiple-choice",
+            'choice_num': 2
+            }
+    ]
+    return fail_data
+
+
 # data for a survey
 @pytest.fixture
 def survey_data(question_data):
@@ -55,6 +76,17 @@ def survey_data(question_data):
         'survey_title': 'test_api',
         'survey_content': 'test_content',
         'questions': question_data,
+        'is_anonymous': 0
+    }
+    return survey
+
+
+@pytest.fixture
+def survey_fail_data(question_fail_data):
+    survey = {
+        'survey_title': 'test_api',
+        'survey_content': 'test_content',
+        'questions': question_fail_data,
         'is_anonymous': 0
     }
     return survey
@@ -152,8 +184,13 @@ class TestSurvey():
         assert (response.status_code == 200)
         assert (json_of_response(response)['messages'] == "Survey created")
 
-    def test_new_survey_bad_request(self, client, login_as_c, api_prefix):
+    def test_new_survey_bad_request(self, survey_fail_data, client,
+                                    login_as_c, api_prefix):
         url = api_prefix+'create_survey'
+        response = post_json(client, url, survey_fail_data)
+        assert (response.status_code == 400)
+        assert (json_of_response(response)['messages'] ==
+                "Invalid input format")
         response = post_json(client, url, {})
         assert (response.status_code == 400)
         assert (json_of_response(response)['messages'] ==

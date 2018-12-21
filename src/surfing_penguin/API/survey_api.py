@@ -102,6 +102,11 @@ class create_survey(Resource):
             if api.payload['survey_title'] is None:
                 return {'messages': "Invalid input: No survey name"}, 400
             # TODO: Check if an user duplicates his/her survey
+            question_data = api.payload['questions']
+            for i in range(len(question_data)):
+                if question_data[i]['format'] not in ["Multiple-choice",
+                                                      "Short answer"]:
+                    return {'messages': "Invalid input format"}, 400
             survey_functions.new_survey(
                     current_user,
                     api.payload['survey_title'],
