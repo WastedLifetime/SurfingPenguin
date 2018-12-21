@@ -11,7 +11,6 @@ import './TopNavBar.css'
 
 class TopNavBar extends Component {
   loginView () {
-    let { currentUser } = this.props
     return (
       <SideNavBar />
     )
@@ -20,8 +19,8 @@ class TopNavBar extends Component {
   unLoginView () {
     return (
       <Nav pullRight>
-        <NavItem eventKey={1} href='#/login'>登入</NavItem>
-        <NavItem eventKey={1} href='#/register'>註冊</NavItem>
+        <NavItem className='NavButton' eventKey={1} href='#/login'>登入</NavItem>
+        <NavItem className='NavButton' eventKey={1} href='#/register'>註冊</NavItem>
       </Nav>
 
     )

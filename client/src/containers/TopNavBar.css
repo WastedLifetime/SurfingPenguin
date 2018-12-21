@@ -11,13 +11,14 @@
   width: 100%;
 }
 
-.navbar a {
+.NavButton a {
   background-color: #0277bd;
   color: white;
-  top: 50%;
+  font-size: 1em;
 }
-
 .navbar-TopNavBar .navbar-brand {
+  background-color: #0277bd;
+  color: white;
   font-size: 1.75em;
 }
 .navbar-header {
@@ -27,6 +28,12 @@
   margin-right: 1%;
 }
 .navbar-collapse {
-  width: 100%;
-  align: center;
+  padding-right: 0;
+  padding-left: 0;
+  margin-right: 0;
+  margin-left: 0;
+}
+.container {
+  padding-right: 0;
+  padding-left: 0;
 }

@@ -3,8 +3,23 @@
   color: white;
   font-size: 1em;
 }
-.dropdown-menu > li > a {
-  background-color: white;
-  color: black;
-  font-size: 1em;
+.dropdown-menu{
+  width: 200%;
+}
+.dropdown-menu li{
+  padding-left: 0;
+}
+.dropdown-menu .dropdown-link a  {
+  text-align: center;
+  color: gray;
+  padding: 5 5 5 5 ;
+  margin: 5 5 5 5;
+}
+.dropdown-menu .dropdown-link.active a {
+  text-align: center;
+  background-color: #0277bd;
+  color: white;
+}
+.dropdown-toggle {
+  color: white;
 }
