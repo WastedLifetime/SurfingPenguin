@@ -81,6 +81,11 @@ and Heroku. And you can see the website on the heroku.
 ```
 Preference: https://medium.com/@felipeluizsoares/automatically-deploy-with-travis-ci-and-heroku-ddba1361647f
 ```
+
+## Database graph
+![database](../image/database.png)
+
+
 ## Author
 
 * Frank [zfrank7777](https://github.com/zfrank7777)

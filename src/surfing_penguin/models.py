@@ -2,7 +2,7 @@
 
 import datetime
 from src.surfing_penguin.extensions import Base
-from sqlalchemy import Column, Integer, String, DateTime, ForeignKey
+from sqlalchemy import Column, Integer, String, DateTime, ForeignKey, Enum
 from sqlalchemy.orm import relationship
 from flask_login import UserMixin
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -39,44 +39,45 @@ class User(UserMixin, Base):
 class Survey(Base):
     __tablename__ = 'survey'
     id = Column(Integer, primary_key=True)
-    surveyname = Column(String(128))
+    survey_title = Column(String(128))
+    survey_content = Column(String(128))  # Briefly describe it
     question_num = Column(Integer)
+    is_anonymous = Column(Integer, default=0)
     answerlist_num = Column(Integer)
     author_id = Column(Integer, ForeignKey('user.id'))
-    is_anonymous = Column(Integer, default=0)
     questions = relationship("Question")
     answerlists = relationship("AnswerList")
 
-    def __init__(self, user, name, is_anonymous):
-        self.surveyname = name
+    def __init__(self, user, name, content, is_anonymous):
+        self.survey_title = name
         self.author_id = user.id
+        self.survey_content = content
         self.question_num = 0
         self.answerlist_num = 0
         self.is_anonymous = is_anonymous
 
 
 class Question(Base):
-    # TODO: add detail in what should in a question
     __tablename__ = 'question'
     id = Column(Integer, primary_key=True)
+    index_in_survey = Column(Integer)  # NO. in that survey
     title = Column(String(128))
     content = Column(String(1024))
+    format = Column(Enum("Multiple-choice", "Short answer", name="format_enum",
+                         create_type=False))
+    choice_num = Column(Integer)
     survey_id = Column(Integer, ForeignKey('survey.id'))
-    index_in_survey = Column(Integer)  # NO. in that survey
-    # TODO: add answer type
 
-    def __init__(self, title, content, survey):
+    def __init__(self, title, content, format, choice_num, survey):
         self.title = title
         self.content = content
+        self.format = format
+        self.choice_num = choice_num
         self.survey_id = survey.id
         self.index_in_survey = survey.question_num
 
 
 class AnswerList(Base):
-    """
-    AnswerList is a table connecting Survey and Answer,
-    where an Answer is an answer to only a question.
-    """
     __tablename__ = 'answerlist'
     id = Column(Integer, primary_key=True)
     survey_id = Column(Integer, ForeignKey('survey.id'))
@@ -84,7 +85,6 @@ class AnswerList(Base):
     answeruser_id = Column(Integer, ForeignKey('user.id'))
     index_in_survey = Column(Integer)
     answers = relationship("Answer")
-    # TODO: add author
 
     def __init__(self, user, survey, nickname):
         self.survey_id = survey.id
@@ -99,12 +99,11 @@ class Answer(Base):
     answerlist_id = Column(Integer, ForeignKey('answerlist.id'))
     question_id = Column(Integer, ForeignKey('question.id'))
     question_index = Column(Integer, ForeignKey('question.index_in_survey'))
-    # TODO: add multiple answer type
-    content = Column(String(1024))
+    content_string = Column(String(1024))
     question = relationship("Question", foreign_keys=[question_index])
 
-    def __init__(self, answerlist, question, content):
+    def __init__(self, answerlist, question, content_string):
         self.answerlist_id = answerlist.id
         self.question_index = question.index_in_survey
         self.question_id = question.id
-        self.content = content
+        self.content_string = content_string

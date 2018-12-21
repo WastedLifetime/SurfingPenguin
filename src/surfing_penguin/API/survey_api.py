@@ -24,11 +24,15 @@ api_get_survey_author = api.model("survey_author", {
 api_question = api.model("question_model", {
         'index_in_survey': fields.Integer(description="Index in that survey"),
         'title': fields.String(description="Question"),
-        'content': fields.String(description="Description of the question")
+        'content': fields.String(description="Description of the question"),
+        'format': fields.String(description="Question format",
+                                enum=["Multiple-choice", "Short answer"]),
+        'choice_num': fields.Integer(description="Question")
     })
 
 api_get_survey = api.model("get_survey_model", {
-        'surveyname': fields.String(description="Survey name"),
+        'survey_title': fields.String(description="Survey name"),
+        'survey_content': fields.String(description="Survey content"),
         'questions': fields.List(
             fields.Nested(api_question),
             description="All questions in the survey"
@@ -42,7 +46,8 @@ api_return_survey = api.model("return_survey_model", {
         'author_id': fields.Integer(description="Author ID"),
         'question_num': fields.Integer(
             description="Number of questions in the survey"),
-        'surveyname': fields.String(description="Survey name"),
+        'survey_title': fields.String(description="Survey name"),
+        'survey_content': fields.String(description="Survey content"),
         'questions': fields.List(
             fields.Nested(api_question),
             description="All questions in the survey"
@@ -53,7 +58,7 @@ api_return_survey = api.model("return_survey_model", {
 
 api_answer = api.model("answer_model", {
         'question_index': fields.Integer(description="index in that survey"),
-        'content': fields.String(description="Answer content")
+        'content_string': fields.String(description="Answer string content"),
     })
 
 api_answerlist = api.model("answerlist_model", {
@@ -94,12 +99,18 @@ class create_survey(Resource):
     @login_required(role='ANY')
     def post(self):
         try:
-            if api.payload['surveyname'] is None:
+            if api.payload['survey_title'] is None:
                 return {'messages': "Invalid input: No survey name"}, 400
             # TODO: Check if an user duplicates his/her survey
+            question_data = api.payload['questions']
+            for i in range(len(question_data)):
+                if question_data[i]['format'] not in ["Multiple-choice",
+                                                      "Short answer"]:
+                    return {'messages': "Invalid input format"}, 400
             survey_functions.new_survey(
                     current_user,
-                    api.payload['surveyname'],
+                    api.payload['survey_title'],
+                    api.payload['survey_content'],
                     api.payload['questions'],
                     api.payload['is_anonymous'])
             return {'messages': "Survey created"}
