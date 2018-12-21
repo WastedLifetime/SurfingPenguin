@@ -58,8 +58,6 @@ api_return_survey = api.model("return_survey_model", {
 api_answer = api.model("answer_model", {
         'question_index': fields.Integer(description="index in that survey"),
         'content_string': fields.String(description="Answer string content"),
-        #'content_array': fields.List(fields.Integer,
-        #                             description="Answer array content")
     })
 
 api_answerlist = api.model("answerlist_model", {

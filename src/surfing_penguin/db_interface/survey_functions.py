@@ -52,8 +52,7 @@ def new_answerlist(user, data):
 
 
 def new_answer(answerlist, question, data):
-    answer = Answer(answerlist, question, data["content_string"])#,
-                    #data["content_array"])
+    answer = Answer(answerlist, question, data["content_string"])
     session.add(answer)
     session.commit()
 

@@ -2,7 +2,7 @@
 
 import datetime
 from src.surfing_penguin.extensions import Base
-from sqlalchemy import Column, Integer, String, DateTime, ForeignKey, ARRAY
+from sqlalchemy import Column, Integer, String, DateTime, ForeignKey
 from sqlalchemy.orm import relationship
 from flask_login import UserMixin
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -99,12 +99,10 @@ class Answer(Base):
     question_id = Column(Integer, ForeignKey('question.id'))
     question_index = Column(Integer, ForeignKey('question.index_in_survey'))
     content_string = Column(String(1024))
-#    content_array = Column(ARRAY(Integer))
     question = relationship("Question", foreign_keys=[question_index])
 
-    def __init__(self, answerlist, question, content_string):#, content_array):
+    def __init__(self, answerlist, question, content_string):
         self.answerlist_id = answerlist.id
         self.question_index = question.index_in_survey
         self.question_id = question.id
         self.content_string = content_string
-        #self.content_array = content_array
