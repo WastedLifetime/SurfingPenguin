@@ -2,7 +2,7 @@
 
 import datetime
 from src.surfing_penguin.extensions import Base
-from sqlalchemy import Column, Integer, String, DateTime, ForeignKey
+from sqlalchemy import Column, Integer, String, DateTime, ForeignKey, Enum
 from sqlalchemy.orm import relationship
 from flask_login import UserMixin
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -63,7 +63,8 @@ class Question(Base):
     index_in_survey = Column(Integer)  # NO. in that survey
     title = Column(String(128))
     content = Column(String(1024))
-    format = Column(String(128))
+    format = Column(Enum("Multiple-choice", "Short answer", name="format_enum",
+                         create_type=False))
     choice_num = Column(Integer)
     survey_id = Column(Integer, ForeignKey('survey.id'))
 

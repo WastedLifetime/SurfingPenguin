@@ -34,14 +34,14 @@ def question_data():
             'index_in_survey': 1,
             'title': "testQ1",
             'content': "Q1content",
-            'format': "formatQ1",
+            'format': "Short answer",
             'choice_num': 1
         },
         {
             'index_in_survey': 2,
             'title': "testQ2",
             'content': "Q2content",
-            'format': "formatQ2",
+            'format': "Multiple-choice",
             'choice_num': 2
             }
     ]
@@ -110,10 +110,10 @@ class TestSurvey():
         assert(survey.answerlist_num == 0)
 
     def test_question_model(self, survey):
-        question = Question("TITLE", "CONTENT", "format", 1, survey)
+        question = Question("TITLE", "CONTENT", "Multiple-choice", 1, survey)
         assert(question.title == "TITLE")
         assert(question.content == "CONTENT")
-        assert(question.format == "format")
+        assert(question.format == "Multiple-choice")
         assert(question.choice_num == 1)
         assert(question.survey_id == survey.id)
         assert(question.index_in_survey == survey.question_num)

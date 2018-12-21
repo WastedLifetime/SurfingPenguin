@@ -25,7 +25,8 @@ api_question = api.model("question_model", {
         'index_in_survey': fields.Integer(description="Index in that survey"),
         'title': fields.String(description="Question"),
         'content': fields.String(description="Description of the question"),
-        'format': fields.String(description="Question format"),
+        'format': fields.String(description="Question format",
+                                enum=["Multiple-choice", "Short answer"]),
         'choice_num': fields.Integer(description="Question")
     })
 
