@@ -26,6 +26,7 @@ class CollectedSurveyPage extends React.Component {
         <div>
           <SurveyNavBar />
         </div>
+        Collected Survey Page
         TODO: this page is directly from the EditSurvey page and need to be updated
         {this.props.children}
       </div>

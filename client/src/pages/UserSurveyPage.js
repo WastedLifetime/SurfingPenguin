@@ -4,7 +4,7 @@ import SurveyNavBar from './../containers/SurveyNavBar'
 import { fetchSurvey } from '../actions/editSurvey'
 import './EditSurveyPage.css'
 
-class EditSurveyPage extends React.Component {
+class UserSurveyPage extends React.Component {
   loadData () {
     this.props.fetchSurvey(this.props.surveyId)
   }
@@ -24,6 +24,8 @@ class EditSurveyPage extends React.Component {
       <div>
         <div>
           <SurveyNavBar />
+          User Survey Page
+          TODO: this page is directly from the EditSurvey page and need to be updated
         </div>
         {this.props.children}
       </div>
@@ -35,4 +37,4 @@ export default connect((state, { params }) => ({
   surveyId: params.surveyId
 }), {
   fetchSurvey
-})(EditSurveyPage)
+})(UserSurveyPage)
