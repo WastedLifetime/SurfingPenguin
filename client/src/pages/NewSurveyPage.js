@@ -1,12 +1,12 @@
 import React from 'react'
 import NewSurvey from '../containers/NewSurvey'
 import SurveyList from '../containers/SurveyList'
-import './UserSurveysPage.css'
+import './NewSurveyPage.css'
 
-class UserSurveysPage extends React.Component {
+class NewSurveysPage extends React.Component {
   render () {
     return (
-      <div className='container UserSurveysPage'>
+      <div className='container NewSurveysPage'>
         <NewSurvey />
         <SurveyList />
 
@@ -15,4 +15,4 @@ class UserSurveysPage extends React.Component {
   }
 }
 
-export default UserSurveysPage
+export default NewSurveysPage
