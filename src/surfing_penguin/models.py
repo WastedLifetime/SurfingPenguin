@@ -18,7 +18,7 @@ class User(UserMixin, Base):
     user_role = Column(String(32), default='normal')
     register_time = Column(DateTime, default=datetime.datetime.utcnow)
     last_seen = Column(DateTime, default=datetime.datetime.utcnow)
-    survey = relationship("Survey")
+    #survey = relationship("Survey")
 
     def __init__(self, username, password, user_role):
         self.username = username
@@ -45,8 +45,8 @@ class Survey(Base):
     is_anonymous = Column(Integer, default=0)
     answerlist_num = Column(Integer)
     author_id = Column(Integer, ForeignKey('user.id'))
-    questions = relationship("Question")
-    answerlists = relationship("AnswerList")
+    #questions = relationship("Question")
+    #answerlists = relationship("AnswerList")
 
     def __init__(self, user, name, content, is_anonymous):
         self.survey_title = name
@@ -84,7 +84,7 @@ class AnswerList(Base):
     nickname = Column(String(128))
     answeruser_id = Column(Integer, ForeignKey('user.id'))
     index_in_survey = Column(Integer)
-    answers = relationship("Answer")
+    #answers = relationship("Answer")
 
     def __init__(self, user, survey, nickname):
         self.survey_id = survey.id
