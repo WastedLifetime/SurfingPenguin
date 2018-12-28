@@ -24,7 +24,7 @@ class SideNavBar extends Component {
           <MenuItem className='dropdown-link' href='#/user/shared_surveys'>共用問卷</MenuItem>
           <MenuItem className='dropdown-link' href='#/user/collected_surveys'>收藏問卷</MenuItem>
           <MenuItem divider />
-          <MenuItem className='dropdown-link' href='#/user/setting'>設定</MenuItem>
+          <MenuItem className='dropdown-link' href='#/user/settings'>設定</MenuItem>
           <MenuItem className='dropdown-link' href='#/support'>支援</MenuItem>
           <MenuItem className='dropdown-link' href='#/contact_us'>聯絡我們</MenuItem>
           <MenuItem className='dropdown-link' href='#/privacy'>隱私權政策</MenuItem>
