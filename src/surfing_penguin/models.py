@@ -100,7 +100,6 @@ class Answer(Base):
     question_id = Column(Integer, ForeignKey('question.id'))
     question_index = Column(Integer, ForeignKey('question.index_in_survey'))
     content_string = Column(String(1024))
-    question = relationship("Question", foreign_keys=[question_index])
 
     def __init__(self, answerlist, question, content_string):
         self.answerlist_id = answerlist.id
