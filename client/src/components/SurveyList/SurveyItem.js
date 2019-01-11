@@ -15,6 +15,17 @@ class SurveyItem extends React.Component<Props> {
       hide: false
     }
   }
+    getQuestions() {
+        if (this.props.questions) {
+            return Object.keys(this.props.questions).map( (question) => {
+                return Object.keys(this.props.questions[question]).map( (key) => {
+                    return <div>{key}: {this.props.questions[question][key]}</div>;
+            })});
+        } else {
+            return <p>data is not available</p>;
+        }
+    }
+
 
   // TODO: render questions
   render () {
@@ -27,8 +38,7 @@ class SurveyItem extends React.Component<Props> {
             <h5 className='mb-1'>{survey.surveyname}</h5>
             <small>已截止</small>
           </div>
-          <div>
-          </div>
+          <div>{this.getQuestions()}</div>
           <p className='mb-1'>Donec id elit non mi porta gravida at eget metus. Maecenas sed diam eget risus varius blandit.</p>
           <i className='fa fa-bookmark' aria-hidden='true'>收藏</i>
           <i className='fa fa-pencil' aria-hidden='true'> 20</i>
