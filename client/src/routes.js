@@ -5,9 +5,16 @@ import Home from './pages/HomePage'
 import SurveyListPage from './pages/SurveyListPage'
 import RegisterPage from './pages/RegisterPage'
 import LoginPage from './pages/LoginPage'
-import UserSurveysPage from './pages/UserSurveysPage'
 import LogoutPage from './pages/LogoutPage'
 import UserSurveyPage from './pages/UserSurveyPage'
+import NewSurveyPage from './pages/NewSurveyPage'
+import SharedSurveyPage from './pages/SharedSurveyPage'
+import CollectedSurveyPage from './pages/CollectedSurveyPage'
+import SettingPage from './pages/SettingPage'
+import PrivacyPage from './pages/PrivacyPage'
+import ContactPage from './pages/ContactPage'
+import SupportPage from './pages/SupportPage'
+import DonatePage from './pages/DonatePage'
 import EditSurveyPage from './pages/EditSurveyPage'
 import SurveyDataPage from './pages/SurveyDataPage'
 import OverviewSurveyPage from './pages/OverviewSurveyPage'
@@ -57,7 +64,15 @@ export default function routes (store) {
       <Route path='login' component={LoginPage} />
       <Route path='surveys' component={SurveyListPage} />
       <Route path='logout' component={LogoutPage} />
-      <Route path='user/surveys' component={UserSurveysPage} />
+      <Route path='user/my_surveys' component={UserSurveyPage} />
+      <Route path='user/shared_surveys' component={SharedSurveyPage} />
+      <Route path='user/collected_surveys' component={CollectedSurveyPage} />
+      <Route path='create_survey' component={NewSurveyPage} />
+      <Route path='support' component={SupportPage} />
+      <Route path='privacy' component={PrivacyPage} />
+      <Route path='contact_us' component={ContactPage} />
+      <Route path='donate' component={DonatePage} />
+      <Route path='user/settings' component={SettingPage} />
       <Route path='surveys/:surveyId' component={SurveyPage} />
     </Route>
   )

@@ -7,6 +7,7 @@ from flask_admin import Admin
 from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
+from sqlalchemy.pool import SingletonThreadPool
 
 
 Base = declarative_base()
@@ -26,7 +27,9 @@ def init_app(app):
     flask_admin.init_app(app)
     db_engine = create_engine(
         app.config['SQLALCHEMY_DATABASE_URI'],
-        echo=False)
+        echo=False,
+        poolclass=SingletonThreadPool
+    )
     from src.surfing_penguin import models  # noqa: F401
     from src.surfing_penguin.models import User  # noqa: F401
     Base.metadata.create_all(db_engine)
