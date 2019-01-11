@@ -30,7 +30,7 @@ class SideNavBar extends Component {
           <MenuItem className='dropdown-link' href='#/privacy'>隱私權政策</MenuItem>
           <MenuItem divider />
           <MenuItem className='dropdown-link' href='#/logout'>登出 </MenuItem>
-          <MenuItem className='dropdown-link' href='#/' active>Donate</MenuItem>
+          <MenuItem className='dropdown-link' href='#/donate' active>Donate</MenuItem>
         </NavDropdown>
       </Nav>
     )
