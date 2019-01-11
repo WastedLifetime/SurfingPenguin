@@ -5,14 +5,16 @@ import './SurveyList.css'
 
 class SurveyList extends React.Component {
   render () {
-    let { surveys } = this.props
+    let surveys = this.props
     console.log(surveys)
+    console.log(Object.keys(surveys).length)
     return (
       <div className='SurveyList row'>
         <ul className='list-unstyled'>
-          {surveys.map(survey => {
-            return <li key={survey._id} className='col-md-3'><SurveyItem survey={survey} /></li>
-          })}
+            {Object.keys(surveys).map((item, i) =>
+                <SurveyItem {...surveys[item]}>
+                </SurveyItem>
+            )}
         </ul>
       </div>
     )

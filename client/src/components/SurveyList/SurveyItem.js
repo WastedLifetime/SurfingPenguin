@@ -16,19 +16,23 @@ class SurveyItem extends React.Component<Props> {
     }
   }
 
+  // TODO: render questions
   render () {
-    let { survey, location } = this.props
+    let survey = this.props
+    let questions = survey.questions
+    console.log(questions)
     return (
-      <ExpansionPanel>
-        <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
-          <Typography className="SimpleExpansionPanel-heading-2">{this.props.surveyname}</Typography>
-        </ExpansionPanelSummary>
-        <ExpansionPanelDetails>
-          <Typography>
-            Survey content
-          </Typography>
-        </ExpansionPanelDetails>
-      </ExpansionPanel>
+        <a href='#' className='list-group-item list-group-item-action flex-column align-items-start'>
+          <div className='d-flex w-100 justify-content-between'>
+            <h5 className='mb-1'>{survey.surveyname}</h5>
+            <small>已截止</small>
+          </div>
+          <div>
+          </div>
+          <p className='mb-1'>Donec id elit non mi porta gravida at eget metus. Maecenas sed diam eget risus varius blandit.</p>
+          <i className='fa fa-bookmark' aria-hidden='true'>收藏</i>
+          <i className='fa fa-pencil' aria-hidden='true'> 20</i>
+        </a>
     )
   }
   showsurvey () {

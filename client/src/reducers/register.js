@@ -1,4 +1,5 @@
 export default function (state = {isSuccess: false, isLoading: false}, action) {
+  console.log(action.type)
   switch (action.type) {
     case 'REGISTER_REQUEST':
       return {

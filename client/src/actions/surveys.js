@@ -1,19 +1,19 @@
 import * as api from '../api'
+import * as Surveys from '../reducers/surveys'
 import initSurvey from '../constants/InitSurvey'
 
 export const fetchSurveysRequest = () => dispatch => {
   dispatch({
-    type: 'FETCH_SURVEYS_REQUEST',
+    type: Surveys.FETCH_SURVEYS_REQUEST,
   })
-
-  return api.fetchAllSurveys().then(res => {
+  api.fetchAllSurveys().then(res => {
     dispatch({
-      type: 'FETCH_SURVEYS_REQUEST_SUCCESS',
+      type: Surveys.FETCH_SURVEYS_REQUEST_SUCCESS,
       payload: res
     })
   }).catch(err => {
     dispatch({
-      type: 'FETCH_SURVEYS_REQUEST_FAIL',
+      type: Surveys.FETCH_SURVEYS_REQUEST_FAIL,
       payload: err
     })
   })
