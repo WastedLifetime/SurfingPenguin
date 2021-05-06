@@ -6,7 +6,7 @@ chardet==3.0.4
 click==6.7
 flake8==3.5.0
 Flask==1.0.2
-Flask-Cors==3.0.6
+Flask-Cors==3.0.9
 Flask-Admin==1.5.1
 Flask-HTTPAuth==3.2.3
 Flask-Login==0.4.1
